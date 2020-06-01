@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_state_model">
+    <sys_state_model action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <description>This is a state model to govern the lifecycle of a Runbook</description>
+        <global_exit_condition/>
+        <name>Runbook State Model</name>
+        <order>100</order>
+        <sys_class_name>sys_state_model</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 11:09:37</sys_created_on>
+        <sys_id>45264871db05901018097b386896194d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Runbook State Model</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_state_model_45264871db05901018097b386896194d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 11:09:37</sys_updated_on>
+        <table>x_485045_icenow_runbook</table>
+    </sys_state_model>
+</record_update>

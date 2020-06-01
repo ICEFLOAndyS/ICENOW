@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_process_flow">
+    <sys_process_flow action="DELETE">
+        <active>true</active>
+        <condition table="x_485045_icenow_runbook">state=3^EQ<item display_value="Active" endquery="false" field="state" goto="false" newquery="false" operator="=" or="false" value="3"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </condition>
+        <description/>
+        <label>Active</label>
+        <name>State Activer</name>
+        <order>400</order>
+        <sys_class_name>sys_process_flow</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 13:30:34</sys_created_on>
+        <sys_id>448664f5db45901018097b3868961946</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>State Activer</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_process_flow_448664f5db45901018097b3868961946</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 13:30:34</sys_updated_on>
+        <table>x_485045_icenow_runbook</table>
+    </sys_process_flow>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICENOW">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_process_flow_448664f5db45901018097b3868961946</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_process_flow"><sys_process_flow action="INSERT_OR_UPDATE"><active>true</active><condition table="x_485045_icenow_runbook">state=3^EQ<item display_value="Active" endquery="false" field="state" goto="false" newquery="false" operator="=" or="false" value="3"/><item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/></condition><description/><label>Active</label><name>State Activer</name><order>400</order><sys_class_name>sys_process_flow</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 13:30:34</sys_created_on><sys_id>448664f5db45901018097b3868961946</sys_id><sys_mod_count>0</sys_mod_count><sys_name>State Activer</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_process_flow_448664f5db45901018097b3868961946</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-05-28 13:30:34</sys_updated_on><table>x_485045_icenow_runbook</table></sys_process_flow></record_update>]]></payload>
+        <payload_hash>-210237809</payload_hash>
+        <record_name>State Activer</record_name>
+        <reverted_from/>
+        <source>352b0f2ddb41901018097b38689619a0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 13:30:34</sys_created_on>
+        <sys_id>f8a664f5db45901018097b3868961986</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1725b7a328c0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 13:30:34</sys_updated_on>
+        <type>Flow Formatter</type>
+        <update_guid>34a664f5324590101fe98749ab57bd86</update_guid>
+        <update_guid_history>34a664f5324590101fe98749ab57bd86:-210237809</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 17:15:48</sys_created_on>
+        <sys_db_object display_value="" name="sys_process_flow">sys_process_flow</sys_db_object>
+        <sys_id>22b7ef84bb3d401089a4991740628910</sys_id>
+        <sys_metadata>448664f5db45901018097b3868961946</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>State Activer</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_process_flow_448664f5db45901018097b3868961946</sys_update_name>
+        <sys_update_version display_value="sys_process_flow_448664f5db45901018097b3868961946">f8a664f5db45901018097b3868961986</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 17:15:48</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

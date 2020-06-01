@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="task" label="Runbook" max_length="40" name="x_485045_icenow_runbook" sizeclass="30" type="collection">
+        <element choice="3" label="Category" max_length="40" name="category" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Disaster Recovery" sequence="0" value="Disaster Recovery"/>
+                <element inactive_on_update="false" label="Planned Change" sequence="0" value="Planned Change"/>
+                <element inactive_on_update="false" label="Service Recovery" sequence="0" value="Service Recovery"/>
+            </choice>
+        </element>
+        <element default="0" label="Percent Complete" max_length="15" name="percent_complete" type="percent_complete"/>
+        <element label="Source ID" max_length="12" name="source_id" type="string"/>
+    </element>
+</database>

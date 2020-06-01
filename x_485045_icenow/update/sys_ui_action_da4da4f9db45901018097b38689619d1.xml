@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name>approve_runbook</action_name>
+        <active>false</active>
+        <client>true</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments>This is a UI Action that will:&#13;
+1) Only display the "Approve" button  when the next state transition is "approved" &#13;
+2) On click of the Approve button, will set the value of the State field to "Approved" </comments>
+        <condition>	gs.hasRole('admin') &amp;&amp; newRunbookStateHandler(current).isNext("approved")</condition>
+        <form_action>true</form_action>
+        <form_button>true</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <hint>Progress runbook state to Approved </hint>
+        <isolate_script>false</isolate_script>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <name>Approve</name>
+        <onclick>approveRunbook()</onclick>
+        <order>100</order>
+        <script><![CDATA[function approveRunbook()
+{
+	var ga = new GlideAjax("RunbookStateHandlerAjax");         
+    ga.addParam("sysparm_name", "getStateValue");         
+    ga.addParam("sysparm_state_name", "approved"); 
+    ga.getXMLAnswer(function(stateValue) {              
+    g_form.setValue("state", stateValue);              
+    gsftSubmit(null, g_form.getFormElement(), "state_model_move_to_approved");         
+    });
+} 
+          if (typeof window == 'undefined')   
+             setRedirect(); 
+
+function setRedirect() 
+{   
+    current.update();   
+    action.setRedirectURL(current);
+}]]></script>
+        <show_insert>false</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 14:02:10</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>da4da4f9db45901018097b38689619d1</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Approve</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_ui_action_da4da4f9db45901018097b38689619d1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 16:32:40</sys_updated_on>
+        <table>x_485045_icenow_runbook</table>
+        <ui11_compatible>false</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>

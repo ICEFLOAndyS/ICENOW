@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="runbook_load" max_length="40" name="x_485045_icenow_runbook_load" sizeclass="90" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Benchmark Duration" label="Benchmark Duration" max_length="40" name="u_benchmark_duration" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Desc CharCount" label="Desc CharCount" max_length="40" name="u_desc_charcount" type="string"/>
+        <element attributes="import_attribute_name=Percent Complete" label="Percent Complete" max_length="40" name="u_percent_complete" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Ref" label="Ref" max_length="40" name="u_ref" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Runbook Category" label="Runbook Category" max_length="40" name="u_runbook_category" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Runbook Description" label="Runbook Description" max_length="352" name="u_runbook_description" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Runbook Owner" label="Runbook Owner" max_length="40" name="u_runbook_owner" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Runbook Title" label="Runbook Title" max_length="87" name="u_runbook_title" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Source Runbook ID" label="Source Runbook ID" max_length="40" name="u_source_runbook_id" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Title CharCount" label="Title CharCount" max_length="40" name="u_title_charcount" type="string"/>
+    </element>
+</database>

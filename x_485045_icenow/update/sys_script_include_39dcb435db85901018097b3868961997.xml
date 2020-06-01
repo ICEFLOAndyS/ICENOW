@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>false</active>
+        <api_name>x_485045_icenow.RunbookStateHandlerAjaxICE</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description>Base client API extended by RunbookStateHandlerAjax</description>
+        <name>RunbookStateHandlerAjaxICE</name>
+        <script><![CDATA[var RunbookStateHandlerAjaxICE = Class.create();
+RunbookStateHandlerAjaxICE.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	initialize: function(request, responseXML, gc) 
+	{
+        AbstractAjaxProcessor.prototype.initialize.call(this, request, responseXML, gc);
+        this.log = new GSLog(RunbookStateHandlerICE.LOG_PROPERTY);
+        this.log.setLog4J();
+    },
+
+    /**
+     * Confirms whether the state value is a valid "next" state for the change to move to
+     * 
+     * @param sysparm_change_sys_id sys_id of a runbook record
+     * @param sysparm_next_state name of the state to check. e.g. initial, draft, approved etc.
+     */
+    ajaxFunction_isNextState: function() {
+        var sysId = this.getParameter("sysparm_runbook_sys_id");
+        var runbookGr = this._getRunbookGr(sysId);
+        if (!runbookGr) {
+            this.log.debug("[isNextState] could not find Runbook with sys_id = " + sysId);
+            return false;
+        }
+
+        return new RunbookStateHandler(changeGr).isNext(this.getParameter("sysparm_next_state"));
+    },
+
+    /**
+     * Returns an array containing the values of the next states for an existing runbook
+     * 
+     * @param sysparm_change_sys_id sys_id of a runbook record
+     */
+    ajaxFunction_getNextStateValues: function() {
+        var runbookId = this.getParameter("sysparm_change_sys_id");
+		var runbookType = '' + this.getParameter("sysparm_runbook_type");
+        if (!runbookId && !runbookType)
+            return "";
+
+		var gr;
+		gr = new GlideRecord("runbook");
+		if (!gr.get(runbookId)) {
+			this.log.debug("[getNextStateValues] could not find Runbook with sys_id = " + changeId);
+			gr = Runbook.newRunbook(runbookType).getGlideRecord();
+		} 	
+		
+		var stateValues = [];
+
+		var stateHandler = new RunbookStateHandler(gr);
+		var nextStates = stateHandler.getNextStates();
+		if (nextStates) {
+			for (var i = 0; i < nextStates.length; i++)
+				stateValues.push(stateHandler.getStateValue(nextStates[i]));
+		}
+		
+		return JSON.stringify(stateValues);
+    },
+
+    /**
+     * Returns the name of the state given its numeric value. E.g. -4 = assess, -3 = authorize
+     * 
+     * @param sysparm_state_name name of the state to convert. E.g. assess, authorize, etc
+     */
+    ajaxFunction_getStateValue: function() {
+        var stateName = this.getParameter("sysparm_state_name");
+        if (!stateName)
+            return "";
+
+        var stateValue = new RunbookStateHandler().getStateValue(stateName);
+
+        this.log.debug("[getStateValue] state with name '" + stateName + "' return with value '" + stateValue + "'");
+
+        return stateValue || "";
+    },
+
+    _getRunbookGr: function(sysId) {
+        if (!sysId)
+            return null;
+
+        var gr = new GlideRecord("runbook");
+        if (gr.get(sysId))
+            return gr;
+
+        return null;
+    },
+
+    type: 'RunbookStateHandlerAjaxICE'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 15:18:01</sys_created_on>
+        <sys_id>39dcb435db85901018097b3868961997</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>RunbookStateHandlerAjaxICE</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_script_include_39dcb435db85901018097b3868961997</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 16:32:31</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_action_param_map">
+    <sys_sg_action_param_map action="DELETE">
+        <button display_value="Edit Button (runbook)">bbf34031db05901018097b38689619e6</button>
+        <item_parameter display_value="runbook short_description">37f34031db05901018097b38689619e4</item_parameter>
+        <sys_class_name>sys_sg_action_param_map</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:59:14</sys_created_on>
+        <sys_id>fff34031db05901018097b38689619e9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>37f34031db05901018097b38689619e4</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_sg_action_param_map_fff34031db05901018097b38689619e9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 10:59:14</sys_updated_on>
+        <ui_parameter display_value="Short description">fbf34031db05901018097b38689619e7</ui_parameter>
+    </sys_sg_action_param_map>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICENOW">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_sg_action_param_map_fff34031db05901018097b38689619e9</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_action_param_map"><sys_sg_action_param_map action="INSERT_OR_UPDATE"><button display_value="Edit Button (runbook)">bbf34031db05901018097b38689619e6</button><item_parameter display_value="runbook short_description">37f34031db05901018097b38689619e4</item_parameter><sys_class_name>sys_sg_action_param_map</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 10:59:14</sys_created_on><sys_id>fff34031db05901018097b38689619e9</sys_id><sys_mod_count>0</sys_mod_count><sys_name>37f34031db05901018097b38689619e4</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_sg_action_param_map_fff34031db05901018097b38689619e9</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-05-28 10:59:14</sys_updated_on><ui_parameter display_value="Short description">fbf34031db05901018097b38689619e7</ui_parameter></sys_sg_action_param_map></record_update>]]></payload>
+        <payload_hash>-645088287</payload_hash>
+        <record_name>37f34031db05901018097b38689619e4</record_name>
+        <reverted_from/>
+        <source>352b0f2ddb41901018097b38689619a0</source>
+        <source_table>sys_update_set</source_table>
+        <state>current</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:59:15</sys_created_on>
+        <sys_id>8c048031db05901018097b3868961949</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1725aefaa090000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 10:59:15</sys_updated_on>
+        <type>Action parameters mapping</type>
+        <update_guid>08048031c4059010e4aae78a8ed40549</update_guid>
+        <update_guid_history>08048031c4059010e4aae78a8ed40549:-645088287</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 17:19:12</sys_created_on>
+        <sys_db_object display_value="" name="sys_sg_action_param_map">sys_sg_action_param_map</sys_db_object>
+        <sys_id>7d3c944df692474b901df78b752490e9</sys_id>
+        <sys_metadata>fff34031db05901018097b38689619e9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>37f34031db05901018097b38689619e4</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_sg_action_param_map_fff34031db05901018097b38689619e9</sys_update_name>
+        <sys_update_version display_value="sys_sg_action_param_map_fff34031db05901018097b38689619e9">8c048031db05901018097b3868961949</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 17:19:12</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

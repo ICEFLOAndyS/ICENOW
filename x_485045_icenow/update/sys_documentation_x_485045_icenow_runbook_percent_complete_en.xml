@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="percent_complete" label="Percent Complete" language="en" table="x_485045_icenow_runbook">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>percent_complete</element>
+            <help/>
+            <hint/>
+            <label>Percent Complete</label>
+            <language>en</language>
+            <name>x_485045_icenow_runbook</name>
+            <plural>Percent Completes</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2020-05-31 07:26:35</sys_created_on>
+            <sys_id>d6103aa2db01101018097b3868961985</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Percent Complete</sys_name>
+            <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+            <sys_update_name>sys_documentation_x_485045_icenow_runbook_percent_complete_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2020-05-31 07:26:35</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_item_view">
+    <sys_sg_item_view action="DELETE">
+        <data_item/>
+        <dependency_fields>state,number,short_description,opened_by,opened_by.avatar,priority</dependency_fields>
+        <item_view_json>{"Children":[{"Children":[{"Children":[{"Font":{"Weight":"semibold","Size":13},"TextColor":"#293e40","Text":"","Width":100,"Height":21,"BackgroundColor":"#f1f1f1","CornerRadius":2,"CellId":"state","TextAlignment":"Center","MaxLines":1,"studio_template_field_id":"E1","Type":"Text"}],"Orientation":"Vertical","Alignment":"Left","Distribution":"Auto","Margin":{"Right":12},"Type":"ViewGroup"},{"Children":[{"Font":{"Weight":"regular","Size":13},"TextColor":"#7d8a8c","Text":"","CellId":"number","TextAlignment":"Right","MaxLines":1,"studio_template_field_id":"E2","Type":"Text"}],"Orientation":"Vertical","Alignment":"Right","Distribution":"Auto","Type":"ViewGroup"}],"Orientation":"Horizontal","Alignment":"Stretch","Distribution":"Equal","Type":"ViewGroup"},{"Font":{"Weight":"regular","Size":18},"TextColor":"#293e40","Text":"","CellId":"short_description","TextAlignment":"Left","MaxLines":2,"studio_template_field_id":"E3","Margin":{"Top":9},"Type":"Text"},{"Children":[{"Children":[{"Font":{"Weight":"regular","Size":13},"studio_template_is_label":true,"TextColor":"#7d8a8c","Text":"${opened_by}","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E4","Margin":{"Right":8},"Type":"Text"},{"Width":22,"Height":22,"CornerRadius":11,"CellId":"opened_by.avatar","Scaling":"Fill","studio_template_field_id":"E5","Margin":{"Right":6},"Type":"Image"},{"Font":{"Weight":"regular","Size":13},"TextColor":"#293e40","Text":"","CellId":"opened_by","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E4","Type":"Text"}],"Orientation":"Horizontal","Alignment":"Center","Distribution":"Auto","Margin":{"Top":9},"Type":"ViewGroup"},{"Children":[{"Font":{"Weight":"regular","Size":13},"studio_template_is_label":true,"TextColor":"#7d8a8c","Text":"${priority}","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E6","Margin":{"Right":8},"Type":"Text"},{"Font":{"Weight":"regular","Size":13},"TextColor":"#293e40","Text":"","CellId":"priority","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E6","Type":"Text"}],"Orientation":"Horizontal","Alignment":"Center","Distribution":"Auto","Margin":{"Top":7},"Type":"ViewGroup"}],"Orientation":"Vertical","Alignment":"Left","Distribution":"Auto","Type":"ViewGroup"}],"Orientation":"Vertical","Alignment":"Stretch","Distribution":"Auto","studio_card_id":"9599488923452300a8ed7f4fc7bf652e","Margin":{"Bottom":15,"Top":17},"Type":"ViewGroup"}</item_view_json>
+        <name>runbook Detail Screen Item View</name>
+        <short_description/>
+        <sys_class_name>sys_sg_item_view</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:59:13</sys_created_on>
+        <sys_id>b7f34031db05901018097b38689619a6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>runbook Detail Screen Item View</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_sg_item_view_b7f34031db05901018097b38689619a6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 10:59:13</sys_updated_on>
+        <table>x_485045_icenow_runbook</table>
+        <ui_styles/>
+    </sys_sg_item_view>
+    <sys_translated_text action="DELETE" query="documentkey=b7f34031db05901018097b38689619a6"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICENOW">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_sg_item_view_b7f34031db05901018097b38689619a6</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_item_view"><sys_sg_item_view action="INSERT_OR_UPDATE"><data_item/><dependency_fields>state,number,short_description,opened_by,opened_by.avatar,priority</dependency_fields><item_view_json>{"Children":[{"Children":[{"Children":[{"Font":{"Weight":"semibold","Size":13},"TextColor":"#293e40","Text":"","Width":100,"Height":21,"BackgroundColor":"#f1f1f1","CornerRadius":2,"CellId":"state","TextAlignment":"Center","MaxLines":1,"studio_template_field_id":"E1","Type":"Text"}],"Orientation":"Vertical","Alignment":"Left","Distribution":"Auto","Margin":{"Right":12},"Type":"ViewGroup"},{"Children":[{"Font":{"Weight":"regular","Size":13},"TextColor":"#7d8a8c","Text":"","CellId":"number","TextAlignment":"Right","MaxLines":1,"studio_template_field_id":"E2","Type":"Text"}],"Orientation":"Vertical","Alignment":"Right","Distribution":"Auto","Type":"ViewGroup"}],"Orientation":"Horizontal","Alignment":"Stretch","Distribution":"Equal","Type":"ViewGroup"},{"Font":{"Weight":"regular","Size":18},"TextColor":"#293e40","Text":"","CellId":"short_description","TextAlignment":"Left","MaxLines":2,"studio_template_field_id":"E3","Margin":{"Top":9},"Type":"Text"},{"Children":[{"Children":[{"Font":{"Weight":"regular","Size":13},"studio_template_is_label":true,"TextColor":"#7d8a8c","Text":"${opened_by}","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E4","Margin":{"Right":8},"Type":"Text"},{"Width":22,"Height":22,"CornerRadius":11,"CellId":"opened_by.avatar","Scaling":"Fill","studio_template_field_id":"E5","Margin":{"Right":6},"Type":"Image"},{"Font":{"Weight":"regular","Size":13},"TextColor":"#293e40","Text":"","CellId":"opened_by","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E4","Type":"Text"}],"Orientation":"Horizontal","Alignment":"Center","Distribution":"Auto","Margin":{"Top":9},"Type":"ViewGroup"},{"Children":[{"Font":{"Weight":"regular","Size":13},"studio_template_is_label":true,"TextColor":"#7d8a8c","Text":"${priority}","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E6","Margin":{"Right":8},"Type":"Text"},{"Font":{"Weight":"regular","Size":13},"TextColor":"#293e40","Text":"","CellId":"priority","TextAlignment":"Left","MaxLines":1,"studio_template_field_id":"E6","Type":"Text"}],"Orientation":"Horizontal","Alignment":"Center","Distribution":"Auto","Margin":{"Top":7},"Type":"ViewGroup"}],"Orientation":"Vertical","Alignment":"Left","Distribution":"Auto","Type":"ViewGroup"}],"Orientation":"Vertical","Alignment":"Stretch","Distribution":"Auto","studio_card_id":"9599488923452300a8ed7f4fc7bf652e","Margin":{"Bottom":15,"Top":17},"Type":"ViewGroup"}</item_view_json><name>runbook Detail Screen Item View</name><short_description/><sys_class_name>sys_sg_item_view</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 10:59:13</sys_created_on><sys_id>b7f34031db05901018097b38689619a6</sys_id><sys_mod_count>0</sys_mod_count><sys_name>runbook Detail Screen Item View</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_sg_item_view_b7f34031db05901018097b38689619a6</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-05-28 10:59:13</sys_updated_on><table>x_485045_icenow_runbook</table><ui_styles/></sys_sg_item_view><sys_translated_text action="delete_multiple" query="documentkey=b7f34031db05901018097b38689619a6"/></record_update>]]></payload>
+        <payload_hash>-92458085</payload_hash>
+        <record_name>runbook Detail Screen Item View</record_name>
+        <reverted_from/>
+        <source>352b0f2ddb41901018097b38689619a0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 17:19:13</sys_created_on>
+        <sys_id>02fa1d39dbc5901018097b3868961939</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1725c4b8a140000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 17:19:13</sys_updated_on>
+        <type>Item view</type>
+        <update_guid>840480313a059010eb289ccfaa534e22</update_guid>
+        <update_guid_history>840480313a059010eb289ccfaa534e22:-1729498731,840480313a059010eb289ccfaa534e22:-1729498731</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 17:19:14</sys_created_on>
+        <sys_db_object display_value="" name="sys_sg_item_view">sys_sg_item_view</sys_db_object>
+        <sys_id>7a31975b346149779bac0ce738fb8f59</sys_id>
+        <sys_metadata>b7f34031db05901018097b38689619a6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>runbook Detail Screen Item View</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_sg_item_view_b7f34031db05901018097b38689619a6</sys_update_name>
+        <sys_update_version display_value="sys_sg_item_view_b7f34031db05901018097b38689619a6">02fa1d39dbc5901018097b3868961939</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 17:19:14</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

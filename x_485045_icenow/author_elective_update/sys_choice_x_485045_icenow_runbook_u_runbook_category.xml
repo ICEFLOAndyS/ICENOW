@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="DELETE" field="u_runbook_category" table="x_485045_icenow_runbook" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>u_runbook_category</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Choice 3</label>
+            <language>en</language>
+            <name>x_485045_icenow_runbook</name>
+            <sequence>2</sequence>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2020-05-28 12:34:49</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cce91cbddb05901018097b3868961941</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2020-05-28 12:34:49</sys_updated_on>
+            <value>Choice 3</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>u_runbook_category</element>
+            <name>x_485045_icenow_runbook</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2020-05-28 12:34:49</sys_created_on>
+            <sys_id>c4e91cbddb05901018097b386896193e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>u_runbook_category</sys_name>
+            <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+            <sys_update_name>sys_choice_x_485045_icenow_runbook_u_runbook_category</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2020-05-28 12:34:49</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICENOW">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_choice_x_485045_icenow_runbook_u_runbook_category</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_choice action="INSERT_OR_UPDATE" field="u_runbook_category" table="x_485045_icenow_runbook" version="3"><sys_choice action="INSERT_OR_UPDATE"><dependent_value/><element>u_runbook_category</element><hint/><inactive>false</inactive><label>Choice 3</label><language>en</language><name>x_485045_icenow_runbook</name><sequence>2</sequence><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 12:34:49</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>cce91cbddb05901018097b3868961941</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-05-28 12:34:49</sys_updated_on><value>Choice 3</value></sys_choice><sys_choice_set action="INSERT_OR_UPDATE"><element>u_runbook_category</element><name>x_485045_icenow_runbook</name><sys_class_name>sys_choice_set</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 12:34:49</sys_created_on><sys_id>c4e91cbddb05901018097b386896193e</sys_id><sys_mod_count>0</sys_mod_count><sys_name>u_runbook_category</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_choice_x_485045_icenow_runbook_u_runbook_category</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-05-28 12:34:49</sys_updated_on></sys_choice_set></sys_choice></record_update>]]></payload>
+        <payload_hash>1285134354</payload_hash>
+        <record_name>runbook.Category</record_name>
+        <reverted_from/>
+        <source>352b0f2ddb41901018097b38689619a0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 12:49:17</sys_created_on>
+        <sys_id>4c3d1c31db45901018097b386896196f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1725b54671c0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 12:49:17</sys_updated_on>
+        <type>Choice list</type>
+        <update_guid>c43d1c31084590100ef7132467cdc36f</update_guid>
+        <update_guid_history>c43d1c31084590100ef7132467cdc36f:1285134354,083d1c31244590104a93ce38e0a3086b:-379338759,88e91cbdf40590107d2b0f9ee5003a44:997608177</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 12:49:17</sys_created_on>
+        <sys_db_object display_value="" name="sys_choice_set">sys_choice_set</sys_db_object>
+        <sys_id>c4e91cbddb05901018097b386896193e</sys_id>
+        <sys_metadata>c4e91cbddb05901018097b386896193e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>u_runbook_category</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_choice_x_485045_icenow_runbook_u_runbook_category</sys_update_name>
+        <sys_update_version display_value="sys_choice_x_485045_icenow_runbook_u_runbook_category">4c3d1c31db45901018097b386896196f</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 12:49:17</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

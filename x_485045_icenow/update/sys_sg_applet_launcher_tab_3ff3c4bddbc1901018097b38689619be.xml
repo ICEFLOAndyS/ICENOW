@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_applet_launcher_tab">
+    <sys_sg_applet_launcher_tab action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applet_launcher display_value="ICENOW">bff3c4bddbc1901018097b38689619bd</applet_launcher>
+        <icon display_value="Home ICENOW">7ff3c4bddbc1901018097b38689619be</icon>
+        <label>ICENOW</label>
+        <roles>admin</roles>
+        <sys_class_name>sys_sg_applet_launcher_tab</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:59:13</sys_created_on>
+        <sys_id>3ff3c4bddbc1901018097b38689619be</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ICENOW</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_sg_applet_launcher_tab_3ff3c4bddbc1901018097b38689619be</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 10:59:13</sys_updated_on>
+    </sys_sg_applet_launcher_tab>
+</record_update>

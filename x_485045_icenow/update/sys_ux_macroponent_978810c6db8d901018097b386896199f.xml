@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_macroponent">
+    <sys_ux_macroponent action="INSERT_OR_UPDATE">
+        <associated_types/>
+        <component_dependencies/>
+        <composition>[ {
+  "elementId" : "ckarvggliiyaaaaaaccddahhmlaxgmjggi",
+  "elementLabel" : "Create a container with a title",
+  "propertyValues" : {
+    "label" : "Default container type",
+    "type" : "default",
+    "bgvar" : "neutral-0",
+    "border" : true,
+    "canCollapse" : true,
+    "collapsed" : false
+  },
+  "slot" : "ckarv6l8y00033a7mnf152aw5",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : {
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"row","columns":[{"type":"column","slotName":"ckarvbd0p000h3a7mj7z6da1i","size":"12","rows":[],"id":"ckarvbd0p000j3a7m3buzx1h7"}],"id":"ckarvbd0p000i3a7mtcxuooun"}
+      }
+    },
+    "composition" : [ {
+      "elementId" : "ckarvbdaaoaaaaaagddahhmgqdddycggd",
+      "elementLabel" : "List",
+      "propertyValues" : {
+        "listTitle" : "My Runbooks",
+        "table" : "x_485045_icenow_runbook",
+        "query" : "",
+        "columns" : "number,short_description,calendar_duration,state",
+        "limit" : "5",
+        "maxColumns" : "5",
+        "page" : "1",
+        "hideHeader" : false,
+        "hideTitle" : false,
+        "hideTitleRowCount" : false,
+        "hideRefreshButton" : false,
+        "hideLastRefreshedText" : false,
+        "hideLinks" : false,
+        "hideViewAll" : false,
+        "hideHighlightedValues" : false,
+        "hideCellFilter" : true,
+        "hideCheckboxHover" : true,
+        "hideColumnFiltering" : true,
+        "hideColumnGrouping" : true,
+        "hideColumnSorting" : false,
+        "hideFilterPanel" : false,
+        "hideFirstPage" : false,
+        "hideLastPage" : false,
+        "hideLimitSelector" : false,
+        "hideMenuButton" : true,
+        "hideMultiEdit" : false,
+        "hideDeclarativeActions" : false,
+        "hideNextPage" : false,
+        "hidePages" : false,
+        "hidePagination" : true,
+        "hidePanel" : true,
+        "hidePanelAdvanced" : false,
+        "hidePanelConditionDelete" : false,
+        "hidePanelFooter" : false,
+        "hidePanelRestore" : false,
+        "hidePreviousPage" : false,
+        "hideQuickEdit" : true,
+        "hideRange" : false,
+        "hideRowCount" : false,
+        "hideRowSelector" : false,
+        "hideSelectAll" : true,
+        "hideEmptyStateImage" : false,
+        "hideDBViews" : false,
+        "hideUnnecessaryRowSelectors" : true
+      },
+      "slot" : "ckarvbd0p000h3a7mj7z6da1i",
+      "definition" : {
+        "id" : "2b1c080881e05dc63b917044290b233f",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ]
+  }
+}, {
+  "elementId" : "ckarvjjcbbsaaaaaahhddahhmiieegahzkgg",
+  "elementLabel" : "A second container",
+  "propertyValues" : {
+    "label" : "Visualisation Container type",
+    "type" : "visualizations",
+    "bgvar" : "neutral-1",
+    "border" : true,
+    "canCollapse" : true,
+    "collapsed" : false
+  },
+  "slot" : "ckarv9c1t00083a7mhov9bbuy",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : {
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"row","columns":[{"type":"column","slotName":"ckarw7q7m000s3a7miuajt1td","size":"12","rows":[],"id":"ckarw7q7n000u3a7myde4lni7"}],"id":"ckarw7q7m000t3a7maz1paltw"}
+      }
+    },
+    "composition" : [ {
+      "elementId" : "ckarwhhqhhmaaaaaarddahhmrebmyanff",
+      "elementLabel" : "Report / PA Widget",
+      "propertyValues" : {
+        "label" : "",
+        "reportSysId" : "",
+        "paWidgetSysId" : "",
+        "isRealtime" : false,
+        "variant" : "auto",
+        "border" : false,
+        "refreshInterval" : ""
+      },
+      "slot" : "ckarw7q7m000s3a7miuajt1td",
+      "definition" : {
+        "id" : "7dbc62b27efa88d6d910579a68c7a65d",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ]
+  }
+}, {
+  "elementId" : "ckarvaeteeaaaaaabddahhmnjddddseeeegg",
+  "elementLabel" : "A third container",
+  "propertyValues" : {
+    "label" : "Just another default container",
+    "type" : "default",
+    "bgvar" : "",
+    "border" : true,
+    "canCollapse" : true,
+    "collapsed" : false
+  },
+  "slot" : "ckarvaet5000c3a7m5wht6lf2",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : null
+} ]</composition>
+        <data/>
+        <events/>
+        <extends display_value="Landing Page Template">19be392623033300f4b4c50947bf65ba</extends>
+        <interactions/>
+        <layout>{
+  "default" : {
+    "type" : "rowColumn",
+    "root" : {"id":"ckarvaet6000e3a7muc19nwi9","type":"column","rows":[{"type":"row","id":"ckarv6l8z00043a7mn7tszk2v","columns":[{"type":"column","id":"ckarv6l8z00053a7mz3a56jvg","slotName":"ckarv6l8y00033a7mnf152aw5","size":"6"},{"type":"column","id":"ckarv9c1u00093a7m4l67oe6h","slotName":"ckarv9c1t00083a7mhov9bbuy","size":"6"}]},{"type":"row","id":"ckarvaet6000d3a7m62j83m2z","slotName":"ckarvaet5000c3a7m5wht6lf2"}],"size":"12"}
+  }
+}</layout>
+        <macroponent_dependencies/>
+        <name>Runbook Workbench</name>
+        <props/>
+        <root_component/>
+        <root_component_config/>
+        <schema_version>1.0.0</schema_version>
+        <sys_class_name>sys_ux_macroponent</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-29 07:07:31</sys_created_on>
+        <sys_id>978810c6db8d901018097b386896199f</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>Runbook Workbench</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_ux_macroponent_978810c6db8d901018097b386896199f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-29 07:37:44</sys_updated_on>
+    </sys_ux_macroponent>
+</record_update>

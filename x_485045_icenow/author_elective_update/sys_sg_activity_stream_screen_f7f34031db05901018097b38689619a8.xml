@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_activity_stream_screen">
+    <sys_sg_activity_stream_screen action="DELETE">
+        <add_additional_comment_button>true</add_additional_comment_button>
+        <add_attachment_button>true</add_attachment_button>
+        <add_work_note_button>true</add_work_note_button>
+        <available_offline>false</available_offline>
+        <description>ICEFLO Now Mobile runbook</description>
+        <dynamic_prefetch_count/>
+        <fetch_type>not_required</fetch_type>
+        <hide_filters>false</hide_filters>
+        <hide_screen_name>false</hide_screen_name>
+        <icon display_value="icon-Group">67f3c4bddbc1901018097b38689619bd</icon>
+        <name>Activity Stream</name>
+        <roles_override/>
+        <sys_class_name>sys_sg_activity_stream_screen</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:59:13</sys_created_on>
+        <sys_id>f7f34031db05901018097b38689619a8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Activity Stream</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_sg_activity_stream_screen_f7f34031db05901018097b38689619a8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 10:59:13</sys_updated_on>
+        <table>x_485045_icenow_runbook</table>
+    </sys_sg_activity_stream_screen>
+    <sys_translated_text action="DELETE" query="documentkey=f7f34031db05901018097b38689619a8"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICENOW">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_sg_activity_stream_screen_f7f34031db05901018097b38689619a8</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_activity_stream_screen"><sys_sg_activity_stream_screen action="INSERT_OR_UPDATE"><add_additional_comment_button>true</add_additional_comment_button><add_attachment_button>true</add_attachment_button><add_work_note_button>true</add_work_note_button><available_offline>false</available_offline><description>ICEFLO Now Mobile runbook</description><dynamic_prefetch_count/><fetch_type>not_required</fetch_type><hide_filters>false</hide_filters><hide_screen_name>false</hide_screen_name><icon display_value="icon-Group">67f3c4bddbc1901018097b38689619bd</icon><name>Activity Stream</name><roles_override/><sys_class_name>sys_sg_activity_stream_screen</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 10:59:13</sys_created_on><sys_id>f7f34031db05901018097b38689619a8</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Activity Stream</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_sg_activity_stream_screen_f7f34031db05901018097b38689619a8</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-05-28 10:59:13</sys_updated_on><table>x_485045_icenow_runbook</table></sys_sg_activity_stream_screen><sys_translated_text action="delete_multiple" query="documentkey=f7f34031db05901018097b38689619a8"/></record_update>]]></payload>
+        <payload_hash>-642490076</payload_hash>
+        <record_name>Activity Stream</record_name>
+        <reverted_from/>
+        <source>352b0f2ddb41901018097b38689619a0</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:59:15</sys_created_on>
+        <sys_id>cc048031db05901018097b3868961925</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1725aefa83e0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 10:59:15</sys_updated_on>
+        <type>Activity Stream Screen</type>
+        <update_guid>48048031cd0590109eb2ac26123c7825</update_guid>
+        <update_guid_history>48048031cd0590109eb2ac26123c7825:-642490076</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 17:19:15</sys_created_on>
+        <sys_db_object display_value="" name="sys_sg_activity_stream_screen">sys_sg_activity_stream_screen</sys_db_object>
+        <sys_id>06962659f2674648815efa516c8b0c81</sys_id>
+        <sys_metadata>f7f34031db05901018097b38689619a8</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Activity Stream</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_sg_activity_stream_screen_f7f34031db05901018097b38689619a8</sys_update_name>
+        <sys_update_version display_value="sys_sg_activity_stream_screen_f7f34031db05901018097b38689619a8">cc048031db05901018097b3868961925</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-05-28 17:19:15</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
