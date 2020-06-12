@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description>*HTML Page for Runbook Homepage&#13;
+*Validates Security to access Home page&#13;
+Refactored from html_page_pm_home as shipped with the PPM solution</description>
+        <media_type/>
+        <name>html_page_runbook_home</name>
+        <scoped_name>x_485045_icenow_html_page_runbook_home</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-11 14:50:15</sys_created_on>
+        <sys_id>27fb7892db11501018097b3868961935</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>html_page_runbook_home</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_ui_macro_27fb7892db11501018097b3868961935</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-11 14:50:15</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="true" xmlns:j="jelly:core" xmlns:g="glide" xmlns:g2="null">
+	<g2:doctype name="html" />
+	<g:inline template="dir_checker.xml"/>
+	<g:evaluate jelly="true" var="jvar_can_create_runbook">
+        var entityClassName = jelly.sysparm_sys_class_name;
+		var entity = jelly.sysparm_entity;
+        var gr = new GlideRecord(entityClassName);
+        gr.newRecord();
+        var access = gr.canRead();
+		var createAccess = gr.canCreate();
+        var crudAccess = access &amp;&amp; createAccess &amp;&amp; gr.canWrite() &amp;&amp; gr.canDelete();
+		createAccess;
+	</g:evaluate>
+	<g:evaluate jelly="true" var="jvar_user_prefered_query">
+		var query = gs.getUser().getPreference('com.snc.project_management.home_page.entity_cards.query');
+		if(!query) {
+			query = 'parentISEMPTY^active=true';
+			gs.getUser().savePreference('com.snc.project_management.home_page.entity_cards.query', query);
+		}
+		query;
+	</g:evaluate>
+	<g:evaluate jelly="true">
+		var runbookDefaultStartDate;
+		var runbookTemplateTable;
+		if(entityClassName &amp;&amp; entity == 'runbook') {
+			runbookDefaultStartDate = new ProjectTaskManagerUtil().getDefaultStartDate(entityClassName);
+			runbookTemplateTable = SNC.PPMConfig.getTemplateTable(entityClassName);
+		} else {
+			runbookDefaultStartDate = '';
+			runbookTemplateTable = '';
+		}
+	</g:evaluate>
+	<g:evaluate jelly="true">
+		var prefferedView = new PMHomeDataUtils().prefferedViewOnCardClick;
+	</g:evaluate>
+	<j:if test="${!entityClassName || !entity}">
+		<h1>${HTML:gs.getMessage("Oops something is missing here! Invalid URL")}</h1>
+	</j:if>
+	<j:if test="${!access &amp;&amp; entityClassName != ''}">
+		<h1>${HTML:gs.getMessage("Access Denied")}</h1>
+	</j:if>
+	<j:if test="${access &amp;&amp; entityClassName != ''}">
+		<html lang="${jvar_text_language}" ng-app="${jvar_app}" class="${jvar_text_direction}" data-doctype="true" dir="${jvar_text_direction}">
+			<head>
+				<!-- no user / device scaling on the iPad, slim URL bar -->
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+				<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+				<link href="${gs.getProperty('glide.product.icon')}" rel="shortcut icon" />
+
+				<title>${jvar_title}</title>
+
+				<g:requires name="styles/css_includes_pm_home.css" includes="true"/>
+				<g:requires name="styles/filter.css" includes="true"/>
+			</head>
+			<body class="pm_home_page_body">
+				<g:insert />
+				<g:requires name="scripts/pm_home/js_includes_pm_home.js" includes="true" />
+				<script>
+					angular.module("sn.pm.home").config(['$provide', '$httpProvider', function($provide, $httpProvider) {
+						$provide.value("sysClassName", '${sysparm_sys_class_name}');
+						$provide.value("entity", '${sysparm_entity}');
+						$provide.value("prefferedQuery", '${JS:query}');
+						$provide.value("hasAccess", '${access}');
+						$provide.value("hasCrudAccess", '${crudAccess}');
+						$provide.value('defaultStartDate', '${projDefaultStartDate}');
+						$provide.value('templateTable', '${projectTemplateTable}');
+						$provide.value('prefferedView', '${prefferedView}');
+						$httpProvider.interceptors.push('pmHomeInterceptor');
+					}]);
+				</script>
+			</body>
+		</html>
+	</j:if>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

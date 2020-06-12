@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category/>
+        <description>This is the ICEFLO Primary Menu. &#13;
+Not in the Custom Applications Category.&#13;
+Not protected by role assignment.</description>
+        <device_type>browser</device_type>
+        <hint>ICEFLO Primary Menu</hint>
+        <name>x_485045_icenow_icenow primary menu</name>
+        <order>100</order>
+        <roles>x_485045_icenow.runbook.manager</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-10 10:40:03</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>e94c7631db91101018097b38689619fd</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>ICEFLO Primary Menu</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_app_application_e94c7631db91101018097b38689619fd</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-11 12:20:01</sys_updated_on>
+        <title>ICEFLO Primary Menu</title>
+        <view_name/>
+    </sys_app_application>
+</record_update>

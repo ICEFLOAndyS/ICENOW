@@ -4,9 +4,9 @@
         <component_dependencies/>
         <composition>[ {
   "elementId" : "ckarvggliiyaaaaaaccddahhmlaxgmjggi",
-  "elementLabel" : "Create a container with a title",
+  "elementLabel" : "List Component",
   "propertyValues" : {
-    "label" : "Default container type",
+    "label" : "Table of runbook data",
     "type" : "default",
     "bgvar" : "neutral-0",
     "border" : true,
@@ -29,9 +29,9 @@
       "elementId" : "ckarvbdaaoaaaaaagddahhmgqdddycggd",
       "elementLabel" : "List",
       "propertyValues" : {
-        "listTitle" : "My Runbooks",
+        "listTitle" : "My Open Runbooks",
         "table" : "x_485045_icenow_runbook",
-        "query" : "",
+        "query" : "stateNOT IN3,4,7^assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe",
         "columns" : "number,short_description,calendar_duration,state",
         "limit" : "5",
         "maxColumns" : "5",
@@ -84,10 +84,10 @@
   }
 }, {
   "elementId" : "ckarvjjcbbsaaaaaahhddahhmiieegahzkgg",
-  "elementLabel" : "A second container",
+  "elementLabel" : "Runbook Category",
   "propertyValues" : {
-    "label" : "Visualisation Container type",
-    "type" : "visualizations",
+    "label" : "Runbook Category",
+    "type" : "default",
     "bgvar" : "neutral-1",
     "border" : true,
     "canCollapse" : true,
@@ -102,20 +102,20 @@
     "layout" : {
       "default" : {
         "type" : "rowColumn",
-        "root" : {"type":"row","columns":[{"type":"column","slotName":"ckarw7q7m000s3a7miuajt1td","size":"12","rows":[],"id":"ckarw7q7n000u3a7myde4lni7"}],"id":"ckarw7q7m000t3a7maz1paltw"}
+        "root" : {"type":"column","id":"ckarw7q7m000t3a7maz1paltw","size":"12","rows":[{"type":"row","id":"ckarw7q7n000u3a7myde4lni7","slotName":"ckarw7q7m000s3a7miuajt1td"}]}
       }
     },
     "composition" : [ {
       "elementId" : "ckarwhhqhhmaaaaaarddahhmrebmyanff",
-      "elementLabel" : "Report / PA Widget",
+      "elementLabel" : "Report Widget",
       "propertyValues" : {
-        "label" : "",
-        "reportSysId" : "",
+        "label" : "Runbook Category Report",
+        "reportSysId" : "9686c3afdb05101018097b38689619f4",
         "paWidgetSysId" : "",
-        "isRealtime" : false,
+        "isRealtime" : true,
         "variant" : "auto",
-        "border" : false,
-        "refreshInterval" : ""
+        "border" : true,
+        "refreshInterval" : "1"
       },
       "slot" : "ckarw7q7m000s3a7miuajt1td",
       "definition" : {
@@ -127,9 +127,9 @@
   }
 }, {
   "elementId" : "ckarvaeteeaaaaaabddahhmnjddddseeeegg",
-  "elementLabel" : "A third container",
+  "elementLabel" : "PA Widget",
   "propertyValues" : {
-    "label" : "Just another default container",
+    "label" : "Performance Analytics ",
     "type" : "default",
     "bgvar" : "",
     "border" : true,
@@ -141,6 +141,123 @@
     "id" : "80653115e23949b501e719ae9b0b42a6",
     "type" : "MACROPONENT"
   },
+  "overrides" : {
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"row","columns":[{"type":"column","slotName":"ckaz8is6a00053a7m93bwn256","size":"12","rows":[],"id":"ckaz8is6a00073a7mxzwgpjlt"}],"id":"ckaz8is6a00063a7mje9h7fg7"}
+      }
+    },
+    "composition" : [ {
+      "elementId" : "ckaziiisggjjaaaaaaeeddahhmhhwixqeya",
+      "elementLabel" : "Report / PA Widget",
+      "propertyValues" : {
+        "label" : "",
+        "reportSysId" : "",
+        "paWidgetSysId" : "4e3045c2d7231100b96d45a3ce610351",
+        "isRealtime" : true,
+        "variant" : "auto",
+        "border" : true,
+        "refreshInterval" : ""
+      },
+      "slot" : "ckaz8is6a00053a7m93bwn256",
+      "definition" : {
+        "id" : "7dbc62b27efa88d6d910579a68c7a65d",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ]
+  }
+}, {
+  "elementId" : "ckazahhddffffaaaaaajjddahhmqwwcchhaajjz",
+  "elementLabel" : "My Tasks",
+  "propertyValues" : {
+    "listTitle" : "My Tasks",
+    "table" : "x_485045_icenow_runbook_task",
+    "query" : "assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe",
+    "columns" : null,
+    "limit" : "5",
+    "maxColumns" : "5",
+    "page" : "1",
+    "hideHeader" : false,
+    "hideTitle" : false,
+    "hideTitleRowCount" : false,
+    "hideRefreshButton" : false,
+    "hideLastRefreshedText" : false,
+    "hideLinks" : false,
+    "hideViewAll" : false,
+    "hideHighlightedValues" : false,
+    "hideCellFilter" : true,
+    "hideCheckboxHover" : true,
+    "hideColumnFiltering" : true,
+    "hideColumnGrouping" : true,
+    "hideColumnSorting" : false,
+    "hideFilterPanel" : false,
+    "hideFirstPage" : false,
+    "hideLastPage" : false,
+    "hideLimitSelector" : false,
+    "hideMenuButton" : true,
+    "hideMultiEdit" : false,
+    "hideDeclarativeActions" : false,
+    "hideNextPage" : false,
+    "hidePages" : false,
+    "hidePagination" : true,
+    "hidePanel" : true,
+    "hidePanelAdvanced" : false,
+    "hidePanelConditionDelete" : false,
+    "hidePanelFooter" : false,
+    "hidePanelRestore" : false,
+    "hidePreviousPage" : false,
+    "hideQuickEdit" : true,
+    "hideRange" : false,
+    "hideRowCount" : false,
+    "hideRowSelector" : false,
+    "hideSelectAll" : true,
+    "hideEmptyStateImage" : false,
+    "hideDBViews" : false,
+    "hideUnnecessaryRowSelectors" : true
+  },
+  "slot" : "ckaza7355000a3a7mfx7463fn",
+  "definition" : {
+    "id" : "2b1c080881e05dc63b917044290b233f",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : null
+}, {
+  "elementId" : "ckazddtdhhaaaaaaiddahhmtjsyiittn",
+  "elementLabel" : "Report / PA Widget",
+  "propertyValues" : {
+    "label" : "Active Tasks",
+    "reportSysId" : "09639fe7db45101018097b38689619e5",
+    "paWidgetSysId" : "",
+    "isRealtime" : true,
+    "variant" : "SMALL",
+    "border" : true,
+    "refreshInterval" : "1"
+  },
+  "slot" : "ckazddtd8000j3a7mmlb7mwjc",
+  "definition" : {
+    "id" : "7dbc62b27efa88d6d910579a68c7a65d",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : null
+}, {
+  "elementId" : "ckbccfngdwaaaaaaggddahhmcchhhbdvdi",
+  "elementLabel" : "Work In Progress Tasks",
+  "propertyValues" : {
+    "label" : "Work In Progress",
+    "reportSysId" : "79ff1650db11901018097b3868961900",
+    "paWidgetSysId" : "",
+    "isRealtime" : true,
+    "variant" : "auto",
+    "border" : true,
+    "refreshInterval" : ""
+  },
+  "slot" : "ckb2fngdx00073a7mrsk1f4br",
+  "definition" : {
+    "id" : "7dbc62b27efa88d6d910579a68c7a65d",
+    "type" : "MACROPONENT"
+  },
   "overrides" : null
 } ]</composition>
         <data/>
@@ -150,7 +267,7 @@
         <layout>{
   "default" : {
     "type" : "rowColumn",
-    "root" : {"id":"ckarvaet6000e3a7muc19nwi9","type":"column","rows":[{"type":"row","id":"ckarv6l8z00043a7mn7tszk2v","columns":[{"type":"column","id":"ckarv6l8z00053a7mz3a56jvg","slotName":"ckarv6l8y00033a7mnf152aw5","size":"6"},{"type":"column","id":"ckarv9c1u00093a7m4l67oe6h","slotName":"ckarv9c1t00083a7mhov9bbuy","size":"6"}]},{"type":"row","id":"ckarvaet6000d3a7m62j83m2z","slotName":"ckarvaet5000c3a7m5wht6lf2"}],"size":"12"}
+    "root" : {"type":"column","id":"ckarvaet6000e3a7muc19nwi9","size":"12","rows":[{"type":"row","id":"ckarv6l8z00043a7mn7tszk2v","columns":[{"type":"column","id":"ckaza7357000c3a7m18oh8khb","size":"6","rows":[{"type":"row","id":"ckarv6l8z00053a7mz3a56jvg","slotName":"ckarv6l8y00033a7mnf152aw5"},{"type":"row","id":"ckaza7357000b3a7mp59lqll2","slotName":"ckaza7355000a3a7mfx7463fn"}]},{"type":"column","id":"ckazddtd9000l3a7muw11h6pb","size":"6","rows":[{"type":"row","id":"ckarv9c1u00093a7m4l67oe6h","slotName":"ckarv9c1t00083a7mhov9bbuy"},{"id":"ckb2fngdx00093a7mccsfrn36","type":"row","columns":[{"type":"column","id":"ckazddtd9000k3a7mdwjud5t8","slotName":"ckazddtd8000j3a7mmlb7mwjc","size":"6"},{"type":"column","slotName":"ckb2fngdx00073a7mrsk1f4br","id":"ckb2fngdx00083a7m0lhdcd4i","size":"6"}]}]}]},{"type":"row","id":"ckarvaet6000d3a7m62j83m2z","slotName":"ckarvaet5000c3a7m5wht6lf2"}]}
   }
 }</layout>
         <macroponent_dependencies/>
@@ -163,13 +280,13 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2020-05-29 07:07:31</sys_created_on>
         <sys_id>978810c6db8d901018097b386896199f</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>Runbook Workbench</sys_name>
-        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
         <sys_policy/>
-        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
         <sys_update_name>sys_ux_macroponent_978810c6db8d901018097b386896199f</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2020-05-29 07:37:44</sys_updated_on>
+        <sys_updated_on>2020-06-05 16:51:06</sys_updated_on>
     </sys_ux_macroponent>
 </record_update>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="DELETE">
+        <active>true</active>
+        <category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category>
+        <description/>
+        <device_type>browser</device_type>
+        <hint/>
+        <name>Task</name>
+        <order>100</order>
+        <roles>x_485045_icenow.task_user</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-02 13:08:57</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>34a1d25bdbc9501018097b38689619a9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Task</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_app_application_34a1d25bdbc9501018097b38689619a9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-02 13:08:57</sys_updated_on>
+        <title>Task</title>
+        <view_name/>
+    </sys_app_application>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_app_application_34a1d25bdbc9501018097b38689619a9</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application"><sys_app_application action="INSERT_OR_UPDATE"><active>true</active><category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category><description/><device_type>browser</device_type><hint/><name>Task</name><order>100</order><roles>x_485045_icenow.task_user</roles><sys_class_name>sys_app_application</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-06-02 13:08:57</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>34a1d25bdbc9501018097b38689619a9</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Task</sys_name><sys_overrides/><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_app_application_34a1d25bdbc9501018097b38689619a9</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-06-02 13:08:57</sys_updated_on><title>Task</title><view_name/></sys_app_application></record_update>]]></payload>
+        <payload_hash>-1904220911</payload_hash>
+        <record_name>Task</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-02 13:08:57</sys_created_on>
+        <sys_id>34a1d25bdbc9501018097b38689619ac</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172752633cb0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-02 13:08:57</sys_updated_on>
+        <type>Application Menu</type>
+        <update_guid>7ca1d25b29c95010ca0524bfc29293ab</update_guid>
+        <update_guid_history>7ca1d25b29c95010ca0524bfc29293ab:-1904220911</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Task">818ab6fddb51101018097b38689619a4</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-10 10:32:22</sys_created_on>
+        <sys_db_object display_value="" name="sys_app_application">sys_app_application</sys_db_object>
+        <sys_id>2c92107818a549d0bf4a17ab55e65900</sys_id>
+        <sys_metadata>34a1d25bdbc9501018097b38689619a9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Task</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_app_application_34a1d25bdbc9501018097b38689619a9</sys_update_name>
+        <sys_update_version display_value="sys_app_application_34a1d25bdbc9501018097b38689619a9">34a1d25bdbc9501018097b38689619ac</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-10 10:32:22</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

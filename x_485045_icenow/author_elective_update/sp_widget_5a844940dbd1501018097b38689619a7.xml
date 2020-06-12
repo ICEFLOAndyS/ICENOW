@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>custom</category>
+        <client_script><![CDATA[function() {
+  // widget controller
+  var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.container {&#13;
+   display: -ms-flex;&#13;
+   display: -webkit-flex;&#13;
+   display: flex;&#13;
+}&#13;
+.overview {&#13;
+    width: 100%;&#13;
+    padding-top: 10px;&#13;
+}&#13;
+.summary {&#13;
+   width: 70%;&#13;
+   padding-top: 10px;&#13;
+   padding-left: 10px;&#13;
+}&#13;
+.summary-value {&#13;
+  padding: 5px;&#13;
+}&#13;
+.panel-override {&#13;
+  height: 95%;&#13;
+}&#13;
+.info-table {&#13;
+  width: 100%;&#13;
+  margin-bottom: 10px;&#13;
+  .tbody-class {&#13;
+    display: table-row-group;&#13;
+    vertical-align: middle;&#13;
+    border-color: inherit;&#13;
+    td{&#13;
+      padding: 10px 5px 10px 0;&#13;
+      width: 33.33%&#13;
+    }&#13;
+    h5{&#13;
+      margin: 5px 0;&#13;
+    }&#13;
+  }&#13;
+}&#13;
+&#13;
+.label-column {&#13;
+    white-space: nowrap;&#13;
+}&#13;
+.value-column {&#13;
+  font-weight: 600;&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>runbook_information</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, element, attrs, c) {
+	/* Hide Service Portal Header when it is being opened in modal dialog from Investment Portal */
+	if(c.data.hide_header) {
+		$('.navbar').hide();
+		$('.sp-page-loader').hide();
+	}
+}]]></link>
+        <name>Runbook Information</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.hide_header = $sp.getParameter("hide_header") == 'true' || false;
+	var result = (new PmProjectStatusReport()).headerInfoPlain($sp.getParameter('sysparm_sys_id'), $sp.getParameter('sysparm_status_date'), $sp.getParameter('sysparm_report_id'));  
+	var naStr = '\xa0';
+	//gs.info(new JSON().encode(result));
+	if(JSUtil.notNil(result)) {
+		for(var attr in result) {
+			var val = result[attr];
+			if(JSUtil.notNil(val))
+				data[attr] = val;
+			else
+				data[attr] = naStr;
+		}
+	}
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-04 15:27:32</sys_created_on>
+        <sys_id>5a844940dbd1501018097b38689619a7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Runbook Information</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sp_widget_5a844940dbd1501018097b38689619a7</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-04 15:27:32</sys_updated_on>
+        <template><![CDATA[<div>
+  <div class="overview">
+  	<div class="panel panel-{{::c.options.color}} b">
+  	 <div class="panel-heading">
+      	<div class="panel-title">${Overview}</div>
+  	  </div>  
+  	  <div class="panel-body"> 
+        <table class="info-table"> 
+          <tbody class="tbody-class">
+           <tr>
+             <td>
+               <div class="label-column">
+                 <h5>${Project  Name}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.short_description}}
+               </div>
+             </td>
+             <td>
+               <div class="label-column">
+                 <h5>${Project Manager}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.project_manager_value}}
+               </div>
+             </td>             
+             <td>
+               <div class="label-column">
+                 <h5>${Portfolio}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.portfolio_value}}
+               </div>
+             </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="label-column">
+                  <h5>${State}</h5>
+                </div>
+                <div class="value-column bold">
+                  {{data.state_value}}
+                </div>
+              </td>
+              <td>
+                <div class="label-column">
+                  <h5>${Phase}</h5>
+                </div>
+                <div class="value-column bold">
+                  {{data.phase}}
+                </div>
+              </td>
+              <td>
+               <div class="label-column">
+                 <h5>${% Complete}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.percent_complete_value}}
+               </div>
+             </td>
+            </tr>
+            <tr>
+              <td>
+               <div class="label-column">
+                 <h5>${Planned Start Date}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.start_date_value}}
+               </div>
+              </td>
+              <td>
+                <div class="label-column">
+                  <h5>${Planned End Date}</h5>
+                </div>
+                <div class="value-column bold">
+                 {{data.end_date_value}}
+                </div>
+              </td> 
+              <td>
+               <div class="label-column">
+                 <h5 ng-if="!data.project_currency">${Planned Cost}</h5>
+                 <h5 ng-if="data.project_currency">${Planned Cost in Project Currency}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.planned_cost}}
+               </div>
+             </td>
+            </tr>
+            <tr>
+              <td>
+               <div class="label-column">
+                 <h5>${Actual Start Date}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.work_start_value}}
+               </div>
+             </td>
+              <td>
+               <div class="label-column">
+                 <h5>${Actual End Date}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.work_end_value}}
+               </div>
+             </td>              
+              <td>
+               <div class="label-column">
+                 <h5 ng-if="!data.project_currency">${Actual Cost}</h5>
+                 <h5 ng-if="data.project_currency">${Actual Cost in Project Currency}</h5>
+               </div>
+               <div class="value-column bold">
+                 {{data.work_cost}}
+               </div>
+             </td>              
+            </tr>  
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sp_widget_5a844940dbd1501018097b38689619a7</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;custom&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function() {
+  // widget controller
+  var c = this;
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;.container {&amp;#13;
+   display: -ms-flex;&amp;#13;
+   display: -webkit-flex;&amp;#13;
+   display: flex;&amp;#13;
+}&amp;#13;
+.overview {&amp;#13;
+    width: 100%;&amp;#13;
+    padding-top: 10px;&amp;#13;
+}&amp;#13;
+.summary {&amp;#13;
+   width: 70%;&amp;#13;
+   padding-top: 10px;&amp;#13;
+   padding-left: 10px;&amp;#13;
+}&amp;#13;
+.summary-value {&amp;#13;
+  padding: 5px;&amp;#13;
+}&amp;#13;
+.panel-override {&amp;#13;
+  height: 95%;&amp;#13;
+}&amp;#13;
+.info-table {&amp;#13;
+  width: 100%;&amp;#13;
+  margin-bottom: 10px;&amp;#13;
+  .tbody-class {&amp;#13;
+    display: table-row-group;&amp;#13;
+    vertical-align: middle;&amp;#13;
+    border-color: inherit;&amp;#13;
+    td{&amp;#13;
+      padding: 10px 5px 10px 0;&amp;#13;
+      width: 33.33%&amp;#13;
+    }&amp;#13;
+    h5{&amp;#13;
+      margin: 5px 0;&amp;#13;
+    }&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.label-column {&amp;#13;
+    white-space: nowrap;&amp;#13;
+}&amp;#13;
+.value-column {&amp;#13;
+  font-weight: 600;&amp;#13;
+}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;runbook_information&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function(scope, element, attrs, c) {
+	/* Hide Service Portal Header when it is being opened in modal dialog from Investment Portal */
+	if(c.data.hide_header) {
+		$('.navbar').hide();
+		$('.sp-page-loader').hide();
+	}
+}]]&gt;&lt;/link&gt;&lt;name&gt;Runbook Information&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	data.hide_header = $sp.getParameter("hide_header") == 'true' || false;
+	var result = (new PmProjectStatusReport()).headerInfoPlain($sp.getParameter('sysparm_sys_id'), $sp.getParameter('sysparm_status_date'), $sp.getParameter('sysparm_report_id'));  
+	var naStr = '\xa0';
+	//gs.info(new JSON().encode(result));
+	if(JSUtil.notNil(result)) {
+		for(var attr in result) {
+			var val = result[attr];
+			if(JSUtil.notNil(val))
+				data[attr] = val;
+			else
+				data[attr] = naStr;
+		}
+	}
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-04 15:27:32&lt;/sys_created_on&gt;&lt;sys_id&gt;5a844940dbd1501018097b38689619a7&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Runbook Information&lt;/sys_name&gt;&lt;sys_package display_value="ICENOW" source="x_485045_icenow"&gt;312b0f2ddb41901018097b386896199e&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="ICENOW"&gt;312b0f2ddb41901018097b386896199e&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_5a844940dbd1501018097b38689619a7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-04 15:27:32&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;
+  &lt;div class="overview"&gt;
+  	&lt;div class="panel panel-{{::c.options.color}} b"&gt;
+  	 &lt;div class="panel-heading"&gt;
+      	&lt;div class="panel-title"&gt;${Overview}&lt;/div&gt;
+  	  &lt;/div&gt;  
+  	  &lt;div class="panel-body"&gt; 
+        &lt;table class="info-table"&gt; 
+          &lt;tbody class="tbody-class"&gt;
+           &lt;tr&gt;
+             &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${Project  Name}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.short_description}}
+               &lt;/div&gt;
+             &lt;/td&gt;
+             &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${Project Manager}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.project_manager_value}}
+               &lt;/div&gt;
+             &lt;/td&gt;             
+             &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${Portfolio}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.portfolio_value}}
+               &lt;/div&gt;
+             &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+                &lt;div class="label-column"&gt;
+                  &lt;h5&gt;${State}&lt;/h5&gt;
+                &lt;/div&gt;
+                &lt;div class="value-column bold"&gt;
+                  {{data.state_value}}
+                &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td&gt;
+                &lt;div class="label-column"&gt;
+                  &lt;h5&gt;${Phase}&lt;/h5&gt;
+                &lt;/div&gt;
+                &lt;div class="value-column bold"&gt;
+                  {{data.phase}}
+                &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${% Complete}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.percent_complete_value}}
+               &lt;/div&gt;
+             &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${Planned Start Date}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.start_date_value}}
+               &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td&gt;
+                &lt;div class="label-column"&gt;
+                  &lt;h5&gt;${Planned End Date}&lt;/h5&gt;
+                &lt;/div&gt;
+                &lt;div class="value-column bold"&gt;
+                 {{data.end_date_value}}
+                &lt;/div&gt;
+              &lt;/td&gt; 
+              &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5 ng-if="!data.project_currency"&gt;${Planned Cost}&lt;/h5&gt;
+                 &lt;h5 ng-if="data.project_currency"&gt;${Planned Cost in Project Currency}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.planned_cost}}
+               &lt;/div&gt;
+             &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${Actual Start Date}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.work_start_value}}
+               &lt;/div&gt;
+             &lt;/td&gt;
+              &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5&gt;${Actual End Date}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.work_end_value}}
+               &lt;/div&gt;
+             &lt;/td&gt;              
+              &lt;td&gt;
+               &lt;div class="label-column"&gt;
+                 &lt;h5 ng-if="!data.project_currency"&gt;${Actual Cost}&lt;/h5&gt;
+                 &lt;h5 ng-if="data.project_currency"&gt;${Actual Cost in Project Currency}&lt;/h5&gt;
+               &lt;/div&gt;
+               &lt;div class="value-column bold"&gt;
+                 {{data.work_cost}}
+               &lt;/div&gt;
+             &lt;/td&gt;              
+            &lt;/tr&gt;  
+            
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1283459615</payload_hash>
+        <record_name>Runbook Information</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-04 15:27:32</sys_created_on>
+        <sys_id>d2844940dbd1501018097b38689619a9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1727ff1cbaa0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-04 15:27:32</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>1e84494091d150102d80a109407349a8</update_guid>
+        <update_guid_history>1e84494091d150102d80a109407349a8:1283459615</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Runbook Information">0f7d9a10db11901018097b38689619ee</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 16:34:38</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>4d5bfc1c204942e1b61b8acb2ef2ceb9</sys_id>
+        <sys_metadata>5a844940dbd1501018097b38689619a7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Runbook Information</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sp_widget_5a844940dbd1501018097b38689619a7</sys_update_name>
+        <sys_update_version display_value="sp_widget_5a844940dbd1501018097b38689619a7">d2844940dbd1501018097b38689619a9</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:34:38</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

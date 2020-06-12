@@ -9,14 +9,14 @@
         <license_category>none</license_category>
         <license_model>none</license_model>
         <logo>d22bc3a1db41901018097b38689619fe</logo>
-        <menu/>
-        <name>ICENOW</name>
+        <menu display_value="ICEFLO Primary Menu">e94c7631db91101018097b38689619fd</menu>
+        <name>ICEFLO on Now</name>
         <private>false</private>
         <restrict_table_access>false</restrict_table_access>
         <runtime_access_tracking>permissive</runtime_access_tracking>
         <scope>x_485045_icenow</scope>
         <scoped_administration>false</scoped_administration>
-        <short_description>ICEFLO on the Now Platform</short_description>
+        <short_description>This is the default role for access to ICEFLO on the Now Platform</short_description>
         <source>x_485045_icenow</source>
         <store_correlation_id/>
         <store_url/>
@@ -25,15 +25,15 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2020-05-28 06:50:52</sys_created_on>
         <sys_id>312b0f2ddb41901018097b386896199e</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2020-05-28 06:50:55</sys_updated_on>
+        <sys_updated_on>2020-06-11 12:18:42</sys_updated_on>
         <template/>
         <trackable>true</trackable>
-        <user_role/>
+        <user_role display_value="x_485045_icenow.runbook.manager" name="x_485045_icenow.runbook.manager">e73cad95db15101018097b386896196c</user_role>
         <vendor/>
         <vendor_prefix/>
-        <version>1.0.0</version>
+        <version>0.01</version>
     </sys_app>
     <sys_attachment action="INSERT_OR_UPDATE">
         <average_image_color/>

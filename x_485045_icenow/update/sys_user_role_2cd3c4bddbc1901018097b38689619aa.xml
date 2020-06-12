@@ -2,25 +2,29 @@
     <sys_user_role action="INSERT_OR_UPDATE">
         <assignable_by/>
         <can_delegate>true</can_delegate>
-        <description/>
+        <description>This role provides access to the ICENOW Workspace:&#13;
+&#13;
+1) Includes the base role workspace_user&#13;
+2) Need to review what other roles might be required - may need to assign this role to other relevant Business Roles e.g. Runbook Manager&#13;
+</description>
         <elevated_privilege>false</elevated_privilege>
         <grantable>true</grantable>
         <includes_roles/>
-        <name>icenow</name>
-        <requires_subscription>-1</requires_subscription>
+        <name>x_485045_icenow.workspace</name>
+        <requires_subscription>0</requires_subscription>
         <scoped_admin>false</scoped_admin>
-        <suffix/>
+        <suffix>workspace</suffix>
         <sys_class_name>sys_user_role</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2020-05-28 10:58:27</sys_created_on>
         <sys_id>2cd3c4bddbc1901018097b38689619aa</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>icenow</sys_name>
-        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>x_485045_icenow.workspace</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
         <sys_policy/>
-        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
         <sys_update_name>sys_user_role_2cd3c4bddbc1901018097b38689619aa</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2020-05-28 10:58:27</sys_updated_on>
+        <sys_updated_on>2020-06-11 09:17:19</sys_updated_on>
     </sys_user_role>
 </record_update>

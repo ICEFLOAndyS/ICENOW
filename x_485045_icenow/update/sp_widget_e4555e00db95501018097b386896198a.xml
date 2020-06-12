@@ -1,0 +1,1481 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $rootScope, $uibModal, PWConfig, PWGanttInstance, PWConstants, PCService, PWGanttConfig, $window, spUtil, $sanitize, PWHelpers, PWSecurityValidator, $timeout, PWGanttStorage, PWGanttClient, Notifier, PPSStringUtil) {
+  /* widget controller */
+   var c = this;
+  $scope.criticalPath = false;
+  $scope.criticalPathTooltipText = $scope.data.messages.showCriticalPath;
+    
+  if(!PWConfig.sysId) {
+    $scope.noProjectAvailable = true;
+  }
+    
+  if(PWConfig.entity === PWConstants.ENTITY.PROJECT) {
+    $scope.title = $scope.data.messages.planningConsole;
+    $scope.entity = $scope.data.messages.planningConsoleTitle;
+    $scope.backBtnLabel = $scope.data.messages.projectLabel;
+    $scope.isProjectView = true;
+  } else if(PWConfig.entity === PWConstants.ENTITY.RELEASE) {
+    $scope.title = $scope.data.messages.releaseGantt;
+    $scope.entity = $scope.data.messages.releaseGanttTitle;
+    $scope.backBtnLabel = $scope.data.messages.releaseLabel;
+    $scope.isReleaseView = true;
+  }
+
+  c.baseline = {};
+  spUtil.recordWatch($scope, PWConstants.NOTIFICATION_TABLE, 'task.top_task='+$scope.data.sysId+'^state=new',function(){
+    spUtil.update($scope);
+  });
+  
+  $scope.safeDigest = function(){
+      $scope.$$phase || $scope.$root && $scope.$root.$$phase || $scope.$digest();
+  };
+  
+  PWGanttConfig.SETTINGS = PWGanttConfig.SETTINGS || {};
+  PWGanttConfig.SETTINGS.showcriticalPath = $scope.criticalPath = (PWConfig.viewMode == 'print' && PWHelpers.stringToBoolean(PWConfig.criticalPath));
+  PWGanttConfig.SETTINGS.showDateChange = $scope.showDateChange = PWHelpers.stringToBoolean($scope.data.preferences.showDateChange);
+  PWGanttConfig.SETTINGS.showDurationChange = $scope.showDurationChange = PWHelpers.stringToBoolean($scope.data.preferences.showDurationChange);
+  PWGanttConfig.SETTINGS.showWeekendShadow = $scope.showWeekendShadow = PWHelpers.stringToBoolean($scope.data.preferences.showWeekendShadow);
+  PWGanttConfig.SETTINGS.hideShadowTasks = $scope.hideShadowTasks = PWHelpers.stringToBoolean($scope.data.preferences.hideShadowTasks);
+  PWGanttConfig.SETTINGS.showWorkbench = $scope.showWorkbench = PWHelpers.stringToBoolean($scope.data.preferences.showWorkbench);
+
+  
+  $scope.action = function(actionName) {
+    $rootScope.$broadcast('gantt.call.to.action', actionName);
+  };
+  
+  $scope.$on('enable_client_save', function() {
+    $scope.enableClientPcSaveButton = true;
+    $scope.enableClientPcResetButton = true;
+  });
+  
+  $scope.$on('disable.header.icons', function(scope, data) {
+    if(data) {
+      $scope.disableAddAbove = data.disableAddAbove;
+      $scope.disableAddBelow = data.disableAddBelow;
+      $scope.disableMoveDown = data.disableMoveDown;
+      $scope.disableMoveUp = data.disableMoveUp;
+      $scope.disableIndent = data.disableIndent;
+      $scope.disableUnIndent = data.disableUnIndent;
+    }
+    $scope.safeDigest();
+  });
+  
+  $scope.$on('gantt.show.criticalpath', function(pscope, data) {
+    PCService.showCriticalPath().then(function(result) {
+      $scope.criticalPath = true;
+      $scope.criticalPathTooltipText = $scope.data.messages.hideCriticalPath;
+      data.successCb(result);
+    }, function() {
+      data.failureCb();
+    });
+  });
+  
+  $scope.$on('gantt.hide.criticalpath', function() {
+    $scope.criticalPath = false;
+    $scope.criticalPathTooltipText = $scope.data.messages.showCriticalPath;
+  });
+  
+  $scope.toggleCriticalPath = function(e){
+    // var _cb = function() {
+      $rootScope.$broadcast('gantt.toggle.criticalpath');	
+			e.target.focus();
+    // };
+    // PWGanttClient.handleAction("CRITICALPATH", _cb);
+  };
+  
+  $scope.$on('gantt.loaded' ,function() {
+	  var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+	  $scope.hasUpdateAccess = PWSecurityValidator.authenticate("UPDATEENTITY");
+	  $scope.ganttHasChildren = gantt.getChildren(PWConfig.sysId).length;
+  });
+  
+  $scope.createProject = function() {
+      var newProjectName = $scope.data.createProjectModal.projectName;
+      var newProjectTemplate = $scope.data.createProjectModal.projectTemplate;
+      var newProjectStartDate = $scope.data.createProjectModal.projectStartDate;
+      var success = function(data) {
+          $rootScope.$broadcast('gantt.loaded');
+          if(data && data.result && data.result.sys_id) {
+            PWHelpers.reloadPage(data.result.sys_id);
+          }
+      };
+      var allRequiredFieldsPopulated = true;
+      if(!newProjectName) {
+          allRequiredFieldsPopulated = false;
+          $scope.data.createProjectModal.isProjectNameEmpty = true;
+      }
+      
+      if( newProjectTemplate && !newProjectStartDate) {
+          allRequiredFieldsPopulated = false;
+          $scope.data.createProjectModal.isProjectStartDateEmpty = true;
+      }
+      
+      if(allRequiredFieldsPopulated) {
+          $rootScope.$broadcast('gantt.loading');
+          PCService.createNewProject($sanitize(newProjectName), $sanitize(newProjectStartDate), $sanitize(newProjectTemplate)).then(success, function() {
+              $rootScope.$broadcast('gantt.loaded');
+			  Notifier.show('error', $scope.data.messages.errorCreatingProject);
+          });
+          $scope.closeNewProjectModal();
+      } 
+  };
+  
+  $scope.createBaseLine = function() {
+      var baselineName = $scope.data.newBaselineModal.baselineName;
+      var baselineDesc = $scope.data.newBaselineModal.baseLineDescription;
+      var enableTaskBaseline = $scope.data.newBaselineModal.enable_task_baseline;
+      var enableFinancialBaseline = $scope.data.newBaselineModal.enable_financial_baseline;
+      
+      if(!enableTaskBaseline && !enableFinancialBaseline){
+          return;
+      }
+      
+      var success = function(data) {
+          if(data.enable_task_baseline == "true"){
+              $scope.baselineItems = $scope.baselineItems || [];
+              $scope.baselineItems.push(data);
+              $scope.data.selectedBaseline = PWConfig.baselineId = data.sys_id;
+              $scope.data.currentBaselineName = data.name;
+              $scope.data.baseLineDescription = "";
+              PWGanttStorage.set('lastBaselineInfo', {
+                  baselineId : data.sys_id,
+                  baselineName : $scope.data.currentBaselineName
+              });
+              $rootScope.$broadcast('gantt.update.baseline', {
+                  baselineSysId : data.sys_id,
+                  baselines : c.baseline
+              });
+          }
+        $rootScope.$broadcast('gantt.loaded');
+      };
+      if( baselineName) {
+          $rootScope.$broadcast('gantt.loading');
+          PCService.createBaseline(PPSStringUtil.escapeHTML(baselineName), PPSStringUtil.escapeHTML(baselineDesc),
+                                  $sanitize(enableTaskBaseline), $sanitize(enableFinancialBaseline)
+                                  ).then(success, function() {
+              $rootScope.$broadcast('gantt.loaded');
+			  Notifier.show('error', $scope.data.messages.errorSavingBaseline);
+          });
+          $scope.closeBaseLineModal();
+      }
+  };
+	
+	function openKeyboardShortcutsModal() {
+		spUtil.get('widget-modal', {
+			embeddedWidgetId: 'pc-keyBoard-shortcuts',
+			embeddedWidgetOptions: {planningOnClient: $scope.data.planningOnClient}
+		}).then(function(response) {
+			c.keyBoardShortcutsModal = response;
+		});
+	}
+
+  $scope.showKeyboardShortCuts = function() {
+    $scope.data.isMoreActionsOpen = false;
+    openKeyboardShortcutsModal();
+  };
+  
+  function clearModal() {
+    c.keyBoardShortcutsModal = null;
+	  var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+	  var dispatcher = gantt.$keyboardNavigation.dispatcher;
+	  if (!dispatcher.isEnabled()) {
+		  dispatcher.enable();
+		  gantt.render();
+	  }
+  }
+	
+$scope.$on('open.project.shortcuts', function() {
+	openKeyboardShortcutsModal();
+});
+    
+  $scope.$on('esc:key:pressed', function() {
+      $scope.data.isMoreActionsOpen = false;
+      $scope.safeDigest();
+  });
+  
+  $scope.$on('sp.widget-modal.closed', clearModal);
+  
+  function savePreference(preference, value, success) {
+    PCService.savePreference(preference, value)
+      .then(success);
+  }
+  
+  $scope.onShowDurationChange = function(value) {
+    value = !value;
+    savePreference("SHOWDURATIONCHANGE", value, function() {
+      PWGanttConfig.SETTINGS.showDurationChange = $scope.showDurationChange = value;
+    });
+  };
+  
+  $scope.onShowDateChange = function(value) {
+    value = !value;
+    savePreference("SHOWDATECHANGE", value, function() {
+      PWGanttConfig.SETTINGS.showDateChange = $scope.showDateChange = value;
+    });
+  };
+
+	var focusCurrentEle = function(evt) {
+        document.activeElement.blur();
+        evt.target.focus();
+    };
+  
+  $scope.onShowWeekEnd = function(evt, value) {
+    value = !value;
+    savePreference("SHOWWEEKENDSHADOW", value, function() {
+      var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+      PWGanttConfig.SETTINGS.showWeekendShadow = $scope.showWeekendShadow = value;
+      //gantt.config.show_task_cells = value;
+	  gantt.config.static_background = PWGanttConfig.SETTINGS.showWeekendShadow ? false : true;
+      gantt.render();
+		focusCurrentEle(evt);
+    });
+  };
+  
+  $scope.onHideShadowTasks = function(evt, value) {
+    
+    value = !value;
+    savePreference("HIDESHADOWTASKS", value, function() {
+      var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+    PWGanttConfig.SETTINGS.hideShadowTasks = $scope.hideShadowTasks = value;
+    gantt.refreshData();
+		focusCurrentEle(evt);
+    });
+  };
+  
+  /*$scope.onEnableClientPc = function(value) {
+   
+		PCService.planningOnClient("PLANNINGONCLIENT", !value)
+      .then(function(response){
+				return;
+			});
+		
+		var _enableClientPc = function() {
+      value = !value;
+      savePreference("PLANNINGONCLIENT", value, function() {
+        PWGanttConfig.SETTINGS.planningOnClient = $scope.planningOnClient = value;
+        $timeout(function() {
+          $window.location.reload();
+        }, 16);
+      });
+    };
+    PWGanttClient.handleAction("DISABLECLIENTGANTT", _enableClientPc);
+  };*/
+
+  $scope.loadwalkthrough = function() {
+	  top.NOW.guided_tours.api.startTour(PWConstants.GUIDED_TOUR_ID);
+  };
+
+  $scope.showLiveFeed = function() {
+    $scope.data.isMoreActionsOpen = false;
+    $rootScope.$broadcast('gantt.show.livefeed');
+  };
+
+  $scope.print = function() {
+    $scope.data.isMoreActionsOpen = false;
+    var _cb = function() {
+      var criticalPath = '&sysparm_critical_path='+PWGanttConfig.SETTINGS.showcriticalPath;
+      var hideShadowTasks = '&sysparm_hide_shadow_tasks='+PWGanttConfig.SETTINGS.hideShadowTasks;
+      $window.open($window.location.href+criticalPath+hideShadowTasks+'&sysparm_view_mode=print');
+    };
+    
+    PWGanttClient.handleAction("PRINT", _cb);
+    
+  };
+  
+  $scope.showLandingPage = function() {
+    var _cb = function() {
+      $window.location.href = '/' + PWConfig.sysClassName + '.do?sys_id=' + PWConfig.sysId;
+    };
+    
+    PWGanttClient.handleAction("GOBACKTOPROJECT", _cb);
+  };
+  
+  $scope.copyPartialProject = function() {
+      var allRequiredFieldsPopulated = true;
+      var task = scope.data.copyPartialProjectModal.task;
+      var taskName = scope.data.copyPartialProjectModal.taskName;
+      if(!task) {
+          allRequiredFieldsPopulated = false;
+          $scope.data.copyPartialProjectModal.isTaskEmpty = true;
+      }
+      if(!taskName) {
+          allRequiredFieldsPopulated = false;
+          $scope.data.copyPartialProjectModal.isTaskNameEmpty = true;
+      }
+      
+      if(allRequiredFieldsPopulated){
+          $rootScope.$broadcast('gantt.loading');
+          PCService.copyPartialProject($sanitize(task), $sanitize(taskName))
+          .then(function(data) {
+              $rootScope.$broadcast('gantt.loaded');
+              if(data.status === "error") {
+				  Notifier.show('error', data.message);
+                  return;
+              }
+              $rootScope.$broadcast('pps.redraw_gantt');
+          }, function() {
+              $rootScope.$broadcast('gantt.loaded');
+			  Notifier.show('error', $scope.data.messages.errorCopyingPartialProject);
+          });
+          $scope.closeCopyPartialProjectModal();
+      }
+  };
+
+  $scope.saveChanges = function() {
+      $rootScope.$broadcast('gantt.save_changes', {
+      successCb : function(data) {
+        $rootScope.$broadcast('gantt.on.client.save.ajax.success', data);
+        $scope.enableClientPcResetButton = false;
+        $scope.enableClientPcSaveButton = false;
+      },
+      failureCb : function(data) {
+        $rootScope.$broadcast('gantt.on.client.save.ajax.failure', data);
+      }
+    });
+  };
+  
+  $scope.$on('pc.disable.save.and.reset', function() {
+    $scope.enableClientPcResetButton = false;
+    $scope.enableClientPcSaveButton = false;
+  });
+  
+  $scope.resetChanges = function() {
+    $rootScope.$broadcast('pps.add.confirmBox', {
+      'okText': $scope.data.messages.resetChangesYes,
+      'cancelText': $scope.data.messages.resetChangesNo,
+      'title': $scope.data.messages.resetChangesTitle,
+      'okBtnClass': 'btn-danger',
+      'callback': function(){
+        PWGanttClient.clearAllActions();
+        $window.location.reload();
+      },
+      'mssg': $scope.data.messages.resetChangesMsg,
+    });
+  };
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.pc-header-cntr {&#13;
+  min-height: 54px;&#13;
+  height: 54px;&#13;
+}&#13;
+.planning-console-nav.navbar {&#13;
+  margin-bottom: 0px;&#13;
+  padding: 6px 0;&#13;
+  border-radius: 0;&#13;
+  box-shadow: rgba($gray-base,.1) 0 0 4px;&#13;
+  background-color: $nav-tabs-active-link-hover-bg;&#13;
+  min-height: 54px;&#13;
+  max-height: 54px;&#13;
+  width: 100%;&#13;
+  z-index: 1;&#13;
+  &#13;
+  .pc-header-title {&#13;
+    font-weight: 600;&#13;
+    font-size: 13px;&#13;
+    color: $text-color;&#13;
+  }&#13;
+  &#13;
+  .btn-default.icon-chevron-left {&#13;
+    width: 32px;&#13;
+    height: 32px;&#13;
+  }&#13;
+  .icon-chevron-left:before {&#13;
+    position: relative;&#13;
+    left: -4px;&#13;
+    top: -3px;&#13;
+  }&#13;
+  .btn[disabled] {&#13;
+    opacity: 0.3;&#13;
+  }&#13;
+  .btn-default {&#13;
+    background-color: rgba($btn-default-bg, 0.45);&#13;
+    border-color: $navbar-inverse-link-color;&#13;
+  }&#13;
+  .btn-default:hover {&#13;
+    background-color: rgba($btn-default-bg, 0.45);&#13;
+    box-shadow: 0 6px 18px -9px $gray-base;&#13;
+    transition: box-shadow 0.2s;&#13;
+  }&#13;
+  &#13;
+  .btn-group .btn-default.dropdown-toggle {&#13;
+    background-color: transparent;&#13;
+    border: none;&#13;
+  }&#13;
+  .btn-group.open .dropdown-toggle {&#13;
+    -webkit-box-shadow: none;&#13;
+    box-shadow: none;&#13;
+  }&#13;
+  .btn-group .btn-default.dropdown-toggle:hover {&#13;
+    box-shadow: none;&#13;
+  }&#13;
+  &#13;
+  .btn-icon {&#13;
+    background-color: transparent;&#13;
+    border-color: transparent;&#13;
+    color : $text-color;&#13;
+    font-size: 16px;&#13;
+    padding: 0;&#13;
+    margin-left: 4px;&#13;
+    width: 32px;&#13;
+    height: 32px;&#13;
+    line-height: 1;&#13;
+  }&#13;
+  .btn-icon:hover {&#13;
+    background-color: rgba($gray-base, 0.1);&#13;
+  }&#13;
+  .btn-icon:active {&#13;
+    outline: none;&#13;
+    box-shadow: rgba($gray-base, 0.4) 0 1px 3px inset;&#13;
+  }&#13;
+  &#13;
+  .navbar-btn:first-child {&#13;
+    margin-left : 0;&#13;
+  }&#13;
+  .navbar-btn {&#13;
+    margin-top: 0;&#13;
+    margin-bottom: 0;&#13;
+    margin-left: 12px;&#13;
+    min-width: 32px;&#13;
+  }&#13;
+  &#13;
+  .navbar-text {&#13;
+    margin: 0px;&#13;
+    display: block;&#13;
+    padding: 7px;&#13;
+    color: $gray-darker;&#13;
+  }&#13;
+  .controls-cntr {&#13;
+    position: absolute;&#13;
+    top: 50%;&#13;
+    left: 51%;&#13;
+    transform: translate(-50%, -50%);&#13;
+    display: inline-block;&#13;
+    .btn-icon {&#13;
+      font-size: 16px;&#13;
+    }&#13;
+  }&#13;
+  .navbar-left-cntr {&#13;
+  	padding-left: 8px;&#13;
+    margin-top: 2px;&#13;
+  }&#13;
+  .navbar-right-cntr {&#13;
+    margin-top: 4px;&#13;
+    .navbar-right {&#13;
+    	display: flex;&#13;
+      flex-direction: row;&#13;
+      justify-content: space-between;&#13;
+    }&#13;
+  }&#13;
+  .menu {&#13;
+    float: none;&#13;
+    font-size: 6pt;&#13;
+    background-color: transparent;&#13;
+    color: $gray-light;&#13;
+    &amp;:focus {&#13;
+      border-radius: 4px;&#13;
+    }&#13;
+  }&#13;
+  .nav-margin-right {&#13;
+    margin-right: 12px;&#13;
+  }&#13;
+  .controls {&#13;
+    text-align: center;&#13;
+    max-height: 34px;&#13;
+    overflow: hidden;&#13;
+    .control.icon-alert-triangle.critical {&#13;
+      color: $brand-danger;&#13;
+    }&#13;
+  }&#13;
+  &#13;
+  .pwmenu {&#13;
+    &amp;.context-menu-cntr {&#13;
+      margin-top: 6px;&#13;
+      margin-left: 3px;&#13;
+    }&#13;
+    .popover-content {&#13;
+      padding:0;&#13;
+    }&#13;
+    .context_menu {&#13;
+      border: none;&#13;
+      box-shadow: none;&#13;
+    }&#13;
+    .icon-arrow-down-triangle {&#13;
+      color: $gray-light;&#13;
+    }&#13;
+  }&#13;
+  &#13;
+  .select2-search-choice-close {&#13;
+    display: none;&#13;
+  }&#13;
+  &#13;
+  .options {&#13;
+    margin-right: 5px;&#13;
+    .popover-content {&#13;
+        padding: 0px;&#13;
+    }&#13;
+    .context_menu {&#13;
+        border: none;&#13;
+        box-shadow: none;&#13;
+    }&#13;
+    .btn {&#13;
+        margin:0px;&#13;
+    }&#13;
+  }&#13;
+  &#13;
+  .more-actions-cntr {&#13;
+    width : 300px;&#13;
+    p.pull-left {&#13;
+      color: $gray;&#13;
+      margin: 5px 0px;&#13;
+      font-size: 13px;&#13;
+    }&#13;
+    .row {&#13;
+        margin: 0px;&#13;
+        padding-left: 10px;&#13;
+        padding-right: 10px;&#13;
+        border-bottom: none;&#13;
+        margin-top: 6px;&#13;
+        span {&#13;
+            color: $gray-darker;&#13;
+          font-size: 13px;&#13;
+        }&#13;
+      label {&#13;
+        color : $gray;&#13;
+        cursor : pointer;&#13;
+      }&#13;
+    }&#13;
+    legend {&#13;
+    	font-size: 13px;&#13;
+        font-weight: 600;&#13;
+        margin-bottom: 0;&#13;
+        padding: 15px 0 5px 10px;&#13;
+    }&#13;
+    .context_menu {&#13;
+        margin-top: 6px;&#13;
+    }&#13;
+    .context_menu li a {&#13;
+        color : $gray;&#13;
+        padding: 4px 10px;&#13;
+      &amp;:hover{&#13;
+        background-color: $state-success-bg;&#13;
+      }&#13;
+    }&#13;
+  }&#13;
+  &#13;
+  .select2-container {&#13;
+    position: relative;&#13;
+    display: inline-block;&#13;
+    vertical-align: middle;&#13;
+    border: none;&#13;
+    padding: 0;&#13;
+  }&#13;
+  &#13;
+  .settings-menu-cntr {&#13;
+    width : 250px;&#13;
+    .row {&#13;
+        display: block;&#13;
+        padding: 6px 4px 6px 0;&#13;
+        margin: 0 -13px 0 0;&#13;
+        border-bottom: 1px solid $color-lighter;&#13;
+        max-height: 300px;&#13;
+      &gt;label {&#13;
+        margin-top: 4px;&#13;
+      }&#13;
+    }&#13;
+    .row:last-child {&#13;
+        border: none;&#13;
+    }&#13;
+    legend {&#13;
+        font-size: 13px;&#13;
+        font-weight: bold;&#13;
+        margin-bottom: 0;&#13;
+        padding: 15px 0 5px 0;&#13;
+    }&#13;
+  }&#13;
+  .fa-bell-o.open {&#13;
+    color : $primary;&#13;
+  }&#13;
+  .count{&#13;
+    color: $panel-primary-text;;&#13;
+    background-color: $primary;&#13;
+    font-size: 10px;&#13;
+    position: absolute;&#13;
+    top: -1px;&#13;
+    right: 3px;&#13;
+    padding: 3px;&#13;
+    font-weight: bold;&#13;
+    border-radius: 7px;&#13;
+  }&#13;
+  .more_actions_tip .popover-content  {&#13;
+    max-height: calc(100vh - 140px);&#13;
+  }&#13;
+  &#13;
+  button:focus { &#13;
+    	outline:none;&#13;
+	}&#13;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>runbook_console_header</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, element, attrs){
+  scope.asideInstance = null;
+  scope.popupModalInstance = null;
+
+  var $aside = $injector.get('$aside');
+  var PWConfig = $injector.get('PWConfig');
+  var PWGanttConfig = $injector.get('PWGanttConfig');
+  var PWGanttInstance = $injector.get('PWGanttInstance');
+  var PWConstants = $injector.get('PWConstants');
+  var PCService = $injector.get('PCService');
+  var $window = $injector.get('$window');
+  var $animate = $injector.get('$animate');
+  var $uibModal = $injector.get("$uibModal");
+  var spUtil = $injector.get('spUtil');
+  var $rootScope = $injector.get('$rootScope');
+  var $timeout = $injector.get('$timeout');
+  var $sanitize = $injector.get('$sanitize');
+  var PWHelpers = $injector.get('PWHelpers');
+  var PWGanttStorage = $injector.get('PWGanttStorage');
+  var PWGanttClient = $injector.get('PWGanttClient');
+  var PWGanttCalendar = $injector.get('PWGanttCalendar');
+  var Notifier = $injector.get('Notifier');
+  
+  var ganttElement = angular.element('#gantt-main-cntr');
+  var backdropElement = angular.element('<div class="aside-backdrop notification"/>');
+  
+  var options = {
+    scope: scope,
+    animation: 'am-slide-right',
+    container: ganttElement,
+    placement: 'right',
+    element: angular.element('.fa-bell-o'),
+    template: 'gantt-notifications',
+    show: false,
+    backdrop: false,
+    prefixEvent: 'notifications-aside',
+  };
+
+  var initializeDateTimePickerWithDefaultDates = function() {
+      $rootScope.$broadcast("gantt:initializeDateTimePicker");
+  };
+
+  scope.asideInstance = $aside(options);
+
+    scope.headerClickHandler = function() {
+        $rootScope.$broadcast("gantt:blurGanttCell");
+    };
+
+  scope.toggleNotifications = function(event){
+    scope.data.isMoreActionsOpen = false;
+    event.stopPropagation();
+    event.preventDefault();
+    scope.asideInstance.toggle();
+  };
+
+  scope.hideNotifications = function(){
+    scope.asideInstance.hide();
+  };
+
+  scope.$on('aside.gantt_notifications.close', scope.hideNotifications);
+  scope.$on('notifications-aside.hide', function(){
+    
+  });
+
+  scope.$on('notifications-aside.show.before', function(){
+    scope.data.isNotificationOpen = true;
+    $animate.enter(backdropElement, ganttElement, null);
+  });
+
+  scope.$on('notifications-aside.hide.before', function(){
+    scope.data.isNotificationOpen = false;
+    $animate.leave(backdropElement);
+    backdropElement.off('click', hideOnBackdropClick);
+        backdropElement.off('wheel', preventEventDefault);
+  });
+
+  backdropElement.on('click', hideOnBackdropClick);
+  backdropElement.on('wheel', preventEventDefault);
+  $('body').on('click', scope.hideNotifications);
+
+  function hideOnBackdropClick(evt) {
+    if (evt.target !== evt.currentTarget) return;
+    scope.hideNotifications();
+  }
+
+  function preventEventDefault(evt) {
+    evt.preventDefault();
+  }
+
+  scope.openCreateBaselineModal = function() {
+    scope.data.isMoreActionsOpen = false;
+      var _cb = function() {
+          resetBaselineModalData();
+          scope.data.newBaselineModal.baselineName = scope.data.currentDate;
+          _openPopupModal(scope, 'createBaseline', function() {
+              $('#name').focus();
+          });
+      };
+      
+      PWGanttClient.handleAction("OPENBASELINE", _cb);
+  };
+
+  scope.baselineChangeHandler = function(evt) {
+    var baselineSysId = (evt && evt.val);
+    scope.data.isMoreActionsOpen = false;
+    scope.data.selectedBaseline = PWConfig.baselineId = evt.val;
+    scope.data.currentBaselineName = $(evt.target).find("option:selected").text();
+    PWGanttStorage.set('lastBaselineInfo', {
+        baselineId : evt.val,
+        baselineName : scope.data.currentBaselineName
+    });
+    $rootScope.$broadcast('gantt.update.baseline', {
+      baselineSysId : baselineSysId,
+      baselines : scope.c.baseline
+    });
+  };
+
+  scope.closeBaseLineModal = function() {
+    _dismissPopupModal(scope);
+  };
+
+  function resetBaselineModalData(){
+    if(!scope.data.newBaselineModal)
+      scope.data.newBaselineModal = {};
+    scope.data.newBaselineModal.baseLineDescription = ""; 
+    scope.data.newBaselineModal.enable_task_baseline = true;
+    scope.data.newBaselineModal.enable_financial_baseline = true;
+  }
+
+  scope.showMoreActions = function() {
+    PCService.getBaselines().then(function (data) {
+        if(data.status === 'error'){
+            var baselineEle = angular.element('#baselineselector');
+            var lastBaselineInfo = angular.element('#baselineselector');
+            baselineEle.select2({
+                "width" : 280
+            }).on('change', scope.baselineChangeHandler);
+            scope.baselineItems = [];
+        }
+        else{
+            var baselineEle = angular.element('#baselineselector');
+            var lastBaselineInfo = PWGanttStorage.get('lastBaselineInfo');
+            scope.baselineItems = data;
+            baselineEle.select2({
+                "width" : 280
+            }).on('change', scope.baselineChangeHandler);
+      if(PWConfig.baselineId || (lastBaselineInfo && lastBaselineInfo.baselineId)) {
+            baselineEle.select2('data', {
+                id : PWConfig.baselineId || (lastBaselineInfo && lastBaselineInfo.baselineId) || '',
+                text : (lastBaselineInfo && lastBaselineInfo.baselineName) || scope.data.messages.noBaselineSelected
+            });
+        }
+    }
+            spUtil.update(scope);
+    });
+  };
+	
+	function CustomEvent(event, params) {
+		params = params || { bubbles: false, cancelable: false, detail: undefined };
+		var evt = document.createEvent('CustomEvent');
+		evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+		return evt;
+	}
+	
+	function dispatchEventToParentFrame(data) {
+		if (typeof window.CustomEvent !== 'function') {
+			CustomEvent.prototype = window.Event.prototype;
+			window.CustomEvent = CustomEvent;
+		}
+		var event = new CustomEvent('update.user.preference', { detail: data });
+		if (window.parent)
+			window.parent.document.dispatchEvent(event);
+	}
+
+  scope.openWorkBench = function() {
+    scope.data.isProjectMenuOpen = false;
+      var _cb = function() {
+		  var url = PWConfig.WORKBENCH_URL + '&sysparm_navigate_from=pmview';
+		  PCService.savePreference("SHOWWORKBENCH", true).then(function () {
+			  dispatchEventToParentFrame({
+				  showWorkbench : true
+			  });
+		  }, function() {
+			  dispatchEventToParentFrame({
+				  showWorkbench : false
+			  });
+		  });
+		  $window.location.replace(url);
+      };
+      PWGanttClient.handleAction("OPENWORKBENCH", _cb);
+  };
+
+  function _openPopupModal($scope, options, onRender) {
+    if(typeof options == 'string') options = {templateUrl:options};
+
+    if(typeof options != 'object' || !options) {
+      $scope.popupModalInstance = null;
+    } else {
+      if(!options.hasOwnProperty('scope')) options.scope = $scope;
+      if(typeof options.controller != 'function') options.controller = function() {};
+
+      $scope.popupModalInstance = $uibModal.open(options);
+      if(typeof onRender == 'function') {
+        $scope.popupModalInstance.rendered.then(function() {
+          onRender();
+        });
+      }
+    }
+  }
+
+  function _dismissPopupModal($scope) {
+    if($scope && $scope.popupModalInstance
+    && typeof $scope.popupModalInstance.dismiss == 'function') {
+      $scope.popupModalInstance.dismiss('cancel');
+    }
+  }
+
+  function _initializeDateTimePicker(domId, options, onChange) {
+    initializeDateTimePickerWithDefaultDates();
+
+    if(typeof options != 'object' || !options) options = {};
+    if(typeof onChange != 'function') onChange = function() {};
+
+    if(!options.hasOwnProperty('locale')) options.locale = PWConfig.language;
+    if(!options.hasOwnProperty('format')) options.format = PWConfig.dateTimeFormat;
+
+    $('#'+domId).datetimepicker(options)
+    .on('dp.change', function (e) {
+      onChange(e);
+    })
+    .on('dp.show', function (e) {
+      _alignDateTimePicker();
+    });
+  }
+
+  function _initializeSelect2(options) {
+    if(!options.query) {
+      options.query = '';
+    }
+
+    options.$element.select2({
+      placeholder: options.placeholder,
+      initSelection : function (element, callback) {
+        var data = {id: element.data('sysId'), text: element.val()};
+        callback(data);
+      },
+      ajax:{
+        url: options.url,
+        dataType: 'json',
+        quietMillis: 250,
+        data: function(term, page) {
+          return {
+            sysparm_fields: options.fields,
+            sysparm_query: options.query + '^' + options.displayField +'CONTAINS'+ term,
+            sysparm_limit: 20,
+            sysparm_offset: (page-1)*20,
+            sysparm_exclude_reference_link: true
+          };
+        },
+        transport: function(params) {
+          var callback = params.success;
+          params.success = function(data, textStatus, jqXHR) {
+            callback({
+              items: data.result,
+              total: jqXHR.getResponseHeader('X-Total-Count')
+            }, textStatus, jqXHR);
+          };
+          return $.ajax(params);
+        },
+        results: function(data, page) {
+          var more = (page * 20) < data.total;
+          var responseData = [];
+          if(data) {
+            var items = data.items;
+            for (var i = 0; i < items.length; i++) {
+              responseData.push({
+                "id": items[i].sys_id,
+                "text": items[i][options.displayField]
+              });
+            }
+          }
+          return { results: responseData, more: more };
+        }
+      }
+    });
+  }
+
+  function _alignDateTimePicker(){
+    var picker = $('.bootstrap-datetimepicker-widget');
+    picker = picker[picker.length-1];
+    picker.style.left = (picker.offsetLeft - picker.offsetWidth + 39) + 'px';
+  }
+
+  function resetApplyTemplateModalData(){
+    if(!scope.data.applyTemplateModal) {
+      scope.data.applyTemplateModal = {};
+    }
+
+    scope.data.applyTemplateModal.isTmpltStartDateEmpty = false;
+    scope.data.applyTemplateModal.isTemplateIdEmpty = false;
+    scope.data.applyTemplateModal.projectTmplt = '';
+    scope.data.applyTemplateModal.startDate = '';
+    scope.data.applyTemplateModal.isTmpltStartDateInValid = false;
+  }
+
+  scope.openApplyTemplateModal = function() {
+      scope.data.isMoreActionsOpen = false;
+      var _openApplyTemplateModal = function() {
+          resetApplyTemplateModalData();
+          var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+          scope.data.applyTemplateModal.startDate = gantt.getTask(PWConfig.sysId).start_date;
+
+          _openPopupModal(scope, 'applytemplate', function() {
+              _initializeDateTimePicker('datetimepickertmplt', {
+                  "defaultDate": scope.data.applyTemplateModal.startDate
+              }, function(e) {
+                  scope.data.applyTemplateModal.startDate = $('#start-date-tmplt').val();
+                  scope.data.applyTemplateModal.isTmpltStartDateEmpty = scope.data.applyTemplateModal.startDate ? false : true;
+                  scope.data.applyTemplateModal.isTmpltStartDateInValid = false;
+              });
+
+              var ele = $('#project-tmplt');
+
+              _initializeSelect2({
+                  $element: ele,
+                  placeholder: scope.data.messages.templatePlaceholder,
+                  url: '/api/now/table/' + scope.data.projectTemplateTable,
+                  fields: 'sys_id,name',
+                  displayField: 'name',
+                  query: '^active=true'
+              }); 
+          });
+      };
+      
+      PWGanttClient.handleAction("APPLYTEMPLATE", _openApplyTemplateModal);
+  };
+
+  scope.onProjectTemplateChange = function() {
+    var projectTemplate = scope.data.applyTemplateModal.projectTmplt;
+    scope.data.applyTemplateModal.isTemplateIdEmpty = projectTemplate ? false : true;
+  };
+  
+  scope.closeApplyTemplateModal = function() {
+    _dismissPopupModal(scope);
+  };
+  
+  scope.applyTemplate = function() {
+    var _startDate = $('#start-date-tmplt').val();
+    var _tmpltId = scope.data.applyTemplateModal.projectTmplt;
+    var success = function(data) {
+      $rootScope.$broadcast('gantt.loaded');
+      $window.location.reload();
+    };
+    if(_startDate && _tmpltId) {
+      if(PWGanttCalendar.isValidDateTime(parseInt(_startDate))) {
+        $rootScope.$broadcast('gantt.loading');
+        PCService.applyTemplate($sanitize(_startDate), _tmpltId).then(success, function() {
+          $rootScope.$broadcast('gantt.loaded');
+		  Notifier.show('error', scope.data.messages.errorSavingAppliedTmplt);
+        });
+        scope.closeApplyTemplateModal();
+      } else {
+        scope.data.applyTemplateModal.isTmpltStartDateInValid = true;
+        return false;
+      }
+    } else {
+      scope.data.applyTemplateModal.isTmpltStartDateEmpty = _startDate ? false : true;
+      scope.data.applyTemplateModal.isTemplateIdEmpty = _tmpltId ? false : true;
+      return false;
+    }
+  };
+  
+  scope.projectDDChangeHandler = function(evt) {
+      var _cb = function() {
+          PWHelpers.reloadPage(evt.val);
+      };
+      
+      PWGanttClient.handleAction("CHANGEPROJECT", _cb);
+  };
+  
+  scope.renderProjectDD = function(shortDescription, sysId) {
+    var self = this;
+    var _ele = $('#entityselector');
+    _ele.select2({
+      placeholder: scope.data.messages.projectPlaceholder,
+      allowClear: true,
+      width: 200,
+      initSelection : function (element, callback) {
+        var data = {id: element.data('sysId'), text: element.val()};
+        callback(data);
+      },
+      ajax: PCService.getEntitySelectorOptions
+    });
+    _ele.on('change', scope.projectDDChangeHandler);
+    _ele.select2('data', {id: sysId , text: shortDescription});
+  };
+  
+  scope.renderProjectDD(scope.data.preferences.shortDescription, PWConfig.sysId);
+  
+  scope.onCreateProjectModalChange = function() {
+    var projectName = scope.data.createProjectModal.projectName;
+    scope.data.createProjectModal.isProjectNameEmpty = (projectName) ? false : true;
+    scope.data.createProjectModal.isProjectStartDateEmpty = (scope.data.createProjectModal.projectTemplate && !scope.data.createProjectModal.projectStartDate) ? true: false;
+    scope.safeDigest();
+  };
+  
+  function resetCreateNewProjectModalData(){
+    if(!scope.data.createProjectModal) {
+      scope.data.createProjectModal = {};
+    }
+    scope.data.createProjectModal.projectName = "";
+    scope.data.createProjectModal.isProjectNameEmpty = false;
+    scope.data.createProjectModal.projectStartDate = "";
+    scope.data.createProjectModal.isProjectStartDateEmpty = false;
+    scope.data.createProjectModal.projectTemplate = "";
+  }
+  
+  scope.openCreateProjectModal = function() {
+      scope.data.isProjectMenuOpen = false;
+      var _openCreateProjectModal = function() {
+          resetCreateNewProjectModalData();
+          _openPopupModal(scope, 'createNewProject', function() {
+              var start_date = PWHelpers.formatDate(PWConfig.PROJECT_START_DATE, PWConfig.timezone, PWConfig.dateTimeFormat);
+              scope.data.createProjectModal.projectStartDate = start_date;      
+              $('#start-date-tmplt').val(start_date);
+              _initializeDateTimePicker('datetimepickertmplt', {}, function(e) {
+                  scope.data.createProjectModal.projectStartDate = $('#start-date-tmplt').val();
+                  scope.onCreateProjectModalChange();
+              });
+
+              var ele = $('#template');
+
+              _initializeSelect2({
+                  $element: ele,
+                  placeholder: scope.data.messages.templatePlaceholder,
+                  url: '/api/now/table/' + scope.data.projectTemplateTable,
+                  fields: 'sys_id,name',
+                  displayField: 'name',
+                  query: '^sys_class_name=' + scope.data.projectTemplateTable
+              });
+
+              ele.on('change', function(e) {
+                  scope.data.createProjectModal.projectTemplate = e.val;
+              });
+
+              $('#name').focus();
+          });
+      };
+      
+      PWGanttClient.handleAction("CREATEPROJECT", _openCreateProjectModal);
+  };
+
+  scope.closeNewProjectModal = function() {
+    _dismissPopupModal(scope);
+  };
+	
+	scope.openMoveProjectModal = function() {
+      scope.data.isMoreActionsOpen = false;
+      var _openMoveProjectModal = function() {
+          resetMoveProjectModalData();
+		  var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+          scope.data.moveProjectModal.projectStartDate =  gantt.getTask(PWConfig.sysId).start_date;
+          _openPopupModal(scope, 'moveProject', function() {
+              _initializeDateTimePicker('startdate', {
+                  "defaultDate": PWGanttCalendar.getMoment(scope.data.moveProjectModal.projectStartDate).format(PWConfig.dateTimeFormat)
+              }, function (e) {
+                  scope.data.moveProjectModal.projectStartDate = $('#startdate-holder').val();
+                  scope.data.moveProjectModal.isProjectStartDateEmpty = scope.data.moveProjectModal.projectStartDate ? false : true;
+                  scope.data.moveProjectModal.isProjectStartDateInValid = false;
+                  scope.safeDigest();
+              });
+			  $('#startdate').focus();
+          });
+      };
+      
+      PWGanttClient.handleAction("MOVEPROJECT", _openMoveProjectModal);
+  };
+  
+  scope.closeMoveProjectModal = function() {
+    _dismissPopupModal(scope);
+  };
+  
+  scope.moveProject = function() {
+      var projectStartDate = $('#startdate-holder').val();
+      if(!projectStartDate) {
+          scope.data.moveProjectModal.isProjectStartDateEmpty = true;
+          scope.data.moveProjectModal.projectStartDate = '';
+          return false;
+      }
+      if(!PWGanttCalendar.isValidDateTime(parseInt(projectStartDate))) {
+          scope.data.moveProjectModal.isProjectStartDateInValid = true;
+          return fasle;
+      }
+      $rootScope.$broadcast('gantt.loading');
+      PCService.moveProject($sanitize(projectStartDate))
+          .then(function(data){
+          $rootScope.$broadcast('gantt.loaded');
+          if(data.status === 'error') {
+			  Notifier.show('error', data.message);
+              return;
+          }
+		  $rootScope.$broadcast('pps.redraw_gantt');
+      }, function() {
+          $rootScope.$broadcast('gantt.loaded');
+		  Notifier.show('error', scope.data.messages.errorMovingProject);
+      });
+      scope.closeMoveProjectModal();
+  };
+    
+  function resetMoveProjectModalData(){
+    if(!scope.data.moveProjectModal) {
+      scope.data.moveProjectModal = {};
+    }
+    scope.data.moveProjectModal.projectStartDate = '';
+    scope.data.moveProjectModal.isProjectStartDateEmpty = false;
+    scope.data.moveProjectModal.isProjectStartDateInValid = false;
+  }
+  
+  scope.openCopyProjectModal = function() {
+      scope.data.isMoreActionsOpen = false;
+      var _openCopyProjectModal = function() {
+          resetCopyProjectModalData();
+          scope.data.copyProjectModal.projectStartDate = PWGanttCalendar.getMoment().format(PWConfig.dateTimeFormat);
+          _openPopupModal(scope, 'copyProject', function() {
+              _initializeDateTimePicker('startdate', {
+                  "defaultDate": scope.data.copyProjectModal.projectStartDate
+              }, function (e) {
+                  scope.data.copyProjectModal.projectStartDate = $('#startdate-holder').val();
+                  scope.data.copyProjectModal.isProjectStartDateEmpty = scope.data.copyProjectModal.projectStartDate ? false : true;
+                  scope.data.copyProjectModal.isProjectStartDateInValid = false;
+                  scope.safeDigest();
+              });
+
+              $('#name').focus();
+          });
+      };
+      
+      PWGanttClient.handleAction("COPYPROJECT", _openCopyProjectModal);
+  };
+  
+  scope.onProjectNameChange = function(){
+    var projectName = scope.data.copyProjectModal.projectName;
+    scope.data.copyProjectModal.isProjectNameEmpty = (projectName) ? false : true;
+  };
+  
+  scope.closeCopyProjectModal = function() {
+    _dismissPopupModal(scope);
+  };
+  
+  scope.copyProject = function() {
+      var projectName = scope.data.copyProjectModal.projectName;
+      var projectStartDate = $('#startdate-holder').val();
+      if(!projectName) {
+          scope.data.copyProjectModal.isProjectNameEmpty = true;
+          return false;
+      }
+      if(!projectStartDate) {
+          scope.data.copyProjectModal.isProjectStartDateEmpty = true;
+          scope.data.copyProjectModal.projectStartDate = '';
+          return false;
+      }
+      if(!PWGanttCalendar.isValidDateTime(parseInt(projectStartDate))) {
+          scope.data.copyProjectModal.isProjectStartDateInValid = true;
+          return fasle;
+      }
+      $rootScope.$broadcast('gantt.loading');
+      PCService.copyProject($sanitize(projectName), $sanitize(projectStartDate))
+          .then(function(data){
+          $rootScope.$broadcast('gantt.loaded');
+          if(data.status === 'error') {
+			  Notifier.show('error', data.message);
+              return;
+          }
+          PWHelpers.reloadPage(data.result.sys_id);
+      }, function() {
+          $rootScope.$broadcast('gantt.loaded');
+		  Notifier.show('error', scope.data.messages.errorCopyingProject);
+      });
+      scope.closeCopyProjectModal();
+  };
+    
+  function resetCopyProjectModalData(){
+    if(!scope.data.copyProjectModal) {
+      scope.data.copyProjectModal = {};
+    }
+    scope.data.copyProjectModal.projectName = '';
+    scope.data.copyProjectModal.isProjectNameEmpty = false;
+    scope.data.copyProjectModal.projectStartDate = '';
+    scope.data.copyProjectModal.isProjectStartDateEmpty = false;
+    scope.data.copyProjectModal.isProjectStartDateInValid = false;
+  }
+  
+  function resetPartialProjectModalData(){
+    if(!scope.data.copyPartialProjectModal) {
+      scope.data.copyPartialProjectModal = {};
+    }
+    scope.data.copyPartialProjectModal.task = '';
+    scope.data.copyPartialProjectModal.isTaskEmpty = false;
+    scope.data.copyPartialProjectModal.taskName = '';
+    scope.data.copyPartialProjectModal.isTaskNameEmpty = false;
+  }
+
+  scope.onTaskNameChange = function(){
+    var taskName = scope.data.copyPartialProjectModal.taskName;
+    scope.data.copyPartialProjectModal.isTaskNameEmpty = taskName ? false : true;
+  };
+
+  scope.openCopyPartialProjectModal = function() {
+      scope.data.isMoreActionsOpen = false;
+      var _openCopyPartialProjectModal = function() {
+          resetPartialProjectModalData();
+          _openPopupModal(scope, 'copyPartialProject', function() {
+              var ele = $('#task');
+
+              _initializeSelect2({
+                  $element: ele,
+                  placeholder: scope.data.messages.selectTaskPlaceholder,
+                  url: '/api/now/table/planned_task',
+                  fields: 'sys_id,short_description',
+                  query: 'sys_class_nameIN'+PWConfig.sysClassName+','+PWGanttConfig.CHILD_SYS_CLASS,
+                  displayField: 'short_description'
+              });
+
+              $(ele).select2('focus');
+
+              ele.on('change', function(e) {
+                  scope.data.copyPartialProjectModal.task = e.val;
+                  scope.data.copyPartialProjectModal.isTaskEmpty = scope.data.copyPartialProjectModal.task ? false : true;
+              });
+          });
+      };
+      
+      PWGanttClient.handleAction("COPYPARTIALPROJECT", _openCopyPartialProjectModal);
+  };
+  scope.closeCopyPartialProjectModal = function() {
+    resetPartialProjectModalData();
+    _dismissPopupModal(scope);
+  };
+
+  $timeout(function() {
+    var dropdownButton = $('#planningConsoleDropdown');
+    if(dropdownButton && dropdownButton[0]) {
+        $(dropdownButton[0]).on('click', function(event){ 
+          var parentElement = $(event.target.parentNode);
+          if(parentElement) {
+            parentElement.find('.dropdown-menu li:first-child a').focus();
+          }
+        });
+    }
+  });
+
+}]]></link>
+        <name>Runbook Console Header</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function($sp) {
+    /* populate the 'data' object */
+    /* e.g., data.table = $sp.getValue('table'); */
+    var planningConsolePreferenceValidator = new PlanningConsolePreferenceValidator();
+    var planningConsoleSecurityValidator = new PlanningConsoleSecurityValidator();
+    
+    data.sysId = options.sysId || input.sysId;
+    data.sysClassName = options.sysClassName || input.sysClassName;
+    data.entity = options.entity || gs.getMessage('project');
+	data.planningOnClient = options.planningOnClient || input.planningOnClient;
+	
+    data.messages = {};
+    data.messages.showCriticalPath = gs.getMessage('Show Critical Path');
+    data.messages.hideCriticalPath = gs.getMessage('Hide Critical Path');
+    data.messages.planningConsole = gs.getMessage('Planning Console');
+    data.messages.releaseGantt = gs.getMessage('Release Gantt');
+    data.messages.planningConsoleTitle = gs.getMessage('Project');
+    data.messages.releaseGanttTitle = gs.getMessage('Release');
+    data.messages.templatePlaceholder = gs.getMessage('Select a template');
+    data.messages.projectPlaceholder = gs.getMessage('Select a {0}', data.entity);
+    data.messages.selectBaslinePlaceholder = gs.getMessage('Select a basline');
+    data.messages.selectTaskPlaceholder = gs.getMessage('Select a task');
+    data.messages.noBaselineSelected = gs.getMessage('No Baseline Selected');
+    data.messages.projectLabel = gs.getMessage('Show Project');
+    data.messages.releaseLabel = gs.getMessage('Show Release');
+    data.messages.errorCreatingProject = gs.getMessage("An error occurred while creating the project");
+    data.messages.errorSavingBaseline = gs.getMessage("An error occurred while creating the baseline");
+    data.messages.errorCopyingPartialProject = gs.getMessage("An error occurred while copying partial project");
+    data.messages.errorSavingAppliedTmplt = gs.getMessage("An error occurred while applying the template");
+    data.messages.errorCopyingProject = gs.getMessage("An error occurred while copying project");
+    data.messages.resetChangesTitle = gs.getMessage("Reset Changes");
+    data.messages.resetChangesYes = gs.getMessage("Yes");   
+    data.messages.resetChangesNo = gs.getMessage("No");
+    data.messages.resetChangesMsg = gs.getMessage("All unsaved changes will be lost. Do you want to continue?");
+    data.messages.baselineCreate = gs.getMessage("Please select at least one baseline option when choosing this action.");
+    data.projectTemplateTable = SNC.PPMConfig.getTemplateTable(data.sysClassName);
+    data.preferences = {};
+    data.preferences.showApplyTemplate = false;
+	if(gs.hasRole('project_manager')){
+		var configId = SNC.PPMConfig.getConfigId(data.sysClassName);
+		var hasTemplateTable = (GlideProjectTemplate.getTemplateCount(configId) != 0);
+		if( hasTemplateTable ) {
+			if( new ProjectWorkbenchService().hasChildren(data.sysId) == false)
+				data.preferences.showApplyTemplate = true;
+		}
+	}
+    
+    data.preferences.canCreateEntity = planningConsoleSecurityValidator.canCreate(data.sysClassName);
+    data.preferences.canCreateBaseline = planningConsoleSecurityValidator.createBaselineAccess() || false;
+    data.hasWbAccess = planningConsoleSecurityValidator.hasWbAccess(data.sysClassName) || false;
+    
+    if(data.sysId) {
+		
+		var clearSprintsMsg = "";
+		if(GlidePluginManager.isActive('com.snc.sdlc.scrum.pp') || GlidePluginManager.isActive('com.snc.sdlc.agile.2.0')){
+			var pmPtGr = new GlideRecord('pm_project_task');
+			pmPtGr.addQuery("top_task", data.sysId);
+			pmPtGr.addQuery("phase_type=agile^start_sprintISNOTEMPTY^ORend_sprintISNOTEMPTY");
+			pmPtGr.query();
+
+			if(pmPtGr.getRowCount()) {
+				clearSprintsMsg = gs.getMessage("Start and end sprint values will be cleared from agile phase.");
+			}
+		}
+		
+        var gr = new GlideRecord(data.sysClassName);
+        gr.get(data.sysId);
+        data.preferences.shortDescription = gr.getValue('short_description');
+		
+		var plannedTaskStateUtil = new PlannedTaskStateUtil(gr);
+		var currentState = gr.getValue('state');
+		data.project = {
+			"stateAndFunding": {
+			},
+			"state": {
+			},
+			"funding": {
+			},
+			"move": {
+			},
+			"hideMoveMsg": false
+		};
+		
+		data.project.state.currentStateDv = gr.getDisplayValue('state');
+		if(plannedTaskStateUtil.isStateOpen(currentState) || 
+		   plannedTaskStateUtil.isStatePending(currentState)) {
+			data.project.state.isValid = true;
+		} else {
+			data.project.state.isValid = false;
+		}
+		
+		data.project.funding.isValid = true;
+		if (GlidePluginManager.isActive('com.snc.financial_planning_pmo')){
+			var ppmProjectFunding = new PPMProjectFunding();
+		    var projectFunding = ppmProjectFunding.findProjectFundingForEntity(data.sysId);
+		    if(projectFunding.isPlanned()){
+		       	data.project.funding.isValid = false;
+		       	data.project.funding.fiscal_period = projectFunding.fiscalPeriodDisplayValue();
+		    }
+		}		
+		var msg = '';
+		if(gs.getProperty('com.snc.project.date_change_cascade') == 'true') {
+			msg += gs.getMessage(' resource plans, cost plans, benefit plans, ');
+		}
+		
+		if(!data.project.funding.isValid && !data.project.state.isValid) {
+			data.project.stateAndFunding.msg = gs.getMessage('Project is in {0} state and is selected for execution in {1}. Only projects in Pending or Open states and not selected for execution can be moved.', [data.project.state.currentStateDv, data.project.funding.fiscal_period]);
+
+		} else if(!data.project.state.isValid) {
+
+			data.project.state.msg = gs.getMessage('Project is in {0} state and cannot be moved. Only projects in Pending or Open states can be moved.', [data.project.state.currentStateDv]);
+
+		} else if(!data.project.funding.isValid) {
+
+			data.project.funding.msg = gs.getMessage('Project is selected for execution in {0} and cannot be moved. Deselect the project for execution to move the project.', [data.project.funding.fiscal_period]);
+			
+		} else {
+
+			data.project.move.msg = gs.getMessage('Moving the project to a new start date will move all the{0} project tasks and subprojects relative to the start date of the project. {1}', [msg, clearSprintsMsg]);
+			data.project.isValid = true;
+		}
+    } else {
+        data.preferences.shortDescription = "Select a project";
+    }
+
+    data.preferences.showDateChange = planningConsolePreferenceValidator.getConsolePreference('SHOWDATECHANGE', data.sysClassName);
+    data.preferences.showDurationChange = planningConsolePreferenceValidator.getConsolePreference('SHOWDURATIONCHANGE', data.sysClassName);
+    data.preferences.showWeekendShadow = planningConsolePreferenceValidator.getConsolePreference('SHOWWEEKENDSHADOW', data.sysClassName);
+    data.preferences.hideShadowTasks = planningConsolePreferenceValidator.getConsolePreference('HIDESHADOWTASKS', data.sysClassName);
+    data.preferences.planningOnClient = planningConsolePreferenceValidator.getConsolePreference('PLANNINGONCLIENT', data.sysClassName);
+    data.preferences.showWorkbench = planningConsolePreferenceValidator.getConsolePreference('SHOWWORKBENCH', data.sysClassName);
+    
+    if(!input)
+        data.notificationWidget = $sp.getWidget('gantt-notifications', {
+            sysId : data.sysId 
+        });
+    
+    var notifications = new GlideRecord('planned_task_notification');
+    notifications.addQuery('task.top_task', data.sysId);
+    notifications.addQuery('state','new');
+    notifications.query();
+    data.newNotificationsCount = notifications.getRowCount();
+    data.currentDate = gs.now();
+})($sp);]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-04 21:20:29</sys_created_on>
+        <sys_id>e4555e00db95501018097b386896198a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Runbook Console Header</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sp_widget_e4555e00db95501018097b386896198a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-04 21:20:29</sys_updated_on>
+        <template><![CDATA[<div class="pc-header-cntr clearfix">
+  <nav id="gantt-header" class="navbar navbar-default planning-console-nav" ng-click="headerClickHandler()" role="navigation">
+    <div class="navbar-left-cntr pull-left clearfix">
+      <div class="btn-group" style="padding-top:4px; padding-left:3px; color:#333333;font-weight: bold">
+        <span class="pc-header-title">{{::title}} </span><button type="button" id="planningConsoleDropdown" ng-if="(data.preferences.canCreateEntity || data.hasWbAccess) && !isReleaseView" class="btn icon-arrow-down-triangle menu pc-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="${Show menu}"></button>
+        <ul ng-if="data.preferences.canCreateEntity || data.hasWbAccess" class="dropdown-menu pc-header-dropdown">
+            <!-- <li ng-if="data.preferences.canCreateEntity"><a href="javascript:void(0)" ng-click="openCreateProjectModal()">${Create New} {{::entity}}</a></li> -->
+            <li><a href="javascript:void(0)">${Planning Console}</a></li>
+            <li ng-if="!isReleaseView && data.hasWbAccess"><a href="javascript:void(0)" ng-click="openWorkBench()">${Project Workbench}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="controls-cntr">
+      <div class="controls" ng-if="!noProjectAvailable">
+        <button class="btn btn-icon navbar-btn nav-margin-right control icon-new-above" ng-disabled="disableAddAbove" aria-disabled="{{disableAddAbove}}" ng-click="action('addTaskAbove')" uib-tooltip="${Add Task Above}" tooltip-placement="bottom" aria-label="${Add Task Above}" tooltip-trigger="focus blur mouseenter outsideClick"></button>
+        <button class="btn btn-icon navbar-btn nav-margin-right control icon-new-below" ng-disabled="disableAddBelow" aria-disabled="{{disableAddBelow}}" ng-click="action('addTaskBelow')" uib-tooltip="${Add Task Below}" tooltip-placement="bottom" aria-label="${Add Task Below}" tooltip-trigger="focus blur mouseenter outsideClick"></button>
+        <button class="btn btn-icon icon-arrow-down navbar-btn nav-margin-right control moveTaskDown" ng-if="!isReleaseView" ng-disabled="disableMoveDown" aria-disabled="{{disableMoveDown}}" ng-click="action('moveTaskDown')" uib-tooltip="${Move Down}" tooltip-placement="bottom" aria-label="${Move Down}" tooltip-trigger="focus blur mouseenter outsideClick"></button>
+        <button class="btn btn-icon icon-arrow-up navbar-btn nav-margin-right control moveTaskUp" ng-if="!isReleaseView" ng-disabled="disableMoveUp" aria-disabled="{{disableMoveUp}}" ng-click="action('moveTaskUp')" uib-tooltip="${Move Up}" tooltip-placement="bottom" aria-label="${Move Up}" tooltip-trigger="focus blur mouseenter outsideClick"></button>
+        <button class="btn btn-icon icon-arrow-left navbar-btn nav-margin-right control leftIndent" ng-disabled="disableUnIndent" aria-disabled="{{disableUnIndent}}" ng-click="action('leftIndent')" uib-tooltip="${Unindent}" tooltip-placement="bottom" aria-label="${Unindent}" tooltip-trigger="focus blur mouseenter outsideClick"></button>
+        <button class="btn btn-icon icon-arrow-right navbar-btn nav-margin-right control rightIndent" ng-disabled="disableIndent" aria-disabled="{{disableIndent}}" ng-click="action('rightIndent')" uib-tooltip="${Indent}" tooltip-placement="bottom" aria-label="${Indent}" tooltip-trigger="focus blur mouseenter outsideClick"></button>
+        <button class="btn btn-icon navbar-btn nav-margin-right control icon-alert-triangle" ng-if="!isReleaseView" ng-click="toggleCriticalPath($event)" ng-class="{'critical': criticalPath}" uib-tooltip="{{criticalPathTooltipText}}" tooltip-placement="bottom" aria-label="${Show or hide critical path}" tooltip-trigger="focus blur mouseenter outsideClick"></button>    
+      </div>
+    </div>
+    <div class="navbar-right-cntr pull-right clearfix">
+      <div class="nav navbar-right">
+        <button class="btn btn-icon fa fa-bell-o" ng-class="{open : data.isNotificationOpen}" style="position:relative;margin-right:15px;" ng-if="hasUpdateAccess && (isReleaseView ? false : (noProjectAvailable ? false : true))" ng-click="toggleNotifications($event)" uib-tooltip="${Show Notifications}" tooltip-trigger="focus blur mouseenter outsideClick" tooltip-placement="bottom" tooltip-append-to-body="true" aria-label="${Show or hide notifications}" aria-haspopup="true" aria-expanded="{{data.isNotificationOpen == true}}">
+          <div class="count" ng-if="data.newNotificationsCount > 0">{{data.newNotificationsCount}}</div>
+        </button>
+        <div class="options" ng-if="isReleaseView ? false : (noProjectAvailable ? false : true)">
+          <button class="btn btn-icon icon-ellipsis navbar-btn nav-margin-right" ng-click="showMoreActions()" popover-animation="true" uib-tooltip="${More actions}" tooltip-placement="bottom-right" tooltip-append-to-body="true" tooltip-trigger="focus blur mouseenter outsideClick" uib-popover-template="'pcMoreActions'" popover-placement="bottom-right" popover-trigger="outsideClick" popover-is-open="data.isMoreActionsOpen" aria-label="${Show or hide more actions}" aria-haspopup="true" aria-expanded="{{data.isMoreActionsOpen == true}}" popover-class="more_actions_tip"></button>
+        </div>
+        <button class="btn btn-icon icon-save navbar-btn nav-margin-right control save" style="position:relative;margin-right:5px;margin-left: 10px;" ng-click="saveChanges()" uib-tooltip="${Save Changes}" tooltip-placement="bottom" tooltip-trigger="focus blur mouseenter outsideClick" aria-label="${Save Changes}" ng-if="data.planningOnClient" ng-disabled="!enableClientPcSaveButton" role="navigation"></button>
+        <div class="entityselector-cntr">
+          <input id="entityselector" class="navbar-btn nav-margin-right control select2" name="entityselector" type="hidden" aria-label="${Select a project from dropdown}"/>
+        </div>
+      </div>
+    </div>
+    <sp-widget widget="c.keyBoardShortcutsModal" ng-if="c.keyBoardShortcutsModal"></sp-widget>
+</nav>
+</div>]]></template>
+    </sp_widget>
+</record_update>

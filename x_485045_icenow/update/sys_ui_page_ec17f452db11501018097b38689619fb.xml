@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[addLateLoadEvent(function(){
+  var fileref=document.createElement('script');
+    fileref.setAttribute("type","text/javascript");
+    fileref.setAttribute("src", "scripts/classes/Number.prototype.js");
+    document.getElementsByTagName("head")[0].appendChild(fileref);
+});]]></client_script>
+        <description>*Home Page for Runbook Landing Page</description>
+        <direct>false</direct>
+        <endpoint>x_485045_icenow_runbook_home.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="true" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<j:set var="jvar_app" value="sn.pm.home" />
+	<g:evaluate var="jvar_title" jelly="true">
+		var title = "",
+        sysClassName = jelly.sysparm_sys_class_name;
+        var gr = new GlideRecord(sysClassName);
+        title = gr.getPlural();
+		title;
+	</g:evaluate>
+	<g2:evaluate var="jvar_error_message" object="true" jelly="true">
+        var message = '';
+        var isMobile = PPMDeviceHelper.isMobileDevice();
+		var isTablet = PPMDeviceHelper.isTabletDevice();
+		
+        if (jelly.jvar_isMSIE == 'true') {
+          if (jelly.jvar_MSIE_vn ${AMP}lt; 10 ) {
+            message = 'unsupported_browser';
+          }
+        } else if (isMobile || isTablet) {
+          message = 'unsupported_device';
+        }
+    message;
+	</g2:evaluate>
+	<g:evaluate>
+		new PPMUsageAnalytics().projectWorkspaceLaunch();
+	</g:evaluate>
+	<g:inline template="ie_checker.xml" />
+	<j2:choose>
+		<j2:when test= "$[jvar_error_message != '']">
+			<g:inline template="pm_landing_page_error_message.xml"/>
+		</j2:when>
+		<j2:otherwise>
+			<j:set var="jvar_media" value="${RP.getParameterValue('sysparm_media')}" />
+			<j:if test="${jvar_media == 'print'}">
+				<g:requires name="scripts/lib/jquery_includes.js" />
+			</j:if>
+			<g:inline template="pm_home_messages.xml" />
+			<g:inline template="html_page_pm_home.xml">
+				<g:inline template="pm_home.xml" />
+			</g:inline>
+		</j2:otherwise>
+	</j2:choose>
+	<script>
+        window.GlideWebAnalytics.trackEvent("com.snc.financial_planning_pmo", "Project_Workspace", "Project Workspace");
+    </script>
+</j:jelly>]]></html>
+        <name>runbook_home</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-11 14:18:37</sys_created_on>
+        <sys_id>ec17f452db11501018097b38689619fb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>runbook_home</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_ui_page_ec17f452db11501018097b38689619fb</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-11 14:18:37</sys_updated_on>
+    </sys_ui_page>
+</record_update>

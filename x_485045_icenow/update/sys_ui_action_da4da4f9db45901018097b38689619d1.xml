@@ -61,9 +61,9 @@ function setRedirect()
         <sys_mod_count>5</sys_mod_count>
         <sys_name>Approve</sys_name>
         <sys_overrides/>
-        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
         <sys_policy/>
-        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
         <sys_update_name>sys_ui_action_da4da4f9db45901018097b38689619d1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2020-05-28 16:32:40</sys_updated_on>

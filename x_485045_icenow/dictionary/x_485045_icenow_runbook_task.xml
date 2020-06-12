@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="task" label="runbook_task" max_length="40" name="x_485045_icenow_runbook_task" sizeclass="18" type="collection">
+        <element label="Percent Complete" max_length="15" name="percent_complete" type="percent_complete"/>
+        <element label="Runbook Task Type" max_length="25" name="runbook_task_type" type="string"/>
+        <element label="Source ID" max_length="25" name="source_id" type="string"/>
+        <element label="Source Runbook ID" max_length="25" name="source_runbook_id" type="string"/>
+        <element choice="1" label="Source Type" max_length="25" name="source_type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Stage" sequence="0" value="Stage"/>
+                <element inactive_on_update="false" label="SubTask" sequence="0" value="SubTask"/>
+                <element inactive_on_update="false" label="Task" sequence="0" value="Task"/>
+            </choice>
+        </element>
+    </element>
+</database>

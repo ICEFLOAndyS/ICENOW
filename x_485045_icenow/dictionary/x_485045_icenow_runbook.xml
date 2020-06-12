@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="task" label="Runbook" max_length="40" name="x_485045_icenow_runbook" sizeclass="30" type="collection">
+    <element extends="task" label="runbook" max_length="40" name="x_485045_icenow_runbook" sizeclass="30" type="collection">
         <element choice="3" label="Category" max_length="40" name="category" type="choice">
             <choice>
                 <element inactive_on_update="false" label="Disaster Recovery" sequence="0" value="Disaster Recovery"/>
@@ -9,5 +9,6 @@
         </element>
         <element default="0" label="Percent Complete" max_length="15" name="percent_complete" type="percent_complete"/>
         <element label="Source ID" max_length="12" name="source_id" type="string"/>
+        <element label="Source Type" max_length="25" name="source_type" type="string"/>
     </element>
 </database>

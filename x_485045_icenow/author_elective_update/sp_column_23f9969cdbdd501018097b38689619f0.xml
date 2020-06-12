@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>5</order>
+        <size>1</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">19e9169cdbdd501018097b3868961976</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 16:19:23</sys_created_on>
+        <sys_id>23f9969cdbdd501018097b38689619f0</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>5</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sp_column_23f9969cdbdd501018097b38689619f0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:19:45</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sp_column_23f9969cdbdd501018097b38689619f0</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>5</order><size>1</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">19e9169cdbdd501018097b3868961976</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-06-05 16:19:23</sys_created_on><sys_id>23f9969cdbdd501018097b38689619f0</sys_id><sys_mod_count>1</sys_mod_count><sys_name>5</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sp_column_23f9969cdbdd501018097b38689619f0</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-06-05 16:19:45</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>2020595047</payload_hash>
+        <record_name>5</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 16:19:45</sys_created_on>
+        <sys_id>151a1a9cdbdd501018097b386896190d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1728547f8940000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:19:45</sys_updated_on>
+        <type>Column</type>
+        <update_guid>5d1a1a9cc5dd5010d161e6ad553efa0c</update_guid>
+        <update_guid_history>5d1a1a9cc5dd5010d161e6ad553efa0c:2020595047,63f9969cabdd501022d96c957d767ff1:1424150377</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="5">021a969cdbdd501018097b38689619a7</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 16:19:49</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>0701c32eb26343c39568823a17f6aa11</sys_id>
+        <sys_metadata>23f9969cdbdd501018097b38689619f0</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>5</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sp_column_23f9969cdbdd501018097b38689619f0</sys_update_name>
+        <sys_update_version display_value="sp_column_23f9969cdbdd501018097b38689619f0">151a1a9cdbdd501018097b386896190d</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:19:49</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

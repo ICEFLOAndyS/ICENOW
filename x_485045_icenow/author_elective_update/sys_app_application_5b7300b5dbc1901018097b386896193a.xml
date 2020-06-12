@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="DELETE">
+        <active>true</active>
+        <category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category>
+        <description>ICEFLO in the Now Platform</description>
+        <device_type>browser</device_type>
+        <hint>ICEFLO in the Now Platform</hint>
+        <name/>
+        <order/>
+        <roles/>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 10:57:01</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5b7300b5dbc1901018097b386896193a</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>ICENOW Standard</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_app_application_5b7300b5dbc1901018097b386896193a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-10 10:38:12</sys_updated_on>
+        <title>ICENOW Standard</title>
+        <view_name/>
+    </sys_app_application>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_app_application_5b7300b5dbc1901018097b386896193a</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application"><sys_app_application action="INSERT_OR_UPDATE"><active>true</active><category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category><description>ICEFLO in the Now Platform</description><device_type>browser</device_type><hint>ICEFLO in the Now Platform</hint><name/><order/><roles/><sys_class_name>sys_app_application</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 10:57:01</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>5b7300b5dbc1901018097b386896193a</sys_id><sys_mod_count>7</sys_mod_count><sys_name>ICENOW Standard</sys_name><sys_overrides/><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_app_application_5b7300b5dbc1901018097b386896193a</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-06-10 10:38:12</sys_updated_on><title>ICENOW Standard</title><view_name/></sys_app_application></record_update>]]></payload>
+        <payload_hash>-521316986</payload_hash>
+        <record_name>ICENOW Standard</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-10 10:38:12</sys_created_on>
+        <sys_id>eadb3a31db91101018097b3868961947</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1729dcf10490000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-10 10:38:12</sys_updated_on>
+        <type>Application Menu</type>
+        <update_guid>26db3a31f49110103431fd3f02275547</update_guid>
+        <update_guid_history>26db3a31f49110103431fd3f02275547:-521316986,bcb9f6bd9f511010430dcf2cb3276b62:808264661,6933b67927511010dc28be641e2e28c7:1503646287,22f6021d77551010ce728bc33cca3a7c:-1987653121,c5dffd55b0551010ec957e2d00e6bf00:587847663,877ef5555855101004d27281d3ac2d1e:1319777121,909157a7aa451010e894270416c80cb7:-471455801,537300b5e4c19010f00f64ac58a01d3d:2114228284</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="ICENOW Standard">aa6c3271db91101018097b38689619f3</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-10 10:40:39</sys_created_on>
+        <sys_db_object display_value="" name="sys_app_application">sys_app_application</sys_db_object>
+        <sys_id>76043b2780b14cb688a3a3d5eb161241</sys_id>
+        <sys_metadata>5b7300b5dbc1901018097b386896193a</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ICENOW Standard</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_app_application_5b7300b5dbc1901018097b386896193a</sys_update_name>
+        <sys_update_version display_value="sys_app_application_5b7300b5dbc1901018097b386896193a">eadb3a31db91101018097b3868961947</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-10 10:40:39</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

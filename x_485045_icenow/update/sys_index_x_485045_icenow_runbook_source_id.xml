@@ -9,13 +9,13 @@
         <sys_id>aa1ffa2edb01101018097b38689619e7</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>x_485045_icenow_runbook</sys_name>
-        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
         <sys_policy/>
-        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
         <sys_update_name>sys_index_x_485045_icenow_runbook_source_id</sys_update_name>
         <sys_updated_by>system</sys_updated_by>
         <sys_updated_on>2020-05-31 08:32:09</sys_updated_on>
-        <table display_value="Runbook" name="x_485045_icenow_runbook">a1fb9939dbc5901018097b3868961965</table>
+        <table display_value="runbook" name="x_485045_icenow_runbook">a1fb9939dbc5901018097b3868961965</table>
         <unique_index>false</unique_index>
     </sys_index>
 </record_update>

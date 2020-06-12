@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_module">
     <sys_ui_module action="INSERT_OR_UPDATE">
         <active>true</active>
-        <application display_value="Runbook">984cd979dbc5901018097b386896195f</application>
+        <application display_value="runbook">c84b5b2fdb45101018097b38689619a8</application>
         <filter/>
-        <name>Runbooks</name>
+        <name>runbooks</name>
         <order/>
         <path/>
         <path_relative_to_root>false</path_relative_to_root>
-        <roles>x_485045_icenow.runbook_user</roles>
+        <roles/>
         <sys_class_name>sys_ui_module</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2020-05-28 17:24:50</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>144cd979dbc5901018097b3868961962</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>Runbooks</sys_name>
-        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>runbooks</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
         <sys_policy/>
-        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
         <sys_update_name>sys_ui_module_144cd979dbc5901018097b3868961962</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2020-05-28 17:24:50</sys_updated_on>
+        <sys_updated_on>2020-06-03 13:09:03</sys_updated_on>
         <table>x_485045_icenow_runbook</table>
         <uncancelable>false</uncancelable>
         <view_name/>

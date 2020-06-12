@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone">
+    <sp_rel_widget_clone action="INSERT_OR_UPDATE">
+        <child display_value="Runbook Planning Console">9427455cdb1d501018097b3868961945</child>
+        <cloned>2020-06-05 10:17:21</cloned>
+        <last_validated>2020-06-05 10:17:21</last_validated>
+        <parent display_value="Planning console">732659a3c313120028d7d56bc3d3ae44</parent>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category/&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, PWConfig, PWGanttConfig, spUtil, $timeout, PWConstants, $rootScope, PWGanttInstance, $window, PWHelpers, $q, PWGanttService, PCService, $aside, PWGanttUserActions, i18n, PWUtils, ClientSidePlanningConsole, ClientSidePCService, PWGanttClient, PWGanttCalendar, ServerSidePlanningConsole, PWGanttServer, ServerSidePCService, PWGanttServerActions){
+  var self = this;
+  
+  i18n.loadMessage('Save', $scope.data.messages.saveGanttClient);
+  i18n.loadMessage('Save changes', $scope.data.messages.saveGanttClientTitle);
+  i18n.loadMessage('You have unsaved changes. Please save and proceed.', $scope.data.messages.saveGanttClientMsg);
+  i18n.loadMessage('Cancel', $scope.data.messages.cancelGanttClientChanges);
+  i18n.loadMessage('Do not show this again', $scope.data.messages.doNowShowAgainTxt);
+  i18n.loadMessage('help text', $scope.data.messages.helpTxt);
+  i18n.loadMessage('Learn more', $scope.data.messages.helpLinkTxt);
+
+  $scope.data.showGantt = true;
+  $scope.data.selectProject = false;
+  this.data.loader = {};
+  this.data.loader.loading = true;
+  this.data.entity = PWConfig.entity;
+
+  $scope.ppsSlidingFormAsideInstance = null;
+  PWConfig.showAddTaskBelowButton = true;
+  $scope.data.resourcePlansToCompleteQuery = '';
+  $scope.data.resourcePlansToCancelQuery = '';
+	$scope.data.ganttHeight = 'calc(100vh - 48px) !important';
+	
+	$scope.data.ganttSettings = {
+		doNotShowClientSavePopUp : PWHelpers.stringToBoolean($scope.data.preferences.doNotShowClientSavePopUp) || false,
+		zoomLevel : $scope.data.preferences.zoom || 'year',
+		columns : $scope.data.preferences.columns ? JSON.parse($scope.data.preferences.columns) : [],
+		gridWidth : $scope.data.preferences.gridWidth || '450',
+		intro : PWHelpers.stringToBoolean($scope.data.preferences.intro),
+		showcriticalPath : (PWConfig.viewMode == 'print' &amp;&amp; PWConfig.criticalPath == 'true') ? true: false,
+		hideShadowTasks : (PWConfig.viewMode == 'print' &amp;&amp; PWConfig.hideShadowTasks == 'true') ? true: false,
+		showWeekendShadow : PWHelpers.stringToBoolean($scope.data.preferences.showWeekendShadow),
+		planningOnClient : $scope.data.planningOnClient,
+		dateFormat : $scope.data.dateFormat,
+		dateTimeFormat : $scope.data.dateTimeFormat
+	};
+	
+	
+  $scope.getPayload = function() {
+    var payload = {};
+    if (PWConfig.entity === PWConstants.ENTITY.CUSTOM)
+      payload = {"sysparm_console_id": PWConfig.consoleId, "sysparm_sys_class_name": PWConfig.sysClassName};
+    else 
+      payload = {"sysparm_sys_id": PWConfig.sysId, "sysparm_sys_class_name": PWConfig.sysClassName,
+                    "sysparm_critical_path": $scope.data.ganttSettings.showcriticalPath
+                };
+    
+    return payload;
+  };
+  
+  $scope.safeDigest = function(){
+    $scope.$$phase || $scope.$root &amp;&amp; $scope.$root.$$phase || $scope.$digest();
+  };
+  
+  $scope.loadGanttData = function() {
+	  PWHelpers.deriveContext();	  
+	  var schedule = self.data.ganttData[3];
+	  if(PWConfig.entity == 'project') {
+		  if($scope.data.ganttSettings.planningOnClient)
+			  PWGanttConfig.AUTO_SCHEDULING_CONFIG = ClientSidePlanningConsole.getAutoSchedulingCofig(schedule);
+		  else
+			  PWGanttConfig.AUTO_SCHEDULING_CONFIG = ServerSidePlanningConsole.getAutoSchedulingCofig(schedule);
+	  }
+
+	  self.data.ganttProperties = 'ProjectGanttProperties';
+  };
+
+  $scope.$on('gantt.loading', function(){
+    self.data.loader.loading = true;
+  });
+  
+  $scope.$on('gantt.loaded', function(){
+    self.data.loader.loading = false;
+  });
+  
+  $scope.addExternalDependency = function(taskId, externalTaskId, relationType, dependencyType){
+    var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+    var task = gantt.getTask(taskId);
+        PWGanttService.executeGantt(PWConstants.ADD_EXTERNAL_DEPENDENCY ,task, "", externalTaskId, relationType, dependencyType).then(
+      function (data) {
+        $rootScope.$broadcast('gantt.on.ajax.success', data);
+      },
+      function(data){
+        $rootScope.$broadcast('gantt.on.ajax.failure', data);
+      }
+    );
+  };
+  
+  $scope.$on('load.walkthrough', function(scope, data) {
+    PWGanttConfig.SETTINGS.showWelcomeScreen = data &amp;&amp; data.showWelcomeScreen;
+    self.walkthrough = $scope.data.callout;
+  });
+  
+  $scope.$on('walkthrough.closed', function() {
+    self.walkthrough = null;
+  });
+  
+  $scope.$on('gantt.save.new.task', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.ADD_TASK, {task: data.task})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.ADD_TASK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.ADD_TASK, data.task);
+		  ClientSidePCService.executeGantt(PWConstants.ADD_TASK, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.ADD_TASK, data.task).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.update.task', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.UPDATE_TASK, {task: data.task, column: data.column})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.UPDATE_TASK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.UPDATE_TASK, data.task, data.column, data.fireBr);
+		  ClientSidePCService.executeGantt(PWConstants.UPDATE_TASK, data).then(data.successCb, data.failureCb);
+	  } else if(PWGanttServer.isClientSideRecalculateRequired(PWConstants.UPDATE_TASK, {task: data.task, column: data.column})) {
+		  PWGanttServerActions.initialize();
+		  PWGanttService.executeGantt(PWConstants.UPDATE_TASK, data.task, data.column, data.fireBr);
+		  ServerSidePCService.executeGantt(PWConstants.UPDATE_TASK, data);
+		  PWGanttService.saveServerSideActions().then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.UPDATE_TASK, data.task, data.column, data.fireBr).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.add.dependency', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(data.eventName, {task: data.task})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(data.eventName, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(data.eventName, data.task, data.dependency);
+		  ClientSidePCService.executeGantt(data.eventName, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(data.eventName, data.task, data.dependency).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.delete.dependency', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.DELETE_DEPENDENCY, {task: {source: data.source.id, target: data.target.id}})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.DELETE_DEPENDENCY, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.DELETE_DEPENDENCY, data.source, data.target, data.wbs, data.relation, data.sign, data.lag);
+		  ClientSidePCService.executeGantt(PWConstants.DELETE_DEPENDENCY, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.DELETE_DEPENDENCY, data.source, data.target, data.wbs, data.relation, data.sign, data.lag).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.add.link', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.ADD_LINK, {task: data.link})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.ADD_LINK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.ADD_LINK, data.link);
+		  ClientSidePCService.executeGantt(PWConstants.ADD_LINK, data).then(data.successCb, data.failureCb);
+	  } else	  
+		  PWGanttService.executeGantt(PWConstants.ADD_LINK, data.link).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.delete.link', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.DELETE_LINK, {task: data.link})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.DELETE_LINK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.DELETE_LINK, data.link);
+		  ClientSidePCService.executeGantt(PWConstants.DELETE_LINK, data).then(data.successCb, data.failureCb);
+	  } else	  
+		  PWGanttService.executeGantt(PWConstants.DELETE_LINK, data.link).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.delete.task', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.DELETE_TASK, {task: data.task})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.DELETE_TASK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.DELETE_TASK, data.task);
+		  ClientSidePCService.executeGantt(PWConstants.DELETE_TASK, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.DELETE_TASK, data.task).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.move.task', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.MOVE_TASK, {task: data.task})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.MOVE_TASK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.MOVE_TASK, data.task, data.parent, data.tindex);
+		  ClientSidePCService.executeGantt(PWConstants.MOVE_TASK, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.MOVE_TASK, data.task, data.parent, data.tindex).then(data.successCb, data.failureCb);	  
+  });
+  
+  $scope.$on('gantt.indent.task', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.INDENT_TASK, {task: data.task})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.INDENT_TASK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.INDENT_TASK, data.task);
+		  ClientSidePCService.executeGantt(PWConstants.INDENT_TASK, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.INDENT_TASK, data.task).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.unindent.task', function(pscope, data) {
+	  if(PWGanttClient.isClientSideAction(PWConstants.UNINDENT_TASK, {task: data.task})) {
+		  //validate action and undo if invalid action
+		  if(!ClientSidePCService.validateAction(PWConstants.UNINDENT_TASK, data))
+			  return;
+		  
+		  PWGanttService.executeGantt(PWConstants.UNINDENT_TASK, data.task);
+		  ClientSidePCService.executeGantt(PWConstants.UNINDENT_TASK, data).then(data.successCb, data.failureCb);
+	  } else
+		  PWGanttService.executeGantt(PWConstants.UNINDENT_TASK, data.task).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.get.wbslevels', function(pscope, data) {
+    PCService.getWbsLevels({
+      "sysparm_project": PWConfig.sysId,
+    }).then(data.successCb);
+  });
+  
+  $scope.$on('gantt.save.preference', function(pscope, data) {
+    PCService.savePreference(data.preferenceName, data.value).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.get.tasksAndLinks', function(pscope, data) {
+    PWGanttService.getTasksAndLinks(data.params || $scope.getPayload()).then(data.successCb, data.failureCb);
+  });
+
+  $scope.$on('gantt.save_changes', function(pscope, data) {
+    PWGanttService.saveClientSideActions().then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.update.time.constraint', function(pscope, data) {
+    if(PWGanttClient.isClientSideAction(PWConstants.UPDATE_TIME_CONSTRAINT, {task: data.task})) {
+        //validate action and undo if invalid action
+        if(!ClientSidePCService.validateAction(PWConstants.UPDATE_TIME_CONSTRAINT, data))
+            return;
+
+        PWGanttService.executeGantt(PWConstants.UPDATE_TIME_CONSTRAINT, data.task, data.time_constraint);
+        ClientSidePCService.executeGantt(PWConstants.UPDATE_TIME_CONSTRAINT, data).then(data.successCb, data.failureCb);
+    } else
+        PWGanttService.executeGantt(PWConstants.UPDATE_TIME_CONSTRAINT, data.task, data.time_constraint).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on('gantt.update.allow.dates.outside.schedule', function(pscope, data) {
+	if(PWGanttClient.isClientSideAction(PWConstants.UPDATE_ALLOW_DATES_OUTSIDE_SCHEDULE, {task: data.task})) {
+        //validate action and undo if invalid action
+        if(!ClientSidePCService.validateAction(PWConstants.UPDATE_ALLOW_DATES_OUTSIDE_SCHEDULE, data))
+            return;
+
+        PWGanttService.executeGantt(PWConstants.UPDATE_ALLOW_DATES_OUTSIDE_SCHEDULE, data.task, data.allow_dates_outside_schedule);
+        ClientSidePCService.executeGantt(PWConstants.UPDATE_ALLOW_DATES_OUTSIDE_SCHEDULE, data).then(data.successCb, data.failureCb);
+    } else
+        PWGanttService.executeGantt(PWConstants.UPDATE_ALLOW_DATES_OUTSIDE_SCHEDULE, data.task, data.allow_dates_outside_schedule).then(data.successCb, data.failureCb);
+  });
+
+  $scope.$on('gantt.convert.to.milestone', function(pscope, data) {
+    if(PWGanttClient.isClientSideAction(PWConstants.CONVERT_TO_MILESTONE, {task: data.task})) {
+        //validate action and undo if invalid action
+        if(!ClientSidePCService.validateAction(PWConstants.CONVERT_TO_MILESTONE, data))
+            return;
+
+        PWGanttService.executeGantt(PWConstants.CONVERT_TO_MILESTONE, data.task);
+        ClientSidePCService.executeGantt(PWConstants.CONVERT_TO_MILESTONE, data).then(data.successCb, data.failureCb);
+    } else
+        PWGanttService.executeGantt(PWConstants.CONVERT_TO_MILESTONE, data.task).then(data.successCb, data.failureCb);
+  });
+  
+  $scope.$on("gantt.open.form", function(pscope, data) {
+    
+	  $scope.data.ppsSlidingFormOpts = {
+      table : data.table,
+      sysId : data.sys_id,
+      view : 'planning_console',
+      gotoUrl : 'blank.do',
+      sysParmTable : data.sysParmTable,
+      sysParmSysId : data.sys_id,
+	  sysParmLinkLess: false,
+	  iFrameId : 'ppsSlidingFrame',
+	  forceView : data.table == 'planned_task_rel_planned_task'
+    };
+
+    var options = {
+      scope: $scope,
+      animation: 'am-slide-right',
+      container: 'body',
+      placement: 'right',
+      template: 'pps-sliding-form',
+      keyboard: false,
+      backdrop : 'static',
+      show: true
+    };
+  
+    $scope.ppsSlidingFormAsideInstance = $aside(options);
+
+    var unregisterAfrerClosingPpsSlidingForm = $scope.$on('on.closing.ppsSlidingForm', function(scope, data) {
+      $scope.ppsSlidingFormAsideInstance.hide();
+      $scope.ppsSlidingFormAsideInstance = null;
+      $scope.data.ppsSlidingFormOpts = null;
+      unregisterAfrerClosingPpsSlidingForm();
+	  	$rootScope.$broadcast('pps.redraw_gantt');
+    });
+  });
+	
+  $scope.openResourcePlanFormSlider = function(query, type) {
+		
+		$scope.data.ppsSlidingFormOpts = {
+		  table : 'resource_plan_list',
+		  view : (type == 'resourcePlansToCancel') ? 'cancellation': (type == 'resourcePlansToComplete') ? 'completion' : 'default', //Need to change after integration
+		  gotoUrl : 'blank.do',
+		  sysParmLinkLess: true,
+		  sysParmQuery: query,
+		  modalClass: 'resource_plan_form',
+		  forceView: true
+		};
+		
+		var options = {
+		  scope: $scope,
+		  animation: 'am-slide-right',
+		  container: 'body',
+		  placement: 'right',
+		  template: 'pps-sliding-form',
+		  keyboard: false,
+		  backdrop : 'static',
+		  show: true
+		};
+	  
+		$scope.ppsSlidingFormAsideInstance = $aside(options);
+	    PWUtils.dismissAllNotifications();
+	    var unregisterAfrerClosingPpsSlidingForm = $scope.$on('on.closing.ppsSlidingForm', function(scope, data) {
+			
+			  $scope.ppsSlidingFormAsideInstance.hide();
+			  $scope.ppsSlidingFormAsideInstance = null;
+			  $scope.data.ppsSlidingFormOpts = null;
+			  unregisterAfrerClosingPpsSlidingForm();
+			  if(data.reloadForm) {
+				$window.location.reload();
+			  }
+		});
+	};
+	
+  $scope.$on("open.resource_plans.slider", function(event, type) { 
+	  
+	  /* event listner for res plan context menu options */
+	  if(type == 'resourcePlansToCancel')
+		  $scope.openResourcePlanFormSlider($scope.data.resourcePlansToCancelQuery, type);
+	  else if(type == 'resourcePlansToComplete')
+		  $scope.openResourcePlanFormSlider($scope.data.resourcePlansToCompleteQuery, type);
+  });
+  
+  if($scope.data.sysId) {
+    PWConfig.sysId = $scope.data.sysId;
+    PWConfig.sysClassName = $scope.data.sysClassName;
+    if($scope.data.entity == PWConstants.ENTITY.CUSTOM){
+      PWConfig.entity = $scope.data.entity;
+    }
+    $scope.loadGanttData();
+	  
+  } else {
+    $scope.data.showGantt = false;
+    $scope.data.selectProject = true;
+  }
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;#gantt-main-cntr {&amp;#13;
+	height: calc(100vh - 48px) !important;&amp;#13;
+  position: relative;&amp;#13;
+  width: 100%;&amp;#13;
+  z-index: 0;&amp;#13;
+}&amp;#13;
+.no-entity-cntr {&amp;#13;
+  height:100%;&amp;#13;
+  .gantt-no-entity {&amp;#13;
+    position: absolute;&amp;#13;
+    top: 50%;&amp;#13;
+    left: 50%;&amp;#13;
+    transform: translateX(-50%) translateY(-50%);&amp;#13;
+    -webkit-transform: translateX(-50%) translateY(-50%);&amp;#13;
+    .invalid-msg {&amp;#13;
+      text-align: center;&amp;#13;
+    }&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&amp;#13;
+.loader{&amp;#13;
+    position : absolute;&amp;#13;
+    top:0;&amp;#13;
+    left:0;&amp;#13;
+    width: 100%;&amp;#13;
+    height:100%;&amp;#13;
+    color : black;&amp;#13;
+    font-size: 20px;&amp;#13;
+  	z-index: 100;&amp;#13;
+    &amp;#13;
+    &amp;amp;:before{&amp;#13;
+      position: absolute;&amp;#13;
+      content:"";&amp;#13;
+      width:100%;&amp;#13;
+      height:100%;&amp;#13;
+      top: 0;&amp;#13;
+      left: 0;&amp;#13;
+      background: black;&amp;#13;
+      opacity:.2;&amp;#13;
+    }&amp;#13;
+&amp;#13;
+    .loader-content{&amp;#13;
+      position:absolute;&amp;#13;
+      width:100%;&amp;#13;
+      text-align:center;&amp;#13;
+      top:50%;&amp;#13;
+      display:block;&amp;#13;
+      transform: translateY(-50%);&amp;#13;
+      &amp;#13;
+      .icon-loading{&amp;#13;
+        font-size: 3rem !important;&amp;#13;
+        width: 3rem !important;&amp;#13;
+        height: 3rem !important;&amp;#13;
+        display: inline-block;&amp;#13;
+    	vertical-align: middle;&amp;#13;
+    	line-height: 1;&amp;#13;
+        &amp;#13;
+        &amp;amp;:before{&amp;#13;
+          vertical-align: bottom;&amp;#13;
+        }&amp;#13;
+      }&amp;#13;
+      &amp;#13;
+      fa{&amp;#13;
+        font-size : 30px;&amp;#13;
+      }&amp;#13;
+    }&amp;#13;
+  }&amp;#13;
+&amp;#13;
+#planning-console{&amp;#13;
+  &amp;#13;
+  .external-dependency-modal .modal-dialog{&amp;#13;
+    min-width: 410px;&amp;#13;
+  }&amp;#13;
+  #gantt-container{&amp;#13;
+   &amp;#13;
+    .gantt-project-mode{&amp;#13;
+      width: 22px;&amp;#13;
+      height: 22px !important;&amp;#13;
+      margin-top: 8px;&amp;#13;
+      margin-left: -1px;&amp;#13;
+    }&amp;#13;
+    .select2-dropdown-open .select2-choice{&amp;#13;
+      font-size: 13px;&amp;#13;
+      background-color: #fff;&amp;#13;
+    }&amp;#13;
+&amp;#13;
+    .gantt_grid_data .gantt_shadow_task .gantt_cell{&amp;#13;
+      color: #82878F;&amp;#13;
+    }&amp;#13;
+    .gantt_shadow_task .gantt_task_progress{&amp;#13;
+      background-color: #313A46 !important;&amp;#13;
+    }&amp;#13;
+    .gantt_task_line.gantt_shadow_task{&amp;#13;
+      background-color: #CED4DB !important;&amp;#13;
+    }&amp;#13;
+    .gantt_shadow_link .gantt_link_line_right, .gantt_shadow_link .gantt_link_line_left{&amp;#13;
+      height: 0px !important;&amp;#13;
+      border-bottom: 2px dotted #81878e;&amp;#13;
+      background: none;&amp;#13;
+   	}&amp;#13;
+    .gantt_shadow_link .gantt_link_line_up, .gantt_shadow_link .gantt_link_line_down{&amp;#13;
+      width: 0px !important;&amp;#13;
+      border-left: 2px dotted #81878e;&amp;#13;
+      background: none;&amp;#13;
+   	}&amp;#13;
+   	.select2-container .select2-choice {&amp;#13;
+   	  text-decoration: none;&amp;#13;
+    }&amp;#13;
+  }&amp;#13;
+}&amp;#13;
+&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description&gt;Planning console gantt chart&lt;/description&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;planning-console&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function(scope, elem, attrs){
+    var $rootScope = $injector.get('$rootScope'),
+        $uibModal = $injector.get('$uibModal'),
+        $window = $injector.get('$window'),
+        $timeout = $injector.get('$timeout'),
+        Notifier = $injector.get('Notifier'),
+        PWConfig = $injector.get('PWConfig'),
+        PWGanttConfig = $injector.get('PWGanttConfig'),
+        PWConstants = $injector.get('PWConstants'),
+        PWGanttInstance = $injector.get('PWGanttInstance'),
+        PWHelpers = $injector.get('PWHelpers'),
+        PCService = $injector.get('PCService'),
+        PWGanttUserActions = $injector.get('PWGanttUserActions'),
+	    PWGanttStorage = $injector.get('PWGanttStorage'),
+	    PWGanttCalendar = $injector.get('PWGanttCalendar');
+
+   if (scope.data.messages[PWConfig.entity + 'GanttTitle'] &amp;&amp; scope.data.sysShortDescription)
+      $window.document.title = scope.data.messages[PWConfig.entity + 'GanttTitle'] + ' - ' + scope.data.sysShortDescription;
+  else if (scope.data.sysShortDescription)
+      $window.document.title = scope.data.sysShortDescription;
+    if(PWConfig.viewMode) $('body').attr('gantt-view-mode', PWConfig.viewMode);
+    
+    var initializeDateTimePickerWithDefaultDates = function() {
+        $rootScope.$broadcast("gantt:initializeDateTimePicker");
+    };
+    
+    
+    scope.$on('show.extenrnalDependency.modal', function(event, taskId){
+        scope.externalTaskId = '';
+        scope.externalProjectId = '';
+        scope.data.isExternalTaskIdEmpty = false;
+        var modalInstance = $uibModal.open({
+            templateUrl: 'extDependency',
+            scope: scope,
+            controller: function($scope, $uibModalInstance){
+                $scope.ok = function(){
+                    if(!$scope.externalTaskId)
+                        $scope.data.isExternalTaskIdEmpty = true;
+                    else{
+                        $scope.data.isExternalTaskIdEmpty = false;
+                        $scope.addExternalDependency(taskId, scope.externalTaskId, scope.dependencyType);
+                        $uibModalInstance.dismiss('close');
+                    }
+                };
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            },
+            windowClass: 'external-dependency-modal',
+            appendTo: angular.element('#planning-console')
+        });
+        modalInstance.rendered.then(function(){
+            var projectSelector = $('#projectSelector');
+            var taskSelector =  $('#taskSelector');
+            var relationType =  $('#relationType');
+            var dependencyType =  $('#dependencyType');
+            
+            projectSelector.select2({
+                  placeholder: scope.data.messages.selectAProject,
+                  ajax: {
+                      url: '/api/now/table/'+ PWConfig.sysClassName,
+                      dataType: 'json',
+                      quietMillis: 250,
+                      data: function(term, page) {
+                          return {
+                              sysparm_query: 'parentISEMPTY^top_task!='+ PWConfig.sysId + '^sys_class_name=' + 
+                                                PWConfig.sysClassName + '^short_descriptionCONTAINS' + term +
+                                                '^ORnumberCONTAINS' + term,
+                              sysparm_fields: 'sys_id,short_description,number',
+                              sysparm_limit: 20,
+                              sysparm_offset: (page-1)*20,
+                              sysparm_exclude_reference_link: true
+                          };
+                      },
+                      transport: function(params) {
+                          var callback = params.success;
+                          params.success = function(data, textStatus, jqXHR) {
+                              callback({
+                                  items: data.result,
+                                  total: jqXHR.getResponseHeader('X-Total-Count')
+                              }, textStatus, jqXHR);
+                          };
+                          return $.ajax(params);
+                      },
+                      results: function(data, page) {
+                          var more = (page * 20) &lt; data.total;
+                          var responseData = [];
+                          if(data) {
+                            var items = data.items;
+                            for (var i = 0; i &lt; items.length; i++) {
+                                responseData.push({ "id": items[i].sys_id, "text": items[i].number + ": " + items[i].short_description});
+                            }
+                        }
+                        return { results: responseData, more: more };
+                      }
+                  }
+              });
+            projectSelector.select2('focus');
+            projectSelector.on('change', function(evt){
+                taskSelector.select2('val', '');
+                scope.externalTaskId = '';
+                scope.externalProjectId = evt.val;
+                scope.safeDigest();
+            });
+            taskSelector.select2({
+                  placeholder: scope.data.messages.selectATask,
+                  ajax:{
+                      url: '/api/now/table/'+ PWGanttConfig.CHILD_SYS_CLASS,
+                      dataType: 'json',
+                      quietMillis: 250,
+                      data: function(term, page) {
+                          return {
+                              sysparm_query: 'top_task='+$('#projectSelector').val()+
+                              '^short_descriptionCONTAINS'+term + '^ORnumberCONTAINS' + term +'^shadow=NULL^ORshadow=false',
+                              sysparm_fields: 'sys_id,short_description,number',
+                              sysparm_limit: 20,
+                              sysparm_offset: (page-1)*20,
+                              sysparm_exclude_reference_link: true
+                          };
+                      },
+                      transport: function(params) {
+                          var callback = params.success;
+                          params.success = function(data, textStatus, jqXHR) {
+                              callback({
+                                  items: data.result,
+                                  total: jqXHR.getResponseHeader('X-Total-Count')
+                              }, textStatus, jqXHR);
+                          };
+                          return $.ajax(params);
+                      },
+                      results: function(data, page) {
+                          var more = (page * 20) &lt; data.total;
+                          var responseData = [];
+                          if(data) {
+                            var items = data.items;
+                            for (var i = 0; i &lt; items.length; i++) {
+                                responseData.push({ "id": items[i].sys_id, "text": items[i].number + ": " + items[i].short_description});
+                            }
+                        }
+                        return { results: responseData, more: more };
+                      }
+                  }
+              });
+            taskSelector.on('change', function(evt){
+                scope.externalTaskId = evt.val;
+                scope.data.isExternalTaskIdEmpty = evt.val ? false : true;
+                scope.safeDigest();
+            });
+            relationType.select2({
+                data: [
+                  { id: 'fs', text: 'Finish to Start' },
+                  { id: 'ss', text: 'Start to Start' },
+                  { id: 'ff', text: 'Finish to Finish' },
+                  { id: 'sf', text: 'Start to Finish' }
+                ]
+            });
+            relationType.on('change', function(evt){
+                scope.relationType = evt.currentTarget.value;
+                scope.safeDigest();
+            });
+            relationType.val('fs').trigger('change');
+
+            dependencyType.select2({
+                data: [
+                  { id: 'hard', text: 'Hard' },
+                  { id: 'soft', text: 'Soft' }
+                ]
+            });
+            dependencyType.on('change', function(evt){
+                scope.dependencyType = evt.currentTarget.value;
+                scope.safeDigest();
+            });
+            // TODO: TO be derived from project preference
+            dependencyType.val('soft').trigger('change');
+        });
+    });
+    
+    scope.$on('show.addChildTasks.modal', function(event, taskId) {
+		scope.data.taskCreatorData = {quantity:'', shouldCreateRelationship:false, plannedStartDate: ''};
+
+        var modalInstance = $uibModal.open({
+            scope: scope,
+            templateUrl: 'childTasksCreator',
+            controller: function($scope, $uibModalInstance) {
+                $scope.createChildTasks = function() {
+                    var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+                    var regexp = /^\+?\d+$/;
+                    var quantity = (regexp.test($scope.data.taskCreatorData.quantity)) ? parseInt($scope.data.taskCreatorData.quantity, 10) : 'invalid_data';
+                    var shouldCreateRelationship = $scope.data.taskCreatorData.shouldCreateRelationship;
+                    var plannedStartDate = $scope.data.taskCreatorData.plannedStartDate;
+                    var selectedTask = gantt.getTask(gantt.getSelectedId());
+                    if(!$scope.data.taskCreatorData.quantity) {
+                        $scope.data.taskCreatorData.isQuantityEmpty = true;
+                        return false;
+                    } else if(typeof quantity !== 'number') {
+                        $scope.data.taskCreatorData.isQuantityInvalid = true;
+                        return false;
+                    } else if(typeof quantity === 'number' &amp;&amp; quantity &gt; 500) {
+                        $scope.data.taskCreatorData.isQuatityOverLimit = true;
+                        return false;
+                    } 
+                    if(plannedStartDate &amp;&amp; !PWGanttCalendar.isValidDateTime(plannedStartDate)) {
+                        $scope.data.taskCreatorData.isInvalidStartDate = true;
+                        return false;
+                    } else {
+                        $scope.data.taskCreatorData.isInvalidStartDate = false;
+                    }
+
+                    $rootScope.$broadcast('gantt.loading');
+
+                    PCService.createTasks(selectedTask.id, selectedTask.sys_class_name, quantity, shouldCreateRelationship, plannedStartDate)
+                    .then(function(data){
+                        $rootScope.$broadcast('gantt.loaded');
+						if (data.status == 'error')
+							Notifier.show('error', data.message ? data.message : scope.data.messages.errorCreatingTasks);
+						else	
+							PWHelpers.reloadPage(PWConfig.sysId);
+                    }, function() {
+                        $rootScope.$broadcast('gantt.loaded');
+						Notifier.show('error', scope.data.messages.errorCreatingTasks);
+                    });
+
+                    $uibModalInstance.dismiss('cancel');
+                };
+
+                $scope.closeTaskCreatorModal = function() {
+                    $uibModalInstance.dismiss('cancel');
+                };
+
+                $scope.onQuantityChange = function() {
+                    var regexp = /^\+?\d+$/;
+                    var quantity = (regexp.test($scope.data.taskCreatorData.quantity)) ? parseInt($scope.data.taskCreatorData.quantity, 10) : 'invalid_data';
+                    $scope.data.taskCreatorData.isQuantityEmpty = (!$scope.data.taskCreatorData.quantity) ? true : false;
+                    $scope.data.taskCreatorData.isQuantityInvalid = (typeof quantity !== 'number') ? true : false;
+                    $scope.data.taskCreatorData.isQuatityOverLimit = (typeof quantity === 'number') &amp;&amp; quantity &gt; 500 ? true: false;
+                };
+
+                $scope.onStartDateChange = function() {
+                    $scope.data.taskCreatorData.plannedStartDate = $('#startdate').val();
+                    $scope.data.taskCreatorData.isInvalidStartDate = ($scope.data.taskCreatorData.plannedStartDate &amp;&amp; !PWGanttCalendar.isValidDateTime($scope.data.taskCreatorData.plannedStartDate));
+                };
+            }
+        });
+        
+        modalInstance.rendered.then(function() {
+            var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+            var selectedTask = gantt.getTask(gantt.getSelectedId());
+            initializeDateTimePickerWithDefaultDates();
+            $('#startdatetimepicker').datetimepicker({
+                locale: PWConfig.language,
+                format: PWConfig.dateTimeFormat,
+                defaultDate: PWGanttCalendar.getMoment(selectedTask.start_date, PWConfig.dateTimeFormat),
+                minDate: PWGanttCalendar.getMoment(selectedTask.start_date, PWConfig.dateTimeFormat)
+            }).on('dp.change', function (e) {
+                scope.data.taskCreatorData.plannedStartDate = $('#startdate').val();
+                scope.data.taskCreatorData.isInvalidStartDate = (scope.data.taskCreatorData.plannedStartDate &amp;&amp; !PWGanttCalendar.isValidDateTime(scope.data.taskCreatorData.plannedStartDate));
+            }).on('dp.show', function (e) {
+                var picker = $('.bootstrap-datetimepicker-widget');
+                picker = picker[picker.length-1];
+                picker.style.left = (picker.offsetLeft - picker.offsetWidth + 39) + 'px';
+            });
+
+            scope.data.taskCreatorData.plannedStartDate = $('#startdate').val();
+            $('#quantity').focus();
+        });
+    });
+
+    $(window).on('beforeunload', function() {
+        if(PWGanttUserActions.getAll().length) {
+            return scope.data.messages.hasUnsavedChanges;
+        }
+    });
+	$(window).resize(function(){
+		if($('.select2-drop-active').length &gt; 0)
+			$('.select2-drop-active').select2("close");
+	});
+	
+	scope.$on("show.pc.notifications", function(event, notificationsData) {
+		scope.invokePlanningConsoleNotifcations(notificationsData);
+	});
+	
+	scope.showResourcePlanNotificationMessage = function(displayMessage, linkLabel, query, type) {
+		
+	  var message = displayMessage;
+	  var link = '&lt;a class="resource_plan_slider_link link_'+type+'" href="javascript:void(0)"&gt;'+linkLabel+'&lt;a&gt;';
+	  Notifier.show('info', message+link);
+	  $('body').one('click', '.link_'+type, function() {
+		  scope.openResourcePlanFormSlider(query, type);
+	  });
+	};
+	
+	scope.invokePlanningConsoleNotifcations = function(notificationsData) {
+		
+		PWGanttStorage.set('notificationsData', notificationsData);
+		
+		notificationsData.forEach(function(notification) {
+			if(notification.type == 'resourcePlansToCancel') {
+				scope.data.resourcePlansToCancelQuery = notification.query;
+				scope.showResourcePlanNotificationMessage(notification.displayMessage[0], notification.displayMessage[1], scope.data.resourcePlansToCancelQuery, notification.type);
+				
+			} else if(notification.type == 'resourcePlansToComplete') {
+				scope.data.resourcePlansToCompleteQuery = notification.query;
+				scope.showResourcePlanNotificationMessage(notification.displayMessage[0], notification.displayMessage[1], scope.data.resourcePlansToCompleteQuery, notification.type);
+			}
+		});
+	};
+}]]&gt;&lt;/link&gt;&lt;name&gt;Planning console&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function($sp) {
+  var planningConsolePreferenceValidator = new PlanningConsolePreferenceValidator();
+  var planningConsoleSecurityValidator = new PlanningConsoleSecurityValidator();
+  
+  data.sysClassName = input.sysClassName || $sp.getParameter('sysparm_sys_class_name') ;
+  data.sysClassName = planningConsolePreferenceValidator.validateClassName(data.sysClassName);
+  data.sysId = input.sysId || $sp.getParameter('sysparm_sys_id') || '';
+  data.consoleId = input.consoleId || $sp.getParameter('sysparm_console_id') || '';
+  data.entity = input.entity || $sp.getParameter('sysparm_entity');
+  data.pageId = input.pageId || $sp.getParameter('id');
+  data.hideBorder = input.hideBorder || options.hideBorder || false;
+  data.showHelp = input.showHelp || options.showHelp || false;
+  data.viewMode = $sp.getParameter('sysparm_view_mode') || '';
+  data.valid = true;
+  
+  var context;
+  if(data.pageId) {
+    if(data.pageId == "pw_gantt") {
+      context = "planning";
+    } else if(data.pageId == "pw_track"){
+      context = "tracking";
+    }
+  } 	
+	
+  var contextPostFix = JSUtil.notNil(context) ? "." + context : "";
+  
+  data.preferences = {};
+      
+  if (!JSUtil.nil(data.sysClassName)) {
+    data.entity = planningConsolePreferenceValidator.getEntity(data.sysClassName);
+	
+	if(data.entity === 'project') {
+		var ppmConsole,
+			ppmConsoleContext,
+			isClientSidePlanningEnabled,
+			isFireBrFromPC;
+		
+		if(!context)
+			ppmConsoleContext = 'default';
+		
+		ppmConsole = new PPMConsole(data.sysClassName, ppmConsoleContext);
+
+		isClientSidePlanningEnabled = ppmConsole.isPlanningOnClient();		
+		isFireBrFromPC = PMPropertiesUtil.isFireBrsFromPlanningConsole(data.sysClassName);
+		if(isClientSidePlanningEnabled &amp;&amp; isFireBrFromPC) {
+			gs.log('Exception: Client side planning enabled for planning console with entity ' + data.sysClassName +
+				   ' and context ' + ppmConsoleContext + ' but fire br for planning console property is set to true', 'PPM');
+		}
+		
+		data.planningOnClient = (isClientSidePlanningEnabled &amp;&amp; !isFireBrFromPC);
+		
+	} else
+		data.planningOnClient = false;
+	
+    if(data.entity === 'project' || data.entity === 'release') {
+      if( ! planningConsolePreferenceValidator.nil(data.sysId) ) {
+        data.sysId = planningConsolePreferenceValidator.getTopTaskId(data.sysId);
+      }
+      if(!data.sysId) {
+        data.sysId = planningConsolePreferenceValidator.lastOpenedEntityId(data.entity, data.sysClassName);
+      }
+      
+      var valid = planningConsolePreferenceValidator.validate(data.entity, data.sysClassName, data.sysId) || true;
+      if(valid)
+        planningConsolePreferenceValidator.saveEntityPreference(data.entity, data.sysClassName, [data.sysId]);
+      
+      var record = new GlideRecord(data.sysClassName);
+      record.get(data.sysId);
+      if ( record.isValid() ) {
+        data.sysShortDescription = record.getValue('short_description');
+	  }
+      else {
+        data.sysId = null;
+        data.valid = false;
+      }
+      
+      if(data.viewMode != 'print') {
+        data.pcHeader = $sp.getWidget('pc-header', {
+          sysId : data.sysId,
+          sysClassName : data.sysClassName,
+          entity: data.entity,
+		  planningOnClient: data.planningOnClient
+        });
+      }
+    }
+	 else  {
+	  var record_sys = new GlideRecord(data.sysClassName);
+      record_sys.get(data.sysId);
+      if ( record.isValid() ) {
+        data.sysShortDescription = record_sys.getValue('short_description');
+	  }
+	} 
+  }else if (!JSUtil.nil(data.consoleId)) {
+    if (planningConsolePreferenceValidator.validateConsoleId(data.consoleId)) {
+      data.entity = 'custom';
+      data.sysClassName = planningConsolePreferenceValidator.getEntityClassNameForCustomConsole(data.consoleId);
+      data.sysId = planningConsolePreferenceValidator.getEntityIdsForCustomConsole(data.consoleId).join(',');
+    }
+    data.cgHeader = $sp.getWidget('cg-header', {
+      consoleId : data.consoleId
+    });
+  }
+  var ids = [];
+  if(data.sysId)
+    ids = data.sysId.split(',');
+  if ( data.valid ) {
+    data.access = planningConsoleSecurityValidator.hasAccess(data.sysClassName, ids);
+    data.preferences.zoom = planningConsolePreferenceValidator.getConsolePreference( 'ZOOM' + contextPostFix, data.sysClassName);
+    data.preferences.columns = planningConsolePreferenceValidator.getConsolePreference('COLUMNS' + contextPostFix, data.sysClassName);
+	  data.preferences.gridWidth = planningConsolePreferenceValidator.getConsolePreference('GRID_WIDTH' + contextPostFix, data.sysClassName);
+    data.preferences.intro = planningConsolePreferenceValidator.getConsolePreference('INTRO');
+	data.preferences.doNotShowClientSavePopUp = planningConsolePreferenceValidator.getConsolePreference('DONOTSHOWCLIENTSAVEPOPUP' + contextPostFix, data.sysClassName);
+	data.preferences.planningOnClient = planningConsolePreferenceValidator.getConsolePreference('PLANNINGONCLIENT', data.sysClassName);
+  data.preferences.showWeekendShadow = planningConsolePreferenceValidator.getConsolePreference('SHOWWEEKENDSHADOW', data.sysClassName);
+  }
+  else
+    data.access = true;
+  
+	data.dateFormat = gs.getDateFormat();
+	data.dateTimeFormat = gs.getDateTimeFormat();
+
+  data.messages = {};
+  data.messages.selectAProject = gs.getMessage('Select a {0}', data.entity);
+  data.messages.selectATask = gs.getMessage('Select a Task');
+  data.messages.loadingText = gs.getMessage('Loading...');
+  data.messages.selectProject = gs.getMessage('Select a {0} from the top right {0} selector dropdown', data.entity);
+  data.messages.accessDenied = gs.getMessage('Access Denied');
+  data.messages.projectGanttTitle = gs.getMessage('Project');
+  data.messages.releaseGanttTitle = gs.getMessage('Release');
+  data.messages.errorCreatingTasks = gs.getMessage('An error occured while creating tasks');
+	data.messages.hasUnsavedChanges = gs.getMessage('You have unsaved changes. Are you sure you want to leave?');
+	data.messages.saveGanttClient = gs.getMessage('Save');
+	data.messages.saveGanttClientTitle = gs.getMessage('Save changes');
+	data.messages.saveGanttClientMsg = gs.getMessage('You have unsaved changes. Do you want to save changes before proceeding?');
+	data.messages.cancelGanttClientChanges = gs.getMessage('Cancel');
+	data.messages.doNowShowAgainTxt = gs.getMessage('Do not show this again');
+	data.messages.helpTxt = gs.getMessage('Performing certain actions in Planning Console will trigger save in client side planning mode.');
+	data.messages.helpLinkTxt = gs.getMessage('Learn more');
+	
+  if ( !data.valid )
+    data.messages.invalidRecord = gs.getMessage('Invalid {0} record', data.entity);
+  
+  var planningConsoleServer = new PlanningConsoleServer();
+  data.ganttData = planningConsoleServer.fetchPlanningConsoleData(data.entity, data.sysClassName, data.sysId, data.consoleId, context);
+  
+  if(!input){
+    var ua = new PPMUsageAnalytics();
+    if(data.viewMode === 'print')
+      ua.printGantt(data.entity, data.sysClassName);
+    else
+      ua.planningConsoleLaunch(data.entity, data.sysClassName, true);
+  }
+})($sp);]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2016-05-16 06:23:51&lt;/sys_created_on&gt;&lt;sys_id&gt;732659a3c313120028d7d56bc3d3ae44&lt;/sys_id&gt;&lt;sys_mod_count&gt;1073&lt;/sys_mod_count&gt;&lt;sys_name&gt;Planning console&lt;/sys_name&gt;&lt;sys_package display_value="Project Portfolio Suite Portal" source="com.snc.pps_portal"&gt;a614b505db09101018097b38689619fc&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_732659a3c313120028d7d56bc3d3ae44&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2019-09-25 14:09:44&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;&lt;dhtmlxgantt-messages&gt;&lt;/dhtmlxgantt-messages&gt;&lt;/div&gt;
+    &lt;div class="fa fa-info-circle" uib-popover-template="'gantt-help'" ng-if="!data.loader.loading &amp;&amp; data.showHelp" popover-placement="bottom" popover-trigger="outsideClick"&gt;&lt;/div&gt;
+&lt;div style="position: relative;" id="planning-console" ng-if="data.access"&gt;
+  &lt;sp-widget widget="data.pcHeader" ng-if="data.pcHeader"&gt;&lt;/sp-widget&gt;
+  &lt;sp-widget widget="data.cgHeader" ng-if="data.cgHeader"&gt;&lt;/sp-widget&gt;
+  &lt;div id="gantt-main-cntr"&gt;
+    &lt;div ng-if="data.selectProject" class="no-entity-cntr"&gt;
+      &lt;div ng-if="!data.valid"&gt;
+        &lt;div class="gantt-no-entity"&gt;
+          &lt;div class="invalid-msg"&gt;
+            {{::data.messages.invalidRecord}}&lt;br/&gt;          
+          &lt;/div&gt;
+          {{::data.messages.selectProject}}
+        &lt;/div&gt;      
+      &lt;/div&gt;
+      &lt;div ng-if="data.valid"&gt;
+        &lt;div class="gantt-no-entity"&gt;
+          {{::data.messages.selectProject}}
+        &lt;/div&gt;      
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div ng-if="data.showGantt" style="height: 100%;"&gt;
+      &lt;div class="loader" ng-if="data.loader.loading"&gt;
+        &lt;div class="loader-content"&gt;
+          &lt;p class="icon-loading"&gt;&lt;/p&gt;
+          &lt;p&gt;{{::data.messages.loadingText}}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- the parent div may be required cause the code may be appending the node directly --&gt;
+      &lt;dhtmlxgantt gantt-data="data.ganttData" gantt-properties="data.ganttProperties" gantt-templates="data.ganttTemplates" gantt-event-handlers="data.ganttEventHandlers" gantt-settings="data.ganttSettings" gantt-height="data.ganttHeight" ng-if="data.ganttData"&gt;&lt;/dhtmlxgantt&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div ng-if="!data.access"&gt;
+  &lt;p&gt;{{::data.messages.accessDenied}}&lt;/p&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload>
+        <sys_class_name>sp_rel_widget_clone</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 10:17:21</sys_created_on>
+        <sys_id>d027455cdb1d501018097b3868961950</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>9427455cdb1d501018097b3868961945</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sp_rel_widget_clone_d027455cdb1d501018097b3868961950</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 10:17:21</sys_updated_on>
+    </sp_rel_widget_clone>
+</record_update>

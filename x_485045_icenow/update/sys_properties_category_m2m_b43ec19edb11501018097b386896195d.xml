@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category_m2m">
+    <sys_properties_category_m2m action="INSERT_OR_UPDATE">
+        <category display_value="ICEFLO System Properties">934c459edb11501018097b3868961989</category>
+        <order>100</order>
+        <property display_value="x_485045_icenow.task_default_rows" name="x_485045_icenow.task_default_rows">5f2dc1dedb11501018097b38689619ef</property>
+        <sys_class_name>sys_properties_category_m2m</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-11 15:56:06</sys_created_on>
+        <sys_id>b43ec19edb11501018097b386896195d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_485045_icenow.task_default_rows.ICEFLO System Properties</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_properties_category_m2m_b43ec19edb11501018097b386896195d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-11 15:56:06</sys_updated_on>
+    </sys_properties_category_m2m>
+</record_update>

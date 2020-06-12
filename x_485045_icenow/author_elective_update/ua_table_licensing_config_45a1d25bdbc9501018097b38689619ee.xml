@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="ua_table_licensing_config">
+    <ua_table_licensing_config action="DELETE">
+        <is_fulfillment>false</is_fulfillment>
+        <license_condition/>
+        <license_model>none</license_model>
+        <license_roles/>
+        <name>x_485045_icenow_task</name>
+        <op_delete>true</op_delete>
+        <op_insert>true</op_insert>
+        <op_update>true</op_update>
+        <owner_condition/>
+        <sys_class_name>ua_table_licensing_config</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-02 13:08:58</sys_created_on>
+        <sys_id>45a1d25bdbc9501018097b38689619ee</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_485045_icenow_task</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>ua_table_licensing_config_45a1d25bdbc9501018097b38689619ee</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-02 13:08:58</sys_updated_on>
+    </ua_table_licensing_config>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>ua_table_licensing_config_45a1d25bdbc9501018097b38689619ee</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="ua_table_licensing_config"><ua_table_licensing_config action="INSERT_OR_UPDATE"><is_fulfillment>false</is_fulfillment><license_condition/><license_model>none</license_model><license_roles/><name>x_485045_icenow_task</name><op_delete>true</op_delete><op_insert>true</op_insert><op_update>true</op_update><owner_condition/><sys_class_name>ua_table_licensing_config</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-06-02 13:08:58</sys_created_on><sys_id>45a1d25bdbc9501018097b38689619ee</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_485045_icenow_task</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>ua_table_licensing_config_45a1d25bdbc9501018097b38689619ee</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-06-02 13:08:58</sys_updated_on></ua_table_licensing_config></record_update>]]></payload>
+        <payload_hash>-1044915501</payload_hash>
+        <record_name>x_485045_icenow_task</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-02 13:08:58</sys_created_on>
+        <sys_id>45a1165bdbc9501018097b3868961909</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172752638ad0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-02 13:08:58</sys_updated_on>
+        <type>Table Subscription Configuration</type>
+        <update_guid>8da1165ba2c9501053a76b02e3d61108</update_guid>
+        <update_guid_history>8da1165ba2c9501053a76b02e3d61108:-1044915501</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-02 13:15:52</sys_created_on>
+        <sys_db_object display_value="" name="ua_table_licensing_config">ua_table_licensing_config</sys_db_object>
+        <sys_id>176b89d40dba4e808293fd29a0d38900</sys_id>
+        <sys_metadata>45a1d25bdbc9501018097b38689619ee</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_485045_icenow_task</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>ua_table_licensing_config_45a1d25bdbc9501018097b38689619ee</sys_update_name>
+        <sys_update_version display_value="ua_table_licensing_config_45a1d25bdbc9501018097b38689619ee">45a1165bdbc9501018097b3868961909</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-02 13:15:52</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

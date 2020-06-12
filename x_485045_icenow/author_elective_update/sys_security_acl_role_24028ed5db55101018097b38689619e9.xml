@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="DELETE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-08 17:13:41</sys_created_on>
+        <sys_id>24028ed5db55101018097b38689619e9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>.x_485045_icenow.runbook.create</sys_name>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_security_acl display_value="">63f18219db55101018097b3868961926</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_24028ed5db55101018097b38689619e9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-08 17:13:41</sys_updated_on>
+        <sys_user_role display_value="x_485045_icenow.runbook.create" name="x_485045_icenow.runbook.create">27cd29d5db15101018097b386896193d</sys_user_role>
+        <transaction_id/>
+    </sys_security_acl_role>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_security_acl_role_24028ed5db55101018097b38689619e9</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role"><sys_security_acl_role action="INSERT_OR_UPDATE"><sys_class_name>sys_security_acl_role</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-06-08 17:13:41</sys_created_on><sys_id>24028ed5db55101018097b38689619e9</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.x_485045_icenow.runbook.create</sys_name><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_security_acl display_value="">63f18219db55101018097b3868961926</sys_security_acl><sys_update_name>sys_security_acl_role_24028ed5db55101018097b38689619e9</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-06-08 17:13:41</sys_updated_on><sys_user_role display_value="x_485045_icenow.runbook.create" name="x_485045_icenow.runbook.create">27cd29d5db15101018097b386896193d</sys_user_role><transaction_id/></sys_security_acl_role></record_update>]]></payload>
+        <payload_hash>1873796681</payload_hash>
+        <record_name>.x_485045_icenow.runbook.create</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-08 17:13:41</sys_created_on>
+        <sys_id>1833ced5db55101018097b38689619a7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17294ec6c950000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-08 17:13:41</sys_updated_on>
+        <type>Access Roles</type>
+        <update_guid>5033ced5375510109e21e3e56076a3a7</update_guid>
+        <update_guid_history>5033ced5375510109e21e3e56076a3a7:1873796681</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value=".x_485045_icenow.runbook.create">f8b4c299db55101018097b386896195b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-08 17:20:17</sys_created_on>
+        <sys_db_object display_value="" name="sys_security_acl_role">sys_security_acl_role</sys_db_object>
+        <sys_id>8e0cc29d1ba24451b3f69301c366c3b9</sys_id>
+        <sys_metadata>24028ed5db55101018097b38689619e9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>.x_485045_icenow.runbook.create</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_security_acl_role_24028ed5db55101018097b38689619e9</sys_update_name>
+        <sys_update_version display_value="sys_security_acl_role_24028ed5db55101018097b38689619e9">1833ced5db55101018097b38689619a7</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-08 17:20:17</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

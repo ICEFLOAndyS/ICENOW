@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view">
+    <sys_ui_view action="INSERT_OR_UPDATE">
+        <group/>
+        <hidden>false</hidden>
+        <name>store_usage_overview</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-03 11:48:10</sys_created_on>
+        <sys_id>d7b80723db45101018097b38689619a1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Store_usage_overview</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_ui_view_d7b80723db45101018097b38689619a1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-03 11:48:10</sys_updated_on>
+        <title>Store_usage_overview</title>
+        <user/>
+    </sys_ui_view>
+</record_update>

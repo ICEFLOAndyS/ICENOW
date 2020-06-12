@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="DELETE">
+        <active>true</active>
+        <category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category>
+        <description/>
+        <device_type>browser</device_type>
+        <hint/>
+        <name>Runbook</name>
+        <order>100</order>
+        <roles>x_485045_icenow.runbook_user,icenow</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-05-28 17:24:50</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>104cd979dbc5901018097b386896195a</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>runbook</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_app_application_104cd979dbc5901018097b386896195a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-03 13:08:20</sys_updated_on>
+        <title>runbook</title>
+        <view_name/>
+    </sys_app_application>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</application>
+        <file_path/>
+        <instance_id>a5e47590db2f1f443353f22ebf961901</instance_id>
+        <instance_name>dev66655</instance_name>
+        <name>sys_app_application_104cd979dbc5901018097b386896195a</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application"><sys_app_application action="INSERT_OR_UPDATE"><active>true</active><category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category><description/><device_type>browser</device_type><hint/><name>Runbook</name><order>100</order><roles>x_485045_icenow.runbook_user,icenow</roles><sys_class_name>sys_app_application</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2020-05-28 17:24:50</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>104cd979dbc5901018097b386896195a</sys_id><sys_mod_count>2</sys_mod_count><sys_name>runbook</sys_name><sys_overrides/><sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package><sys_policy/><sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope><sys_update_name>sys_app_application_104cd979dbc5901018097b386896195a</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2020-06-03 13:08:20</sys_updated_on><title>runbook</title><view_name/></sys_app_application></record_update>]]></payload>
+        <payload_hash>-1616740564</payload_hash>
+        <record_name>runbook</record_name>
+        <reverted_from/>
+        <source>18b37ffadbc9101018097b386896198b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-03 13:08:20</sys_created_on>
+        <sys_id>651b9b2fdb45101018097b3868961990</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1727a4bfee80000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-03 13:08:20</sys_updated_on>
+        <type>Application Menu</type>
+        <update_guid>ad1b9b2f80451010f02efa49fb99748f</update_guid>
+        <update_guid_history>ad1b9b2f80451010f02efa49fb99748f:-1616740564,b18a5bebc445101056ee07956e6b477b:1420005100,dc4cd979b5c5901086cb678f7721e95b:-108333393</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="runbook">1b7af6fddb51101018097b3868961990</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-10 10:32:15</sys_created_on>
+        <sys_db_object display_value="" name="sys_app_application">sys_app_application</sys_db_object>
+        <sys_id>05eaf3653c6946aab8fc4fc092443281</sys_id>
+        <sys_metadata>104cd979dbc5901018097b386896195a</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>runbook</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope_delete display_value="">0d9603d9d2ac4fd2819c6683a753d3e9</sys_scope_delete>
+        <sys_update_name>sys_app_application_104cd979dbc5901018097b386896195a</sys_update_name>
+        <sys_update_version display_value="sys_app_application_104cd979dbc5901018097b386896195a">651b9b2fdb45101018097b3868961990</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-10 10:32:15</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>This is the property that controls the number of rows retrieved and displayed when a query on the task table is performed. The property will apply to lists, VTBs and Workspace cards, if used.</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_485045_icenow.task_default_rows</name>
+        <read_roles/>
+        <suffix>task_default_rows</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-11 15:54:30</sys_created_on>
+        <sys_id>5f2dc1dedb11501018097b38689619ef</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_485045_icenow.task_default_rows</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_properties_5f2dc1dedb11501018097b38689619ef</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-11 15:54:30</sys_updated_on>
+        <type>integer</type>
+        <value>100</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=5f2dc1dedb11501018097b38689619ef"/>
+</record_update>

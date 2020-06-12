@@ -45,7 +45,7 @@
         <order>100</order>
         <push_message_only>false</push_message_only>
         <recipient_fields/>
-        <recipient_groups name="Runbook Managers">01c788b1db05901018097b38689619c6</recipient_groups>
+        <recipient_groups name="ICENOW Runbook Managers">01c788b1db05901018097b38689619c6</recipient_groups>
         <recipient_users>6816f79cc0a8016401c5a33be04be441</recipient_users>
         <reply_to/>
         <send_self>true</send_self>
@@ -62,9 +62,9 @@
         <sys_mod_count>1</sys_mod_count>
         <sys_name>New Runbook</sys_name>
         <sys_overrides/>
-        <sys_package display_value="ICENOW" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
         <sys_policy/>
-        <sys_scope display_value="ICENOW">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
         <sys_update_name>sysevent_email_action_58640831db05901018097b3868961901</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2020-05-28 11:20:59</sys_updated_on>

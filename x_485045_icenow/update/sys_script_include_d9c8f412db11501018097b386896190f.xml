@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_485045_icenow.RunbookUsageAnalytics</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>This script include has been refactored from the PPMUsageAnalytics script include that ships with the PPM solution.</description>
+        <name>RunbookUsageAnalytics</name>
+        <script><![CDATA[var RunbookUsageAnalytics = Class.create();
+RunbookUsageAnalytics.prototype = {
+    initialize: function() {
+    },
+	runbookConsoleLaunch: function(data1, data2, data3) {
+		this.logAnalytics('runbookconsole', 'open', data1, data2, data3);
+	},
+	
+	deferedModeSave: function(data1, data2) {
+		this.logAnalytics('runbookconsole', 'deferedSave', data1, data2);
+	},
+	
+	runbookWorkbenchLaunch: function(data1, data2) {
+		this.logAnalytics('runbookworkbench', 'open', data1, data2);
+	},
+	
+	runbookStatusPortalLaunch : function(module) {
+		this.logAnalytics('runbookstatusportal', 'open', module);
+	},
+	
+	runbookprintGantt : function(entity, sysClassName) {
+		this.logAnalytics('runbookprintgantt', 'open', entity, sysClassName);
+	},
+	
+	runbookmsProjectImport: function(source) {
+		this.logAnalytics('runbookmsprojectimport', 'open', source);
+	},
+	runbookWorkspaceLaunch: function() {
+		this.logAnalytics('runbook_workspace', 'load');
+	},
+	menuClick: function(menuName) {
+		this.logAnalytics('landing_page_menu', 'click', menuName);
+	},
+	cardClick: function() {
+		this.logAnalytics('workspace_card', 'click');
+	},
+	runbookOnClient: function(name, value) {
+		this.logAnalytics('runbookconsole', name, value);
+	},
+	logAnalytics: function(eventType, action, data1, data2, data3) {
+		if ( AnalyticsFramework.isDisabled() )
+			return;
+		var streamId = "ice.now.runbook_management";
+		var obfuscationList = [];
+		status = AnalyticsFramework.open(streamId);
+		var data = {};
+		data["data.1"] = '';
+		data["data.2"] = '';
+		data["data.3"] = '';
+		data["event.type"] = eventType;
+		data["action"] = action;
+		data["app.name"] = "runbook_management";
+		if ( data1 )
+			data["data.1"] = data1;
+		if ( data2 )
+			data["data.2"] = data2;
+		if ( data3 )
+			data["data.3"] = data3;
+		if (status === 0) {
+			status = AnalyticsFramework.sendJSON(streamId, obfuscationList, JSON.stringify(data));
+			status = AnalyticsFramework.close(streamId);
+		}
+	},
+
+    type: 'RunbookUsageAnalytics'
+
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-11 14:32:10</sys_created_on>
+        <sys_id>d9c8f412db11501018097b386896190f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RunbookUsageAnalytics</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_script_include_d9c8f412db11501018097b386896190f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-11 14:32:10</sys_updated_on>
+    </sys_script_include>
+</record_update>

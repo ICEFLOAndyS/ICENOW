@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, PWGanttConfig, PCService, $rootScope) {
+	/* widget controller */
+	var c = this;
+	
+	$scope.savePreferenceAndSettings = function(mode){
+		if (mode == 'beforestart')
+			PWGanttConfig.MODE = "introduction";
+		else PWGanttConfig.MODE = "";
+		PCService.savePreference('INTRO', true, true)
+			.then(function() {
+			PWGanttConfig.SETTINGS.INTRO = true;
+		});
+		if(mode != 'beforestart')
+			$rootScope.$broadcast('walkthrough.closed');
+	};
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>runbook_planning_console_callout</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope, ele, attr) {
+	var PWGanttInstance = $injector.get('PWGanttInstance'),
+		PWConstants = $injector.get('PWConstants'),
+		PWConfig = $injector.get('PWConfig'),
+		ProjectGanttWalkthroughSteps = $injector.get('ProjectGanttWalkthroughSteps'),
+		$window = $injector.get('$window'),
+		$timeout = $injector.get('$timeout'),
+		PWGanttConfig = $injector.get('PWGanttConfig');
+	
+	var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+	if(gantt && typeof gantt.scrollTo === 'function') gantt.scrollTo(0, 0);
+	if(PWConfig.entity === PWConstants.ENTITY.PROJECT) {
+		scope.steps = ProjectGanttWalkthroughSteps.getSteps();
+		
+		var callout = new Callout({
+			steps: scope.steps,
+			callbacks: {
+				beforeStart: _closeMenuAndSavePreference,
+				onExit: _closeMenuAndSavePreference,
+				onComplete: _closeMenuAndSavePreference
+			},
+			welcomeScreen: {
+				intro: "<b>" + scope.data.messages.planningConsole + "</b><br/>" +
+						scope.data.messages.pcOverView + scope.data.messages.liveFeed,
+				introShort: scope.data.messages.introShort
+			},
+			startLabel: scope.data.messages.startLabel,
+			nextLabel: scope.data.messages.nextLabel,
+			doneLabel: scope.data.messages.doneLabel
+		});
+
+		$timeout(function() {
+			callout.start(PWGanttConfig && PWGanttConfig.SETTINGS && PWGanttConfig.SETTINGS.showWelcomeScreen);
+		}, 0);
+
+	} 
+	
+	function _closeMenuAndSavePreference(mode) {
+		scope.savePreferenceAndSettings(mode);
+		$('body').trigger('click');
+	}
+}]]></link>
+        <name>Runbook Planning Console Callout</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	data.messages = {};
+	data.messages.planningConsole = gs.getMessage('Planning Console');
+	data.messages.pcOverView = gs.getMessage('The planning console gives project managers a comprehensive view of all aspects of a project, including a hierarchical list of sub-projects, if any, project tasks, which appear in a work breakdown structure (WBS) list with task assignments, and the project Gantt chart. ');
+	data.messages.liveFeed = gs.getMessage('The console also integrates with Live Feed so your users can collaborate on projects.');
+	data.messages.introShort = gs.getMessage('Introduction to Planning Console.');
+	data.messages.startLabel = gs.getMessage('Take the tour');
+	data.messages.nextLabel = gs.getMessage('Got it');
+	data.messages.doneLabel = gs.getMessage('Done');
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 16:03:35</sys_created_on>
+        <sys_id>04665e58dbdd501018097b3868961970</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Runbook Planning Console Callout</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sp_widget_04665e58dbdd501018097b3868961970</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:03:35</sys_updated_on>
+        <template><![CDATA[<now-message key="Switch between views" value="${Switch between planning console and workbench views for the current project}"></now-message>
+<now-message key="Menu" value="${Menu}"></now-message>
+<now-message key="Inserts a new task above" value="${Inserts a new task above the current task. You cannot insert a task above the top task}"></now-message>
+<now-message key="Add Task Above" value="${Add Task Above}"></now-message>
+<now-message key="Insert a new task below" value="${Insert a new task below the current task or insert the first task in the project}"></now-message>
+<now-message key="Add Task Below" value="${Add Task Below}"></now-message>
+<now-message key="Move the current task down" value="${Move the current task down in the hierarchy. It renumbers the WBS number for this task and its sibling tasks}"></now-message>
+<now-message key="Move Down" value="${Move Down}"></now-message>
+<now-message key="Move the current task up" value="${Move the current task up in the hierarchy.  The WBS numbers for this task and its siblings are renumbered}"></now-message>
+<now-message key="Move Up" value="${Move Up}"></now-message>
+<now-message key="Unindent the task" value="${Unindent the task. This changes the parent and WBS numbering of the task}"></now-message>
+<now-message key="Unindent" value="${Unindent}"></now-message>
+<now-message key="Indent the task" value="${Indent the task. This changes the parent and WBS numbering of the task}"></now-message>
+<now-message key="Indent" value="${Indent}"></now-message>
+<now-message key="Display the critical path in red" value="${Display the critical path in red. Any delay of critical path tasks delays the project completion}"></now-message>
+<now-message key="Show Critical Path" value="${Show Critical Path}"></now-message>
+<now-message key="Indicates whether the project schedule is calculated automatically or manually" value="${Indicates whether the project schedule is calculated automatically or manually}"></now-message>
+<now-message key="Project Mode" value="${Project Mode}"></now-message>
+<now-message key="Select the columns to be displayed on the planning console" value="${Select the columns to be displayed on the planning console. This also changes the WBS level as displayed on the console}"></now-message>
+<now-message key="Filter Menu" value="${Filter Menu}"></now-message>
+<now-message key="Double click any field to edit its values" value="${Double click any field to edit its values. Right-click the field to see more actions}"></now-message>
+<now-message key="Inline editing" value="${Inline editing}"></now-message>
+<now-message key="View notifications" value="${View notifications generated by external project task dependencies. You can choose to accept or reject changes when external dependency is set to soft}"></now-message>
+<now-message key="Notifications" value="${Notifications}"></now-message>
+<now-message key="View more actions" value="${View more actions to be performed on the project. You can create or view baselines, move project, copy project, copy partial project, view livefeed or apply template. You can change the settings to show or hide date change, duration change or weekends. You can also view Keyboard shortcuts and walkthrough.}"></now-message>
+<now-message key="More Actions" value="${More Actions}"></now-message>
+<now-message key="Open a new project" value="${Open a new project}"></now-message>
+<now-message key="Select a project to open it in the Planning Console" value="${Select a project to open it in the Planning Console}"></now-message>
+<now-message key="Change Zoom Level and Scroll to a date" value="${Change Zoom Level and Scroll to a date}"></now-message>
+<now-message key="Save client data" value="${Save all changes made on the client side}">
+<now-message key="Save" value="${Save}">
+<now-message key="Change zoom level and scroll to a date" value="${Change zoom level and scroll to a date}"></now-message>
+<div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

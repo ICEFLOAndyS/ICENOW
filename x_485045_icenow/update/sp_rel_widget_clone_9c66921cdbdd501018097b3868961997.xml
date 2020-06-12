@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_rel_widget_clone">
+    <sp_rel_widget_clone action="INSERT_OR_UPDATE">
+        <child display_value="Runbook Planning Console Callout">04665e58dbdd501018097b3868961970</child>
+        <cloned>2020-06-05 16:03:35</cloned>
+        <last_validated>2020-06-05 16:03:35</last_validated>
+        <parent display_value="Callout">d95e858a0b472200b7d0c32c15673a55</parent>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;sp_widget&gt;&lt;category/&gt;&lt;client_script&gt;&lt;![CDATA[function($scope, PWGanttConfig, PCService, $rootScope) {
+	/* widget controller */
+	var c = this;
+	
+	$scope.savePreferenceAndSettings = function(mode){
+		if (mode == 'beforestart')
+			PWGanttConfig.MODE = "introduction";
+		else PWGanttConfig.MODE = "";
+		PCService.savePreference('INTRO', true, true)
+			.then(function() {
+			PWGanttConfig.SETTINGS.INTRO = true;
+		});
+		if(mode != 'beforestart')
+			$rootScope.$broadcast('walkthrough.closed');
+	};
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css/&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data/&gt;&lt;description&gt;Walkthrough for planning console using introjs&lt;/description&gt;&lt;docs/&gt;&lt;field_list/&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id&gt;callout&lt;/id&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function(scope, ele, attr) {
+	var PWGanttInstance = $injector.get('PWGanttInstance'),
+		PWConstants = $injector.get('PWConstants'),
+		PWConfig = $injector.get('PWConfig'),
+		ProjectGanttWalkthroughSteps = $injector.get('ProjectGanttWalkthroughSteps'),
+		$window = $injector.get('$window'),
+		$timeout = $injector.get('$timeout'),
+		PWGanttConfig = $injector.get('PWGanttConfig');
+	
+	var gantt = PWGanttInstance.get(PWConstants.GANTT_INSTANCE);
+	if(gantt &amp;&amp; typeof gantt.scrollTo === 'function') gantt.scrollTo(0, 0);
+	if(PWConfig.entity === PWConstants.ENTITY.PROJECT) {
+		scope.steps = ProjectGanttWalkthroughSteps.getSteps();
+		
+		var callout = new Callout({
+			steps: scope.steps,
+			callbacks: {
+				beforeStart: _closeMenuAndSavePreference,
+				onExit: _closeMenuAndSavePreference,
+				onComplete: _closeMenuAndSavePreference
+			},
+			welcomeScreen: {
+				intro: "&lt;b&gt;" + scope.data.messages.planningConsole + "&lt;/b&gt;&lt;br/&gt;" +
+						scope.data.messages.pcOverView + scope.data.messages.liveFeed,
+				introShort: scope.data.messages.introShort
+			},
+			startLabel: scope.data.messages.startLabel,
+			nextLabel: scope.data.messages.nextLabel,
+			doneLabel: scope.data.messages.doneLabel
+		});
+
+		$timeout(function() {
+			callout.start(PWGanttConfig &amp;&amp; PWGanttConfig.SETTINGS &amp;&amp; PWGanttConfig.SETTINGS.showWelcomeScreen);
+		}, 0);
+
+	} 
+	
+	function _closeMenuAndSavePreference(mode) {
+		scope.savePreferenceAndSettings(mode);
+		$('body').trigger('click');
+	}
+}]]&gt;&lt;/link&gt;&lt;name&gt;Callout&lt;/name&gt;&lt;option_schema/&gt;&lt;public&gt;false&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+	/* populate the 'data' object */
+	/* e.g., data.table = $sp.getValue('table'); */
+	data.messages = {};
+	data.messages.planningConsole = gs.getMessage('Planning Console');
+	data.messages.pcOverView = gs.getMessage('The planning console gives project managers a comprehensive view of all aspects of a project, including a hierarchical list of sub-projects, if any, project tasks, which appear in a work breakdown structure (WBS) list with task assignments, and the project Gantt chart. ');
+	data.messages.liveFeed = gs.getMessage('The console also integrates with Live Feed so your users can collaborate on projects.');
+	data.messages.introShort = gs.getMessage('Introduction to Planning Console.');
+	data.messages.startLabel = gs.getMessage('Take the tour');
+	data.messages.nextLabel = gs.getMessage('Got it');
+	data.messages.doneLabel = gs.getMessage('Done');
+})();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2016-11-13 23:53:50&lt;/sys_created_on&gt;&lt;sys_id&gt;d95e858a0b472200b7d0c32c15673a55&lt;/sys_id&gt;&lt;sys_mod_count&gt;68&lt;/sys_mod_count&gt;&lt;sys_name&gt;Callout&lt;/sys_name&gt;&lt;sys_package display_value="Project Portfolio Suite Portal" source="com.snc.pps_portal"&gt;a614b505db09101018097b38689619fc&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_d95e858a0b472200b7d0c32c15673a55&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2018-11-01 12:21:49&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;now-message key="Switch between views" value="${Switch between planning console and workbench views for the current project}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Menu" value="${Menu}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Inserts a new task above" value="${Inserts a new task above the current task. You cannot insert a task above the top task}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Add Task Above" value="${Add Task Above}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Insert a new task below" value="${Insert a new task below the current task or insert the first task in the project}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Add Task Below" value="${Add Task Below}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Move the current task down" value="${Move the current task down in the hierarchy. It renumbers the WBS number for this task and its sibling tasks}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Move Down" value="${Move Down}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Move the current task up" value="${Move the current task up in the hierarchy.  The WBS numbers for this task and its siblings are renumbered}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Move Up" value="${Move Up}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Unindent the task" value="${Unindent the task. This changes the parent and WBS numbering of the task}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Unindent" value="${Unindent}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Indent the task" value="${Indent the task. This changes the parent and WBS numbering of the task}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Indent" value="${Indent}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Display the critical path in red" value="${Display the critical path in red. Any delay of critical path tasks delays the project completion}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Show Critical Path" value="${Show Critical Path}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Indicates whether the project schedule is calculated automatically or manually" value="${Indicates whether the project schedule is calculated automatically or manually}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Project Mode" value="${Project Mode}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Select the columns to be displayed on the planning console" value="${Select the columns to be displayed on the planning console. This also changes the WBS level as displayed on the console}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Filter Menu" value="${Filter Menu}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Double click any field to edit its values" value="${Double click any field to edit its values. Right-click the field to see more actions}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Inline editing" value="${Inline editing}"&gt;&lt;/now-message&gt;
+&lt;now-message key="View notifications" value="${View notifications generated by external project task dependencies. You can choose to accept or reject changes when external dependency is set to soft}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Notifications" value="${Notifications}"&gt;&lt;/now-message&gt;
+&lt;now-message key="View more actions" value="${View more actions to be performed on the project. You can create or view baselines, move project, copy project, copy partial project, view livefeed or apply template. You can change the settings to show or hide date change, duration change or weekends. You can also view Keyboard shortcuts and walkthrough.}"&gt;&lt;/now-message&gt;
+&lt;now-message key="More Actions" value="${More Actions}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Open a new project" value="${Open a new project}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Select a project to open it in the Planning Console" value="${Select a project to open it in the Planning Console}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Change Zoom Level and Scroll to a date" value="${Change Zoom Level and Scroll to a date}"&gt;&lt;/now-message&gt;
+&lt;now-message key="Save client data" value="${Save all changes made on the client side}"&gt;
+&lt;now-message key="Save" value="${Save}"&gt;
+&lt;now-message key="Change zoom level and scroll to a date" value="${Change zoom level and scroll to a date}"&gt;&lt;/now-message&gt;
+&lt;div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;</payload>
+        <sys_class_name>sp_rel_widget_clone</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-05 16:03:35</sys_created_on>
+        <sys_id>9c66921cdbdd501018097b3868961997</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>04665e58dbdd501018097b3868961970</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sp_rel_widget_clone_9c66921cdbdd501018097b3868961997</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-05 16:03:35</sys_updated_on>
+    </sp_rel_widget_clone>
+</record_update>
