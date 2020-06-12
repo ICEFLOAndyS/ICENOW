@@ -2,7 +2,7 @@
     <sys_properties_category_m2m action="INSERT_OR_UPDATE">
         <category display_value="ICEFLO System Properties">934c459edb11501018097b3868961989</category>
         <order>100</order>
-        <property display_value="x_485045_icenow.task_default_rows" name="x_485045_icenow.task_default_rows">5f2dc1dedb11501018097b38689619ef</property>
+        <property display_value="x_485045_icenow.taskdefaultrows" name="x_485045_icenow.taskdefaultrows">5f2dc1dedb11501018097b38689619ef</property>
         <sys_class_name>sys_properties_category_m2m</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2020-06-11 15:56:06</sys_created_on>

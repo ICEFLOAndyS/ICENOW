@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category/>
+        <description>This is a main menu option, visible only to users with the client_admin role. It will have sub-menu options for the range of Client Administrative tasks. &#13;
+In my PDI instance, this role has been assigned to user Andy Smith only&#13;
+1) Set System Property Values&#13;
+2) etc&#13;
+3) etc</description>
+        <device_type>browser</device_type>
+        <hint>Application menu for all Client Admin tasks</hint>
+        <name/>
+        <order/>
+        <roles>x_485045_icenow.client_admin</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-12 11:35:05</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>789bd526db11101018097b3868961904</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>ICEFLO Client Administration</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_app_application_789bd526db11101018097b3868961904</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-12 12:02:49</sys_updated_on>
+        <title>ICEFLO Client Administration</title>
+        <view_name/>
+    </sys_app_application>
+</record_update>

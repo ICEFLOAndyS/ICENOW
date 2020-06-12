@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role">
+    <sys_user_role action="INSERT_OR_UPDATE">
+        <assignable_by/>
+        <can_delegate>true</can_delegate>
+        <description>This is a role defned for the Client Administrator  of an ICENOW instance. It will anable users with this role to perform the following activities:&#13;
+1) Set the branding of the instance&#13;
+2) Define the values of the available System Properties&#13;
+3) Other functions to be added here.....</description>
+        <elevated_privilege>false</elevated_privilege>
+        <grantable>true</grantable>
+        <includes_roles/>
+        <name>x_485045_icenow.client_admin</name>
+        <requires_subscription>-1</requires_subscription>
+        <scoped_admin>false</scoped_admin>
+        <suffix>client_admin</suffix>
+        <sys_class_name>sys_user_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-12 11:29:09</sys_created_on>
+        <sys_id>1a2a19e2db11101018097b3868961925</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_485045_icenow.client_admin</sys_name>
+        <sys_package display_value="ICEFLO on Now" source="x_485045_icenow">312b0f2ddb41901018097b386896199e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="ICEFLO on Now">312b0f2ddb41901018097b386896199e</sys_scope>
+        <sys_update_name>sys_user_role_1a2a19e2db11101018097b3868961925</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-12 11:29:09</sys_updated_on>
+    </sys_user_role>
+</record_update>
